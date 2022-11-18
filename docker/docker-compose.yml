@@ -1,63 +1,63 @@
 version: '3'
 services:
-    php-web:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: "docker-abantether-php-web"
-        working_dir: "/var/www/html"
-        volumes:
-            - "./php/php.ini:/usr/local/etc/php/conf.d/php.ini"
-            - "../src:/var/www/html"
-        ports:
-            - "9000:9000"
-        networks:
-            - docker-abantether-network
-    web:
-        image: nginx:stable-alpine
-        container_name: "docker-abantether-web"
-        working_dir: "/var/www/html"
-        ports:
-            - "9085:80"
-        volumes:
-            - "../src:/var/www/html"
-            - "./nginx/web/logs:/var/log/nginx"
-            - "./nginx/web/default.conf:/etc/nginx/conf.d/default.conf"
-        depends_on:
-            - php-web
-            - mysql
-            - redis
-        links:
-            - mysql
-            - redis
-        networks:
-            - docker-abantether-network
-    mysql:
-        image: mysql:8.0.25
-        container_name: "docker-abantether-mysql"
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "9306:3306"
-        volumes:
-            - "./mysql:/var/lib/mysql"
-        environment:
-            MYSQL_DATABASE: "abantether_shared"
-            MYSQL_ROOT_PASSWORD: "docker"
-            SERVICE_TAGS: dev
-            SERVICE_NAME: mysql
-        networks:
-            - docker-abantether-network
-    redis:
-        image: redis
-        container_name: "docker-abantether-redis"
-        restart: always
-        ports:
-            - "9379:6379"
-        volumes:
-            - "./redis/data:/data"
-            - "./redis/redis.conf:/usr/local/etc/redis/redis.conf"
-        networks:
-            - docker-abantether-network
+  php-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "docker-travelagency-php-web"
+    working_dir: "/var/www/html"
+    volumes:
+      - "./php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+      - "../src:/var/www/html"
+    ports:
+      - "9000:9000"
+    networks:
+      - docker-travelagency-network
+  web:
+    image: nginx:stable-alpine
+    container_name: "docker-travelagency-web"
+    working_dir: "/var/www/html"
+    ports:
+      - "9085:80"
+    volumes:
+      - "../src:/var/www/html"
+      - "./nginx/web/logs:/var/log/nginx"
+      - "./nginx/web/default.conf:/etc/nginx/conf.d/default.conf"
+    depends_on:
+      - php-web
+      - mysql
+      - redis
+    links:
+      - mysql
+      - redis
+    networks:
+      - docker-travelagency-network
+  mysql:
+    image: mysql:8.0.25
+    container_name: "docker-travelagency-mysql"
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "9306:3306"
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: "travelagency_db"
+      MYSQL_ROOT_PASSWORD: "docker"
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - docker-travelagency-network
+  redis:
+    image: redis
+    container_name: "docker-travelagency-redis"
+    restart: always
+    ports:
+      - "9379:6379"
+    volumes:
+      - "./redis/data:/data"
+      - "./redis/redis.conf:/usr/local/etc/redis/redis.conf"
+    networks:
+      - docker-travelagency-network
 networks:
-    docker-abantether-network:
+  docker-travelagency-network:
