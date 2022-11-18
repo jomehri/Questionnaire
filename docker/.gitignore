@@ -1,0 +1,9 @@
+/mysql/*
+/redis/data/*
+/nginx/web/logs/*
+/nginx/admin/logs/*
+/nginx/file/logs/*
+/nginx/image/logs/*
+/nginx/auth/logs/*
+/nginx/link/logs/*
+/nginx/logs/*

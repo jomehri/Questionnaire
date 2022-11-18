@@ -1,0 +1,61 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "AbanTether Task by Ali Jomehri",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/user/coins/purchase": {
+            "put": {
+                "tags": [
+                    "Coins"
+                ],
+                "summary": "store new user coin purchase",
+                "description": "store new user coin purchase",
+                "operationId": "91c3ec1ea685a21acd4369740836fd4a",
+                "requestBody": {
+                    "description": "store new user coin purchase",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "coinName": {
+                                        "type": "string",
+                                        "example": "ABAN"
+                                    },
+                                    "amount": {
+                                        "type": "float",
+                                        "example": 3
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "sucess": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
