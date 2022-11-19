@@ -14,11 +14,11 @@
 ## Installation:
 
 - cd docker
-- docker-compose up
+- docker-compose build
+- docker-compose up --remove-orphans
 - cd ../src
 - composer install
 - cp .env.example .env
 - sudo chmod 777 storage/ -R
 - php artisan migrate:fresh --seed
 - visit http://localhost:9085
-- php artisan test
