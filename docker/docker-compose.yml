@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: "docker-travelagency-php-web"
+    container_name: "docker-qst-php-web"
     working_dir: "/var/www/html"
     volumes:
       - "./php/php.ini:/usr/local/etc/php/conf.d/php.ini"
@@ -12,10 +12,10 @@ services:
     ports:
       - "9000:9000"
     networks:
-      - docker-travelagency-network
+      - docker-qst-network
   web:
     image: nginx:stable-alpine
-    container_name: "docker-travelagency-web"
+    container_name: "docker-qst-web"
     working_dir: "/var/www/html"
     ports:
       - "9085:80"
@@ -31,26 +31,25 @@ services:
       - mysql
       - redis
     networks:
-      - docker-travelagency-network
+      - docker-qst-network
   mysql:
     image: mysql:8.0.25
-    container_name: "docker-travelagency-mysql"
+    container_name: "docker-qst-mysql"
     restart: unless-stopped
     tty: true
     ports:
       - "9306:3306"
     volumes:
       - "./mysql:/var/lib/mysql"
+      - "./mysql/init:/docker-entrypoint-initdb.d"
+
     environment:
-      MYSQL_DATABASE: "travelagency_db"
       MYSQL_ROOT_PASSWORD: "docker"
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
     networks:
-      - docker-travelagency-network
+      - docker-qst-network
   redis:
     image: redis
-    container_name: "docker-travelagency-redis"
+    container_name: "docker-qst-redis"
     restart: always
     ports:
       - "9379:6379"
@@ -58,6 +57,6 @@ services:
       - "./redis/data:/data"
       - "./redis/redis.conf:/usr/local/etc/redis/redis.conf"
     networks:
-      - docker-travelagency-network
+      - docker-qst-network
 networks:
-  docker-travelagency-network:
+  docker-qst-network:
