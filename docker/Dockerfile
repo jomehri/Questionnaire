@@ -21,7 +21,7 @@ RUN apk --update --no-cache add pcre-dev ${PHPIZE_DEPS} \
 
 RUN apk --update --no-cache add unixodbc;
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql tokenizer zip gd pdo_dblib bcmath pcntl
+RUN docker-php-ext-install mysqli pdo pdo_mysql mbstring tokenizer zip gd pdo_dblib bcmath pcntl
 
 RUN pecl channel-update pecl.php.net \
     && pecl install redis \

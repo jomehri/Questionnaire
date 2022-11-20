@@ -22,3 +22,5 @@
 - sudo chmod 777 storage/ -R
 - php artisan migrate:fresh --seed
 - visit http://localhost:9085
+
+docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)

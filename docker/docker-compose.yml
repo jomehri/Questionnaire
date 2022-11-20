@@ -31,6 +31,9 @@ services:
       - qst-php-web
       - qst-mysql
       - qst-redis
+    links:
+      - qst-mysql
+      - qst-redis
     networks:
       - docker-network
   qst-mysql:
@@ -41,7 +44,7 @@ services:
     ports:
       - "9306:3306"
     volumes:
-      - "./mysql/dbdata:/var/lib/mysql"
+      - "./~mysql/dbdata:/var/lib/mysql"
       - "./mysql/my.cnf:/etc/mysql/my.cnf"
       - "./mysql/init:/docker-entrypoint-initdb.d"
     environment:
