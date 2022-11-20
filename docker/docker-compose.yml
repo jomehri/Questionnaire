@@ -1,6 +1,7 @@
 version: '3.0'
 networks:
   docker-network:
+    driver: bridge
 services:
   qst-php-web:
     build:
@@ -9,8 +10,8 @@ services:
     container_name: "docker-qst-php-web"
     working_dir: "/var/www/html"
     volumes:
-      - "./php/php.ini:/usr/local/etc/php/conf.d/php.ini"
       - "../src:/var/www/html"
+      - "./php/php.ini:/usr/local/etc/php/conf.d/php.ini"
     ports:
       - "9900:9000"
     networks:
@@ -18,6 +19,7 @@ services:
   qst-web:
     image: nginx:stable-alpine
     container_name: "docker-qst-web"
+    restart: unless-stopped
     working_dir: "/var/www/html"
     ports:
       - "9085:80"
@@ -29,23 +31,19 @@ services:
       - qst-php-web
       - qst-mysql
       - qst-redis
-    links:
-      - qst-mysql
-      - qst-redis
     networks:
       - docker-network
   qst-mysql:
     image: mysql:8.0.25
     container_name: "docker-qst-mysql"
-    restart: always
+    restart: unless-stopped
     tty: true
     ports:
       - "9306:3306"
     volumes:
-      - "./mysql:/var/lib/mysql"
-      - "./provision/mysql/init:/docker-entrypoint-initdb.d"
-    command:
-      - '--default-authentication-plugin=mysql_native_password'
+      - "./mysql/dbdata:/var/lib/mysql"
+      - "./mysql/my.cnf:/etc/mysql/my.cnf"
+      - "./mysql/init:/docker-entrypoint-initdb.d"
     environment:
       MYSQL_ROOT_PASSWORD: "docker"
     networks:
