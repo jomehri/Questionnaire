@@ -20,7 +20,8 @@
 - composer install
 - cp .env.example .env
 - sudo chmod 777 storage/ -R
-- php artisan migrate:fresh --seed
-- visit http://localhost:9085
+- cd ../docker
+- docker-compose exec qst-php-web php /var/www/html/artisan migrate:fresh --seed
+- visit http://localhost:9085 
 
 docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
