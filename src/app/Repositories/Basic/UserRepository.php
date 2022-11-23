@@ -14,28 +14,16 @@ class UserRepository extends BaseRepository implements IUserRepository
      */
     public function getUser(int $id): User
     {
-        return (new User)
-            ->first();
+        return (new User)->first();
     }
 
     /**
-     * @param int $id
+     * @param string $mobile
      * @return User
      */
-    public function getUserWithLockForUpdate(int $id): User
+    public function register(string $mobile): User
     {
-        return (new User)
-            ->lockForUpdate()
-            ->first();
-    }
-
-    /**
-     * @param User $user
-     * @return void
-     */
-    public function updateUser(User $user): void
-    {
-        $user->save();
+        return (new User)->setMobile($mobile)->save();
     }
 
 }

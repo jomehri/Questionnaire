@@ -5,5 +5,5 @@ use App\Http\Controllers\Api\User\UserApiController;
 
 Route::prefix("/user/")
     ->group(function () {
-        Route::post('auth/requestPinCode', [UserApiController::class, 'requestPinCode']);
+        Route::post('register', [UserApiController::class, 'register']);
     });

@@ -3,6 +3,7 @@
 namespace Database\Factories\Basic;
 
 use App\Models\Basic\User;
+use Ybazli\Faker\Facades\Faker;
 use Database\Factories\BaseFactory;
 
 class UserFactory extends BaseFactory
@@ -20,10 +21,34 @@ class UserFactory extends BaseFactory
     public function definition(): array
     {
         return [
-            User::COLUMN_NAME => $this->faker->name(),
-            User::COLUMN_EMAIL => $this->faker->unique()->safeEmail(),
-            User::COLUMN_BALANCE => $this->faker->randomFloat(2, 100, 1000),
+            User::COLUMN_FIRST_NAME => Faker::firstName(),
+            User::COLUMN_LAST_NAME => Faker::lastName(),
+            User::COLUMN_MOBILE => Faker::mobile(),
         ];
+    }
+
+    /**
+     * @return UserFactory
+     */
+    public function nullFirstName(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                User::COLUMN_FIRST_NAME => null,
+            ];
+        });
+    }
+
+    /**
+     * @return UserFactory
+     */
+    public function nullLastName(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                User::COLUMN_LAST_NAME => null,
+            ];
+        });
     }
 
 }

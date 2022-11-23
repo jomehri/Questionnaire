@@ -13,14 +13,9 @@ interface IUserRepository
     public function getUser(int $id): User;
 
     /**
-     * @param int $id
+     * @param string $mobile
      * @return User
      */
-    public function getUserWithLockForUpdate(int $id): User;
+    public function register(string $mobile): User;
 
-    /**
-     * @param User $user
-     * @return void
-     */
-    public function updateUser(User $user): void;
 }

@@ -30,16 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerServices();
         $this->registerRepositories();
-    }
-
-    /**
-     * @return void
-     */
-    public function registerServices(): void
-    {
-        $this->app->bind(IUserCoinService::class, UserCoinService::class);
     }
 
     /**
@@ -48,7 +39,5 @@ class AppServiceProvider extends ServiceProvider
     public function registerRepositories(): void
     {
         $this->app->singleton(IUserRepository::class, UserRepository::class);
-        $this->app->singleton(ICoinRepository::class, CoinRepository::class);
-        $this->app->singleton(IUserCoinRepository::class, UserCoinRepository::class);
     }
 }

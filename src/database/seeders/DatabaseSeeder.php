@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         /**
-         * Seed a sample user
+         * Seed some sample users
          */
-        User::factory(1)
+        User::factory(10)
+            ->nullFirstName()
             ->create();
     }
 }

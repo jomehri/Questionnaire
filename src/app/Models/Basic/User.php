@@ -28,16 +28,16 @@ class User extends BaseModel
     /**
      * Columns
      */
-    const COLUMN_NAME = 'name';
-    const COLUMN_EMAIL = 'email';
-    const COLUMN_BALANCE = 'balance';
+    const COLUMN_FIRST_NAME = 'first_name';
+    const COLUMN_LAST_NAME = 'last_name';
+    const COLUMN_MOBILE = 'mobile';
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getFirstName(): string
     {
-        return $this->{self::COLUMN_NAME};
+        return $this->{self::COLUMN_FIRST_NAME};
     }
 
     /**
@@ -45,9 +45,9 @@ class User extends BaseModel
      *
      * @return $this
      */
-    public function setName(string $value): self
+    public function setFirstName(string $value): self
     {
-        $this->{self::COLUMN_NAME} = $value;
+        $this->{self::COLUMN_FIRST_NAME} = $value;
 
         return $this;
     }
@@ -55,9 +55,9 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getLastName(): string
     {
-        return $this->{self::COLUMN_EMAIL};
+        return $this->{self::COLUMN_LAST_NAME};
     }
 
     /**
@@ -65,57 +65,9 @@ class User extends BaseModel
      *
      * @return $this
      */
-    public function setEmail(string $value): self
+    public function setLastName(string $value): self
     {
-        if ($value) {
-            $value = strtolower($value);
-        }
-
-        $this->{self::COLUMN_EMAIL} = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getBalance(): float
-    {
-        return $this->{self::COLUMN_BALANCE};
-    }
-
-    /**
-     * @param float $value
-     *
-     * @return $this
-     */
-    public function setBalance(float $value): self
-    {
-        $this->{self::COLUMN_BALANCE} = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param float $value
-     *
-     * @return $this
-     */
-    public function decreaseBalance(float $value): self
-    {
-        $this->{self::COLUMN_BALANCE} = $this->getBalance() - $value;
-
-        return $this;
-    }
-
-    /**
-     * @param float $value
-     *
-     * @return $this
-     */
-    public function increaseBalance(float $value): self
-    {
-        $this->{self::COLUMN_BALANCE} = $this->getBalance() + $value;
+        $this->{self::COLUMN_LAST_NAME} = $value;
 
         return $this;
     }

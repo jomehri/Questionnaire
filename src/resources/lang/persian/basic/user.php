@@ -6,5 +6,5 @@ return [
         'userBalanceNotEnough' => 'موجودی شما کافی نیست',
     ],
 
-    'notificationSentToYourMobile' => 'رمز یک بار مصرف به شماره :mobile ارسال شد.',
+    'registerSuccess' => 'ثبت نام شما با موفقیت انجاد شد و رمز یک بار مصرف به شماره همراه :mobile ارسال شد.',
 ];

@@ -2,34 +2,38 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Api\BaseApiController;
 
 class UserApiController extends BaseApiController
 {
-    /**
-     * @var Request
-     */
+    /** @var Request */
     private Request $request;
+
+    /** @var UserService  */
+    private UserService $userService;
 
     /**
      * @param Request $request
+     * @param UserService $userService
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, UserService $userService)
     {
         $this->request = $request;
+        $this->userService = $userService;
     }
 
     /**
      * @OA\post (
-     * path="/api/user/auth/requestPinCode",
-     * summary="Requests pin code to be sent to user cell phone",
-     * description="Requests pin code to be sent to user cell phone",
+     * path="/api/user/register",
+     * summary="Registers new user",
+     * description="Registers new user",
      * tags={"User"},
      * @OA\RequestBody(
      *    required=true,
-     *    description="generate PIN code and texts user on their cell phone",
+     *    description="Registers new user",
      *  @OA\JsonContent(
      *      @OA\Property(property="mobile", type="string",example="09123456789"),
      *  ),
@@ -45,9 +49,11 @@ class UserApiController extends BaseApiController
      *
      * @return JsonResponse
      */
-    public function requestPinCode(): JsonResponse
+    public function register(): JsonResponse
     {
         $data = $this->sanitizeRequestPinData();
+
+        $this->userService->register($data);
 
         return $this->returnOk($this->getPinRequestSuccessMessage($data['mobile']));
     }
@@ -68,7 +74,7 @@ class UserApiController extends BaseApiController
      */
     private function getPinRequestSuccessMessage($mobile): string
     {
-        return __('basic/user.notificationSentToYourMobile', ['mobile' => $mobile]);
+        return __('basic/user.registerSuccess', ['mobile' => $mobile]);
     }
 
 

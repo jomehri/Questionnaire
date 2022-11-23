@@ -21,14 +21,13 @@ class CreateUsersTable extends BaseMigration
      */
     protected function createTable(Blueprint $table): void
     {
-        $table->string(User::COLUMN_NAME, 100)
-            ->nullable(false);
-        $table->string(User::COLUMN_EMAIL, 150)
+        $table->string(User::COLUMN_FIRST_NAME, 50)
+            ->nullable(true);
+        $table->string(User::COLUMN_LAST_NAME, 100)
+            ->nullable(true);
+        $table->string(User::COLUMN_MOBILE, 11)
             ->nullable(false)
             ->unique();
-        $table->decimal(User::COLUMN_BALANCE, 10, 2)
-            ->nullable(false)
-            ->default(0);
     }
 
     /**
