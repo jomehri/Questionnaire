@@ -2,9 +2,9 @@
 
 namespace App\Services\User;
 
-use App\Interfaces\Repositories\Basic\IUserRepository;
-use App\Repositories\Basic\UserRepository;
 use App\Services\BaseService;
+use App\Repositories\Basic\UserRepository;
+use App\Interfaces\Repositories\Basic\IUserRepository;
 
 class UserService extends BaseService
 {
@@ -25,7 +25,7 @@ class UserService extends BaseService
      */
     public function register(array $data): void
     {
-        $this->userRepository->register($data['mobile']);
+        $this->userRepository->register($data);
     }
 
 }

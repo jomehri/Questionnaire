@@ -20,7 +20,18 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
+                                    "first_name": {
+                                        "nullable": "true",
+                                        "type": "string",
+                                        "example": "دوا"
+                                    },
+                                    "last_name": {
+                                        "nullable": "true",
+                                        "type": "string",
+                                        "example": "لیپا"
+                                    },
                                     "mobile": {
+                                        "nullable": "false",
                                         "type": "string",
                                         "example": "09123456789"
                                     }
@@ -46,6 +57,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "description": "bad request"
                     }
                 }
             }

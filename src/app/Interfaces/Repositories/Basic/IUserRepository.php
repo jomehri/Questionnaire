@@ -13,9 +13,9 @@ interface IUserRepository
     public function getUser(int $id): User;
 
     /**
-     * @param string $mobile
+     * @param array $data
      * @return User
      */
-    public function register(string $mobile): User;
+    public function register(array $data): User;
 
 }

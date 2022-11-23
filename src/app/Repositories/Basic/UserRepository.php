@@ -18,12 +18,20 @@ class UserRepository extends BaseRepository implements IUserRepository
     }
 
     /**
-     * @param string $mobile
+     * @param array $data
      * @return User
      */
-    public function register(string $mobile): User
+    public function register(array $data): User
     {
-        return (new User)->setMobile($mobile)->save();
+        $user = new User;
+
+        $user
+            ->setFirstName($data[User::COLUMN_FIRST_NAME])
+            ->setLastName($data[User::COLUMN_LAST_NAME])
+            ->setMobile($data[User::COLUMN_MOBILE])
+            ->save();
+
+        return $user;
     }
 
 }

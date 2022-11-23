@@ -33,19 +33,19 @@ class User extends BaseModel
     const COLUMN_MOBILE = 'mobile';
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->{self::COLUMN_FIRST_NAME};
     }
 
     /**
-     * @param string $value
+     * @param string|null $value
      *
      * @return $this
      */
-    public function setFirstName(string $value): self
+    public function setFirstName(?string $value): self
     {
         $this->{self::COLUMN_FIRST_NAME} = $value;
 
@@ -53,11 +53,31 @@ class User extends BaseModel
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->{self::COLUMN_LAST_NAME};
+    }
+
+    /**
+     * @param string|null $value
+     *
+     * @return $this
+     */
+    public function setLastName(?string $value): self
+    {
+        $this->{self::COLUMN_LAST_NAME} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobile(): string
+    {
+        return $this->{self::COLUMN_MOBILE};
     }
 
     /**
@@ -65,9 +85,9 @@ class User extends BaseModel
      *
      * @return $this
      */
-    public function setLastName(string $value): self
+    public function setMobile(string $value): self
     {
-        $this->{self::COLUMN_LAST_NAME} = $value;
+        $this->{self::COLUMN_MOBILE} = $value;
 
         return $this;
     }
