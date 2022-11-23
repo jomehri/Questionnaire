@@ -24,5 +24,3 @@
 - cd ../docker
 - docker-compose exec qst-php-web php /var/www/html/artisan migrate:fresh --seed
 - visit http://localhost:9085 
-
-docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)
