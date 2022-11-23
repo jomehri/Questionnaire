@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
          * Seed some sample users
          */
         User::factory(10)
-            ->nullFirstName()
             ->create();
     }
 }
