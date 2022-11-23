@@ -20,13 +20,5 @@ class DatabaseSeeder extends Seeder
          */
         User::factory(1)
             ->create();
-
-        /**
-         * Seed Aban Coin
-         */
-        Coin::factory(1)
-            ->abanCoin()
-            ->enabled()
-            ->create();
     }
 }

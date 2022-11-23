@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Sale\UserCoinApiController;
+use App\Http\Controllers\Api\User\UserApiController;
 
-Route::put('user/coins/purchase', [UserCoinApiController::class, 'newPurchase']);
+Route::prefix("/user/")
+    ->group(function () {
+        Route::post('auth/requestPinCode', [UserApiController::class, 'requestPinCode']);
+    });

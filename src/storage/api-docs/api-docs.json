@@ -1,32 +1,28 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "AbanTether Task by Ali Jomehri",
+        "title": "Questioner",
         "version": "0.1"
     },
     "paths": {
-        "/api/user/coins/purchase": {
-            "put": {
+        "/api/user/auth/requestPinCode": {
+            "post": {
                 "tags": [
-                    "Coins"
+                    "User"
                 ],
-                "summary": "store new user coin purchase",
-                "description": "store new user coin purchase",
-                "operationId": "91c3ec1ea685a21acd4369740836fd4a",
+                "summary": "Requests pin code to be sent to user cell phone",
+                "description": "Requests pin code to be sent to user cell phone",
+                "operationId": "83031efc94c9cc612bf0c6b0587e7962",
                 "requestBody": {
-                    "description": "store new user coin purchase",
+                    "description": "generate PIN code and texts user on their cell phone",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "coinName": {
+                                    "mobile": {
                                         "type": "string",
-                                        "example": "ABAN"
-                                    },
-                                    "amount": {
-                                        "type": "float",
-                                        "example": 3
+                                        "example": "09123456789"
                                     }
                                 },
                                 "type": "object"

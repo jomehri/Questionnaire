@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
 /**
- * @OA\Info(title="AbanTether Task by Ali Jomehri", version="0.1")
+ * @OA\Info(title="Questioner", version="0.1")
  */
 class BaseApiController extends Controller
 {
