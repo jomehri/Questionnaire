@@ -43,13 +43,32 @@ class UserApiController extends BaseApiController
      *     ),
      * )
      *
-     * @param Request $request
      * @return JsonResponse
      */
-    public function requestPinCode(Request $request): JsonResponse
+    public function requestPinCode(): JsonResponse
     {
-        $request->post('mobile');
-        return $this->returnOk("purchase success");
+        $data = $this->sanitizeRequestPinData();
+
+        return $this->returnOk($this->getPinRequestSuccessMessage($data['mobile']));
+    }
+
+    /**
+     * @return array
+     */
+    private function sanitizeRequestPinData(): array
+    {
+        return [
+            'mobile' => $this->request->post('mobile'),
+        ];
+    }
+
+    /**
+     * @param $mobile
+     * @return string
+     */
+    private function getPinRequestSuccessMessage($mobile): string
+    {
+        return __('basic/user.notificationSentToYourMobile', ['mobile' => $mobile]);
     }
 
 
