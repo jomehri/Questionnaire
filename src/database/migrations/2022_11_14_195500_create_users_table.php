@@ -28,6 +28,8 @@ class CreateUsersTable extends BaseMigration
         $table->string(User::COLUMN_MOBILE, 11)
             ->nullable(false)
             ->unique();
+        $table->string(User::COLUMN_PIN_CODE, 7)
+            ->nullable(true);
     }
 
     /**

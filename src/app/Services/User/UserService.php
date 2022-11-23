@@ -2,9 +2,13 @@
 
 namespace App\Services\User;
 
+use App\Helpers\StringHelper;
+use App\Models\Basic\User;
+use App\Notifications\User\UserPinCodeNotification;
 use App\Services\BaseService;
 use App\Repositories\Basic\UserRepository;
 use App\Interfaces\Repositories\Basic\IUserRepository;
+use Illuminate\Support\Str;
 
 class UserService extends BaseService
 {
@@ -25,7 +29,20 @@ class UserService extends BaseService
      */
     public function register(array $data): void
     {
-        $this->userRepository->register($data);
+        /**
+         * Generate OTP pin code
+         */
+        $data[User::COLUMN_PIN_CODE] = StringHelper::randomNumber(7);
+
+        /**
+         * Create user
+         */
+        $user = $this->userRepository->register($data);
+
+        /**
+         * Send pin-code to user's cell phone
+         */
+        $user->notify(new UserPinCodeNotification());
     }
 
 }

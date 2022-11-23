@@ -31,6 +31,7 @@ class User extends BaseModel
     const COLUMN_FIRST_NAME = 'first_name';
     const COLUMN_LAST_NAME = 'last_name';
     const COLUMN_MOBILE = 'mobile';
+    const COLUMN_PIN_CODE = 'pin_code';
 
     /**
      * @return string|null
@@ -91,5 +92,37 @@ class User extends BaseModel
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getPinCode(): ?string
+    {
+        return $this->{self::COLUMN_PIN_CODE};
+    }
+
+    /**
+     * @param string|null $value
+     *
+     * @return $this
+     */
+    public function setPinCode(?string $value): self
+    {
+        $this->{self::COLUMN_PIN_CODE} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string $mobile
+     * @return User|null
+     */
+    public static function getUserByMobile(string $mobile): ?user
+    {
+        return (new self)
+            ->where(self::COLUMN_MOBILE, $mobile)
+            ->first();
+    }
+
 
 }
