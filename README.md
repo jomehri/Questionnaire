@@ -1,4 +1,4 @@
-## Design an API with following conditions (AbanTether - Ali Jomehri)
+## Questioner
 
 ## What's included:
 
