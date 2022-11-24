@@ -4,6 +4,7 @@ namespace App\Models\Basic;
 
 use App\Models\BaseModel;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 class User extends BaseModel
 {
@@ -32,6 +33,7 @@ class User extends BaseModel
     const COLUMN_LAST_NAME = 'last_name';
     const COLUMN_MOBILE = 'mobile';
     const COLUMN_PIN_CODE = 'pin_code';
+    const COLUMN_PIN_EXPIRE_AT = 'pin_expire_at';
 
     /**
      * @return string|null
@@ -109,6 +111,42 @@ class User extends BaseModel
     public function setPinCode(?string $value): self
     {
         $this->{self::COLUMN_PIN_CODE} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return Carbon|null
+     */
+    public function getPinExpireAt(): ?Carbon
+    {
+        if (!$this->{self::COLUMN_PIN_EXPIRE_AT}) {
+            return null;
+        }
+
+        return Carbon::parse($this->{self::COLUMN_PIN_EXPIRE_AT});
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPinExpireAtTimeStamp(): ?string
+    {
+        if (!$this->getPinExpireAt()) {
+            return null;
+        }
+
+        return $this->getPinExpireAt()->timestamp;
+    }
+
+    /**
+     * @param Carbon|null $value
+     *
+     * @return $this
+     */
+    public function setPinExpireAt(?Carbon $value): self
+    {
+        $this->{self::COLUMN_PIN_EXPIRE_AT} = $value;
 
         return $this;
     }

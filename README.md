@@ -22,5 +22,5 @@
 - cp .env.testing.example .env.testing
 - sudo chmod 777 storage/ -R
 - cd ../docker
-- docker-compose exec qst-php-web php /var/www/html/artisan migrate:fresh
+- docker-compose exec qst-php-web php /var/www/html/artisan migrate
 - visit http://localhost:9085 

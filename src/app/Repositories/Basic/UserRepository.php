@@ -30,6 +30,7 @@ class UserRepository extends BaseRepository implements IUserRepository
             ->setLastName($data[User::COLUMN_LAST_NAME])
             ->setMobile($data[User::COLUMN_MOBILE])
             ->setPinCode($data[User::COLUMN_PIN_CODE])
+            ->setPinExpireAt($data[User::COLUMN_PIN_EXPIRE_AT])
             ->save();
 
         return $user;

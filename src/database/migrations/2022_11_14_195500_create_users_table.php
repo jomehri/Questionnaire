@@ -22,14 +22,16 @@ class CreateUsersTable extends BaseMigration
     protected function createTable(Blueprint $table): void
     {
         $table->string(User::COLUMN_FIRST_NAME, 50)
-            ->nullable(true);
+            ->nullable();
         $table->string(User::COLUMN_LAST_NAME, 100)
-            ->nullable(true);
+            ->nullable();
         $table->string(User::COLUMN_MOBILE, 11)
             ->nullable(false)
             ->unique();
         $table->string(User::COLUMN_PIN_CODE, 7)
-            ->nullable(true);
+            ->nullable();
+        $table->dateTime(User::COLUMN_PIN_EXPIRE_AT)
+            ->nullable();
     }
 
     /**
@@ -38,6 +40,12 @@ class CreateUsersTable extends BaseMigration
      */
     protected function alterTable(Blueprint $table): void
     {
+        /** New Columns */
+        if (!$this->hasColumn(User::COLUMN_PIN_EXPIRE_AT)) {
+            $table->dateTime(User::COLUMN_PIN_EXPIRE_AT)
+                ->nullable()
+                ->after(User::COLUMN_PIN_CODE);
+        }
     }
 }
 
