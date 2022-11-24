@@ -74,9 +74,9 @@ class Handler extends ExceptionHandler
             if ($e instanceof ValidationException) {
                 return (new BaseApiController())
                     ->returnError(
-                        __('shared::invalid_data.invalid_data'),
+                        null,
                         $e->errors(),
-                        500
+                        422
                     );
             }
 
@@ -85,8 +85,8 @@ class Handler extends ExceptionHandler
              */
             if ($e instanceof BaseApiException) {
                 return (new BaseApiController())->returnError(
-                    $e->getMessage(),
-                    [],
+                    null,
+                    [$e->getMessage()],
                     $e->getErrorCode()
                 );
             }

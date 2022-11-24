@@ -33,7 +33,8 @@ class BaseApiController extends Controller
                 "status" => $responseStatus ?? self::JSON_RESPONSE_SUCCESS,
                 "code" => $code ?? self::RETURN_CODE_OK,
                 "message" => $message,
-                "result" => $data,
+                "result" => ($responseStatus === self::JSON_RESPONSE_SUCCESS) ? $data : null,
+                "errors" => ($responseStatus !== self::JSON_RESPONSE_SUCCESS) ? $data : null,
             ],
             $code ?? self::RETURN_CODE_OK
         );
