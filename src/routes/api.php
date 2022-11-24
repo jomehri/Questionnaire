@@ -6,4 +6,5 @@ use App\Http\Controllers\Api\User\UserApiController;
 Route::prefix("/user/")
     ->group(function () {
         Route::post('register', [UserApiController::class, 'register']);
+        Route::post('login', [UserApiController::class, 'login']);
     });

@@ -11,7 +11,7 @@
                     "User"
                 ],
                 "summary": "Registers new user",
-                "description": "Registers new user",
+                "description": "Registers new user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
                 "operationId": "3c4a30cf94ea42e2b977644c2080348c",
                 "requestBody": {
                     "description": "Registers new user",
@@ -59,6 +59,58 @@
                         }
                     },
                     "422": {
+                        "description": "bad request"
+                    }
+                }
+            }
+        },
+        "/api/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login request for a user",
+                "description": "Login request for a user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
+                "operationId": "9137e24cf43eb1f2290bf31874a00dab",
+                "requestBody": {
+                    "description": "Registers new user",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "mobile": {
+                                        "nullable": "false",
+                                        "type": "string",
+                                        "example": "09123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "sucess": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "bad request"
+                    },
+                    "500": {
                         "description": "bad request"
                     }
                 }

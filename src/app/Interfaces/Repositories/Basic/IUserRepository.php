@@ -18,4 +18,11 @@ interface IUserRepository
      */
     public function register(array $data): User;
 
+    /**
+     * @param User $user
+     * @param array $data
+     * @return void
+     */
+    public function login(User $user, array $data): void;
+
 }

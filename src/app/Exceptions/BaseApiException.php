@@ -12,11 +12,17 @@ use Throwable;
  */
 abstract class BaseApiException extends Exception
 {
+    /** @var array|null $extraData */
+    public array $extraData;
+
     /**
      * @param Throwable|null $previous
+     * @param array|null $extraData
      */
-    public function __construct(Throwable $previous = null)
+    public function __construct(Throwable $previous = null, ?array $extraData = [])
     {
+        $this->extraData = $extraData;
+
         parent::__construct($this->getErrorMessage(), $this->getErrorCode(), $previous);
     }
 
@@ -35,6 +41,6 @@ abstract class BaseApiException extends Exception
      */
     public function getHttpCode(): int
     {
-        return 500;
+        return 422;
     }
 }

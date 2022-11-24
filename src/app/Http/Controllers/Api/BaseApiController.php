@@ -23,18 +23,19 @@ class BaseApiController extends Controller
      * @param string $responseStatus
      * @param array|null $data
      * @param string|null $message
+     * @param int|null $code
      * @return JsonResponse
      */
-    private function returnResult(string $responseStatus, ?array $data = [], ?string $message = null): JsonResponse
+    private function returnResult(string $responseStatus, ?array $data = [], ?string $message = null, ?int $code = null): JsonResponse
     {
         return response()->json(
             [
-                "status" => self::JSON_RESPONSE_SUCCESS,
-                "code" => self::RETURN_CODE_OK,
+                "status" => $responseStatus ?? self::JSON_RESPONSE_SUCCESS,
+                "code" => $code ?? self::RETURN_CODE_OK,
                 "message" => $message,
                 "result" => $data,
             ],
-            self::RETURN_CODE_OK
+            $code ?? self::RETURN_CODE_OK
         );
     }
 
@@ -51,21 +52,12 @@ class BaseApiController extends Controller
     /**
      * @param string|null $message
      * @param mixed|null $data
+     * @param int|null $code
      * @return JsonResponse
      */
-    public function returnError(?string $message = "", ?array $data = []): JsonResponse
+    public function returnError(?string $message = "", ?array $data = [], ?int $code = self::RETURN_CODE_SERVER_ERROR): JsonResponse
     {
-        return $this->returnResult(self::JSON_RESPONSE_ERROR, $data, $message);
-    }
-
-    /**
-     * @param string|null $message
-     * @param mixed|null $data
-     * @return JsonResponse
-     */
-    public function returnWarning(?string $message = "", ?array $data = []): JsonResponse
-    {
-        return $this->returnResult(self::JSON_RESPONSE_WARNING, $data, $message);
+        return $this->returnResult(self::JSON_RESPONSE_ERROR, $data, $message, $code);
     }
 
 

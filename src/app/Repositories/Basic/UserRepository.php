@@ -36,4 +36,17 @@ class UserRepository extends BaseRepository implements IUserRepository
         return $user;
     }
 
+    /**
+     * @param User $user
+     * @param array $data
+     * @return Void
+     */
+    public function login(User $user, array $data): Void
+    {
+        $user
+            ->setPinCode($data[User::COLUMN_PIN_CODE])
+            ->setPinExpireAt($data[User::COLUMN_PIN_EXPIRE_AT])
+            ->save();
+    }
+
 }
