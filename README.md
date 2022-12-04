@@ -15,7 +15,7 @@
 
 - cd docker
 - docker-compose build
-- docker-compose up --remove-orphans
+- docker-compose up
 - cd ../src
 - composer install --ignore-platform-reqs
 - cp .env.example .env
