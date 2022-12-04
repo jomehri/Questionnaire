@@ -1,44 +1,77 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.0-fpm
 
-RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS autoconf  libtool
-
-RUN apk add --no-cache zip libzip-dev
-
-RUN apk --update --no-cache add pcre-dev ${PHPIZE_DEPS} \
-    autoconf \
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev pkg-config libssl-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libpq-dev \
+    libwebp-dev \
     g++ \
-    make \
+    libicu-dev \
     libxml2-dev \
-    wget \
-    php-soap \
-    supervisor \
-    freetype-dev \
-    ca-certificates \
     git \
-    freetds-dev \
-    unixodbc-dev \
-    openssh
+    vim \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    zlib1g-dev \
+    libmagickwand-dev --no-install-recommends \
+    libzip-dev \
+    libonig-dev \
+    procps \
+    locales \
+    tesseract-ocr-fas
 
-RUN apk --update --no-cache add unixodbc;
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql tokenizer zip gd pdo_dblib bcmath pcntl
-
-RUN pecl channel-update pecl.php.net \
-    && pecl install redis \
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install zip \
+    && docker-php-ext-install soap \
+    && docker-php-ext-configure gd  \
+        --with-freetype  \
+        --with-jpeg \
+        --with-webp \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install opcache \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install sockets \
+    && pecl install apcu \
+    && pecl install -o -f redis \
+    && rm -rf /tmp/pear \
     && docker-php-ext-enable redis \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-    && apk del pcre-dev ${PHPIZE_DEPS}
+    && docker-php-ext-enable apcu \
+    && docker-php-ext-install pdo \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_pgsql pgsql \
+    && docker-php-ext-install exif
 
-RUN mkdir -p /var/www && \
-    mkdir -p /var/www/html
+RUN apt-get clean && rm -rf /var/lib/opt/lists/*
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-	php composer-setup.php && \
-	mv composer.phar /usr/local/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Set working directory
+RUN echo pt_BR.UTF-8 UTF-8 > /etc/locale.gen && locale-gen
+
 WORKDIR /var/www/html
 
-# Change current user to www
-USER www-data
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN sed -i -e 's/listen.*/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.conf
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN usermod -u 1000 www-data
+
+
+# Copy existing application directory contents
+COPY . /var/www/html
+
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www/html
+
+
+EXPOSE 9000
+CMD ["php-fpm"]
