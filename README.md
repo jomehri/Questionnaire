@@ -17,7 +17,7 @@
 - docker-compose build
 - docker-compose up --remove-orphans
 - cd ../src
-- composer install
+- composer install --ignore-platform-reqs
 - cp .env.example .env
 - cp .env.testing.example .env.testing
 - sudo chmod 777 storage/ -R
