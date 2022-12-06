@@ -21,19 +21,19 @@
                             "schema": {
                                 "properties": {
                                     "first_name": {
-                                        "nullable": "true",
                                         "type": "string",
-                                        "example": "دوا"
+                                        "example": "دوا",
+                                        "nullable": "true"
                                     },
                                     "last_name": {
-                                        "nullable": "true",
                                         "type": "string",
-                                        "example": "لیپا"
+                                        "example": "لیپا",
+                                        "nullable": "true"
                                     },
                                     "mobile": {
-                                        "nullable": "false",
                                         "type": "string",
-                                        "example": "09123456789"
+                                        "example": "09123456789",
+                                        "nullable": "false"
                                     }
                                 },
                                 "type": "object"
@@ -80,9 +80,9 @@
                             "schema": {
                                 "properties": {
                                     "mobile": {
-                                        "nullable": "false",
                                         "type": "string",
-                                        "example": "09123456789"
+                                        "example": "09123456789",
+                                        "nullable": "false"
                                     }
                                 },
                                 "type": "object"
@@ -116,8 +116,5 @@
                 }
             }
         }
-    },
-    "security": [
-        []
-    ]
+    }
 }
