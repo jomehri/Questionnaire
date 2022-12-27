@@ -2,23 +2,19 @@
 
 namespace App\Services\User;
 
-use App\Exceptions\User\UserMobileNotFoundException;
-use App\Exceptions\User\UserPinHasExpiredException;
-use App\Exceptions\User\UserPinIsIncorrectException;
 use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Helpers\StringHelper;
 use Illuminate\Support\Carbon;
-use App\Repositories\Basic\UserRepository;
+use App\Exceptions\User\UserPinHasExpiredException;
 use App\Notifications\User\UserPinCodeNotification;
+use App\Exceptions\User\UserPinIsIncorrectException;
 use App\Interfaces\Repositories\Basic\IUserRepository;
 use App\Exceptions\User\UserPreviousPinNotExpiredYetException;
 
 class UserService extends BaseService
 {
-    /** @var UserRepository */
-    private IUserRepository $userRepository;
 
     /**
      * @param IUserRepository $userRepository

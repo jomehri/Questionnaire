@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Exceptions\User\UserMobileNotFoundException;
-use App\Exceptions\User\UserPinHasExpiredException;
-use App\Exceptions\User\UserPinIsIncorrectException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\User\UserService;
 use App\Http\Controllers\Api\BaseApiController;
+use App\Exceptions\User\UserPinHasExpiredException;
+use App\Exceptions\User\UserPinIsIncorrectException;
 use App\Http\Requests\Api\User\UserLoginTokenValidation;
 use App\Http\Requests\Api\User\UserLoginPinRequestValidation;
 use App\Exceptions\User\UserPreviousPinNotExpiredYetException;
@@ -16,11 +15,6 @@ use App\Http\Requests\Api\User\UserRegisterPinRequestValidation;
 
 class UserApiController extends BaseApiController
 {
-    /** @var Request */
-    private Request $request;
-
-    /** @var UserService */
-    private UserService $userService;
 
     /**
      * @param Request $request
@@ -37,7 +31,7 @@ class UserApiController extends BaseApiController
      *  path="/api/user/register/request",
      *  summary="Registers new user",
      *  description="Registers new user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
-     *  tags={"User"},
+     *  tags={"Authentication"},
      *  @OA\RequestBody(
      *      required=true,
      *      description="Registers new user",
@@ -77,7 +71,7 @@ class UserApiController extends BaseApiController
      *  path="/api/user/login/request",
      *  summary="Login request for a user",
      *  description="Login request for a user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
-     *  tags={"User"},
+     *  tags={"Authentication"},
      *  @OA\RequestBody(
      *      required=true,
      *      description="Login request for existing user",
@@ -120,7 +114,7 @@ class UserApiController extends BaseApiController
      *  path="/api/user/login/token",
      *  summary="Logs user in by pincode",
      *  description="Logs user in by inserting mobile and received pin code, returns generated token",
-     *  tags={"User"},
+     *  tags={"Authentication"},
      *  @OA\RequestBody(
      *      required=true,
      *      description="Returns user token providing following credentials",
