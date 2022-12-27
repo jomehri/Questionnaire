@@ -8,9 +8,15 @@ interface IUserRepository
 {
     /**
      * @param int $id
-     * @return User
+     * @return User|null
      */
-    public function getUser(int $id): User;
+    public function getUser(int $id): User|null;
+
+    /**
+     * @param string $mobile
+     * @return User|null
+     */
+    public function getUserByMobile(string $mobile): User|null;
 
     /**
      * @param array $data

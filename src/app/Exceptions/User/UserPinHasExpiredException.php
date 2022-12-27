@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Exceptions\Sale;
+namespace App\Exceptions\User;
 
 use App\Exceptions\BaseApiException;
 
-class UserBalanceNotEnoughException extends BaseApiException
+class UserPinHasExpiredException extends BaseApiException
 {
     /**
      * @return string
      */
     public function getErrorMessage(): string
     {
-        return __("basic/user.exception.userBalanceNotEnough");
+        return __("basic/user.exception.userPinHasExpired");
     }
 
     /**
@@ -19,6 +19,6 @@ class UserBalanceNotEnoughException extends BaseApiException
      */
     public function getErrorCode(): int
     {
-        return 403;
+        return 422;
     }
 }

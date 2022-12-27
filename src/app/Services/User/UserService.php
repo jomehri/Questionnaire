@@ -2,6 +2,9 @@
 
 namespace App\Services\User;
 
+use App\Exceptions\User\UserMobileNotFoundException;
+use App\Exceptions\User\UserPinHasExpiredException;
+use App\Exceptions\User\UserPinIsIncorrectException;
 use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
@@ -50,6 +53,18 @@ class UserService extends BaseService
     }
 
     /**
+     * @param Request $request
+     * @return array
+     */
+    public function sanitizeLoginTokenData(Request $request): array
+    {
+        return [
+            User::COLUMN_MOBILE => $request->post('mobile'),
+            User::COLUMN_PIN_CODE => $request->post('pin_code'),
+        ];
+    }
+
+    /**
      * @param string $actionType
      * @param string $mobile
      * @return string
@@ -64,7 +79,7 @@ class UserService extends BaseService
      * @param array $data
      * @return void
      */
-    public function register(array $data): void
+    public function registerRequest(array $data): void
     {
         /**
          * Generate OTP pin code
@@ -88,7 +103,7 @@ class UserService extends BaseService
      * @return void
      * @throws UserPreviousPinNotExpiredYetException
      */
-    public function login(array $data): void
+    public function loginRequest(array $data): void
     {
         /**
          * Generate OTP pin code
@@ -115,6 +130,35 @@ class UserService extends BaseService
          * Send pin-code to user's cell phone
          */
         $user->notify(new UserPinCodeNotification());
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     * @throws UserPinHasExpiredException
+     * @throws UserPinIsIncorrectException
+     */
+    public function generateToken(array $data): string
+    {
+        $user = $this->userRepository->getUserByMobile($data['mobile']);
+
+        /**
+         * User pin is incorrect?
+         */
+        if ($user->getPinCode() !== $data[User::COLUMN_PIN_CODE]) {
+            throw new UserPinIsIncorrectException();
+        }
+
+        /**
+         * User pin has expired?
+         */
+        if ($user->getPinExpireAt() < now()) {
+            throw new UserPinHasExpiredException();
+        }
+
+        $token = $user->createToken('api');
+
+        return $token->plainTextToken;
     }
 
 }

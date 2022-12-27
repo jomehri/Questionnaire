@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Exceptions\User\UserMobileNotFoundException;
+use App\Exceptions\User\UserPinHasExpiredException;
+use App\Exceptions\User\UserPinIsIncorrectException;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\User\UserService;
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Requests\Api\User\UserLoginValidation;
-use App\Http\Requests\Api\User\UserRegisterValidation;
+use App\Http\Requests\Api\User\UserLoginTokenValidation;
+use App\Http\Requests\Api\User\UserLoginPinRequestValidation;
 use App\Exceptions\User\UserPreviousPinNotExpiredYetException;
+use App\Http\Requests\Api\User\UserRegisterPinRequestValidation;
 
 class UserApiController extends BaseApiController
 {
@@ -56,14 +60,14 @@ class UserApiController extends BaseApiController
      *  ),
      * ),
      *
-     * @param UserRegisterValidation $userRegisterValidation
+     * @param UserRegisterPinRequestValidation $registerPinRequestValidation
      * @return JsonResponse
      */
-    public function registerRequest(UserRegisterValidation $userRegisterValidation): JsonResponse
+    public function registerRequest(UserRegisterPinRequestValidation $registerPinRequestValidation): JsonResponse
     {
         $data = $this->userService->sanitizeRegisterRequestData($this->request);
 
-        $this->userService->register($data);
+        $this->userService->registerRequest($data);
 
         return $this->returnOk($this->userService->getPinRequestSuccessMessage('register', $data['mobile']));
     }
@@ -76,7 +80,7 @@ class UserApiController extends BaseApiController
      *  tags={"User"},
      *  @OA\RequestBody(
      *      required=true,
-     *      description="Registers new user",
+     *      description="Login request for existing user",
      *      @OA\JsonContent(
      *          @OA\Property(property="mobile", type="string",example="09123456789", nullable="false"),
      *      ),
@@ -98,17 +102,62 @@ class UserApiController extends BaseApiController
      *  ),
      * ),
      *
-     * @param UserLoginValidation $userRegisterValidation
+     * @param UserLoginPinRequestValidation $loginPinRequestValidation
      * @return JsonResponse
      * @throws UserPreviousPinNotExpiredYetException
      */
-    public function loginRequest(UserLoginValidation $userRegisterValidation): JsonResponse
+    public function loginRequest(UserLoginPinRequestValidation $loginPinRequestValidation): JsonResponse
     {
         $data = $this->userService->sanitizeLoginRequestData($this->request);
 
-        $this->userService->login($data);
+        $this->userService->loginRequest($data);
 
         return $this->returnOk($this->userService->getPinRequestSuccessMessage('login', $data['mobile']));
+    }
+
+    /**
+     * @OA\post (
+     *  path="/api/user/login/token",
+     *  summary="Logs user in by pincode",
+     *  description="Logs user in by inserting mobile and received pin code, returns generated token",
+     *  tags={"User"},
+     *  @OA\RequestBody(
+     *      required=true,
+     *      description="Returns user token providing following credentials",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="mobile", type="string",example="09123456789", nullable="false"),
+     *          @OA\Property(property="pin_code", type="string",example="1234567", nullable="false"),
+     *      ),
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     *  @OA\Response(
+     *      response=500,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param UserLoginTokenValidation $userLoginTokenValidation
+     * @return JsonResponse
+     * @throws UserPinHasExpiredException
+     * @throws UserPinIsIncorrectException
+     */
+    public function loginToken(UserLoginTokenValidation $userLoginTokenValidation): JsonResponse
+    {
+        $data = $this->userService->sanitizeLoginTokenData($this->request);
+
+        $token = $this->userService->generateToken($data);
+
+        return $this->returnOk(__("basic/user.validation.loginSuccessful"), ['token' => $token]);
     }
 
 }

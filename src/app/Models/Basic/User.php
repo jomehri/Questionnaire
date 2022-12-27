@@ -3,12 +3,13 @@
 namespace App\Models\Basic;
 
 use App\Models\BaseModel;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 
 class User extends BaseModel
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     /**
      * @return string

@@ -18,6 +18,15 @@ class UserRepository extends BaseRepository implements IUserRepository
     }
 
     /**
+     * @param string $mobile
+     * @return User
+     */
+    public function getUserByMobile(string $mobile): User
+    {
+        return User::where(User::COLUMN_MOBILE, $mobile)->first();
+    }
+
+    /**
      * @param array $data
      * @return User
      */
@@ -41,7 +50,7 @@ class UserRepository extends BaseRepository implements IUserRepository
      * @param array $data
      * @return Void
      */
-    public function login(User $user, array $data): Void
+    public function login(User $user, array $data): void
     {
         $user
             ->setPinCode($data[User::COLUMN_PIN_CODE])

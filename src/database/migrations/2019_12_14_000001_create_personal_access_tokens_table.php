@@ -1,36 +1,51 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Database\Migration\BaseMigration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreatePersonalAccessTokensTable extends Migration
+class CreatePersonalAccessTokensTable extends BaseMigration
 {
+
     /**
-     * Run the migrations.
      *
-     * @return void
      */
-    public function up()
+    public function __construct()
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->morphs('tokenable');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamps();
-        });
+        parent::__construct('personal_access_tokens');
     }
 
     /**
-     * Reverse the migrations.
+     * Run the migrations.
      *
+     * @param Blueprint $table
      * @return void
      */
-    public function down()
+    protected function createTable(Blueprint $table): void
     {
-        Schema::dropIfExists('personal_access_tokens');
+        $table->bigIncrements('id');
+        $table->morphs('tokenable');
+        $table->string('name');
+        $table->string('token', 64)->unique();
+        $table->text('abilities')->nullable();
+        $table->timestamp('last_used_at')->nullable();
+        $table->timestamp('expires_at')->nullable();
+        $table->timestamps();
+    }
+
+    /**
+     * @param Blueprint $table
+     * @return void
+     */
+    protected function alterTable(Blueprint $table): void
+    {
+        /**
+         * Add Columns
+         */
+        if (!$this->hasColumn('expires_at')) {
+            $table->timestamp('expires_at')
+                ->nullable()
+                ->after('last_used_at');
+        }
     }
 }
