@@ -50,7 +50,7 @@ class ProfileApiController extends BaseApiController
     {
         $data = $this->profileService->getUserDetails();
 
-        return $this->returnOk(__("basic/user.validation.loginSuccessful"), $data);
+        return $this->returnOk(null, $data);
     }
 
 }
