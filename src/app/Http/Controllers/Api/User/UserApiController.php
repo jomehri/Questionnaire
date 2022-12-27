@@ -30,7 +30,7 @@ class UserApiController extends BaseApiController
 
     /**
      * @OA\post (
-     *  path="/api/user/register",
+     *  path="/api/user/register/request",
      *  summary="Registers new user",
      *  description="Registers new user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
      *  tags={"User"},
@@ -59,18 +59,18 @@ class UserApiController extends BaseApiController
      * @param UserRegisterValidation $userRegisterValidation
      * @return JsonResponse
      */
-    public function register(UserRegisterValidation $userRegisterValidation): JsonResponse
+    public function registerRequest(UserRegisterValidation $userRegisterValidation): JsonResponse
     {
         $data = $this->userService->sanitizeRegisterRequestData($this->request);
 
         $this->userService->register($data);
 
-        return $this->returnOk($this->userService->getPinRequestSuccessMessage($data['mobile']));
+        return $this->returnOk($this->userService->getPinRequestSuccessMessage('register', $data['mobile']));
     }
 
     /**
      * @OA\post (
-     *  path="/api/user/login",
+     *  path="/api/user/login/request",
      *  summary="Login request for a user",
      *  description="Login request for a user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
      *  tags={"User"},
@@ -102,13 +102,13 @@ class UserApiController extends BaseApiController
      * @return JsonResponse
      * @throws UserPreviousPinNotExpiredYetException
      */
-    public function login(UserLoginValidation $userRegisterValidation): JsonResponse
+    public function loginRequest(UserLoginValidation $userRegisterValidation): JsonResponse
     {
         $data = $this->userService->sanitizeLoginRequestData($this->request);
 
         $this->userService->login($data);
 
-        return $this->returnOk($this->userService->getPinRequestSuccessMessage($data['mobile']));
+        return $this->returnOk($this->userService->getPinRequestSuccessMessage('login', $data['mobile']));
     }
 
 }

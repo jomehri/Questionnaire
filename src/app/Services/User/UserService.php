@@ -50,12 +50,14 @@ class UserService extends BaseService
     }
 
     /**
-     * @param $mobile
+     * @param string $actionType
+     * @param string $mobile
      * @return string
      */
-    public function getPinRequestSuccessMessage($mobile): string
+    public function getPinRequestSuccessMessage(string $actionType, string $mobile): string
     {
-        return __('basic/user.registerSuccess', ['mobile' => $mobile]);
+        $phrase = ($actionType === 'register') ? 'registerSuccess' : 'loginSuccess';
+        return __("basic/user.{$phrase}", ['mobile' => $mobile]);
     }
 
     /**
