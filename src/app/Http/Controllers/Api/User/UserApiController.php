@@ -151,7 +151,7 @@ class UserApiController extends BaseApiController
 
         $token = $this->userService->generateToken($data);
 
-        return $this->returnOk(__("basic/user.validation.loginSuccessful"), ['token' => $token]);
+        return $this->returnOk(null, ['token' => $token]);
     }
 
 }

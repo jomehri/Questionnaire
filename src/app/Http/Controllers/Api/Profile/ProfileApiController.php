@@ -51,7 +51,7 @@ class ProfileApiController extends BaseApiController
     {
         $data = $this->profileService->getUserDetails();
 
-        return $this->returnOk(null, $data);
+        return $this->returnOk(null, ['items' => $data]);
     }
 
 }

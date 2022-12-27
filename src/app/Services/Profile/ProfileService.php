@@ -2,6 +2,7 @@
 
 namespace App\Services\Profile;
 
+use App\Http\Resources\User\UserResource;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Auth;
 use App\Interfaces\Repositories\Basic\IUserRepository;
@@ -18,11 +19,11 @@ class ProfileService extends BaseService
     }
 
     /**
-     * @return array
+     * @return UserResource
      */
-    public function getUserDetails(): array
+    public function getUserDetails(): UserResource
     {
-        dd(Auth::id());
+        return UserResource::make(Auth::user());
     }
 
 }
