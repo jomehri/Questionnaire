@@ -20,6 +20,7 @@ Route::prefix("/user/")
  */
 Route::prefix("/profile/")
     ->as('profile.')
+    ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('general', [ProfileApiController::class, 'general'])->name('general');
     });

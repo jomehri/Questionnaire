@@ -23,6 +23,7 @@ class ProfileApiController extends BaseApiController
     /**
      * @OA\get (
      *  path="/api/profile/general",
+     *  security={{"sanctum":{}}},
      *  summary="General profile details",
      *  description="General profile detils for logged in user",
      *  tags={"Profile"},
