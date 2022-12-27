@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Helpers\StringHelper;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use App\Exceptions\User\UserPinHasExpiredException;
 use App\Notifications\User\UserPinCodeNotification;
 use App\Exceptions\User\UserPinIsIncorrectException;
@@ -96,10 +97,10 @@ class UserService extends BaseService
 
     /**
      * @param array $data
-     * @return void
+     * @return string
      * @throws UserPreviousPinNotExpiredYetException
      */
-    public function loginRequest(array $data): void
+    public function loginRequest(array $data): string
     {
         /**
          * Generate OTP pin code
@@ -126,6 +127,9 @@ class UserService extends BaseService
          * Send pin-code to user's cell phone
          */
         $user->notify(new UserPinCodeNotification());
+
+        // TODO @aliJo return void when sms panel launched
+        return $data[User::COLUMN_PIN_CODE];
     }
 
     /**
@@ -155,6 +159,16 @@ class UserService extends BaseService
         $token = $user->createToken('api');
 
         return $token->plainTextToken;
+    }
+
+    /**
+     * @return void
+     */
+    public function logout(): void
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $user->currentAccessToken()->delete();
     }
 
 }

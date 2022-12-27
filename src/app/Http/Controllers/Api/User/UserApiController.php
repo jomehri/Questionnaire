@@ -104,9 +104,10 @@ class UserApiController extends BaseApiController
     {
         $data = $this->userService->sanitizeLoginRequestData($this->request);
 
-        $this->userService->loginRequest($data);
+        // TODO @aliJo return void when sms panel launched
+        $result = $this->userService->loginRequest($data);
 
-        return $this->returnOk($this->userService->getPinRequestSuccessMessage('login', $data['mobile']));
+        return $this->returnOk($this->userService->getPinRequestSuccessMessage('login', $data['mobile']), ['token_temp_remove_when_sms_panel_launched' => $result]);
     }
 
     /**
@@ -152,6 +153,40 @@ class UserApiController extends BaseApiController
         $token = $this->userService->generateToken($data);
 
         return $this->returnOk(null, ['token' => $token]);
+    }
+
+    /**
+     * @OA\get (
+     *  path="/api/user/logout",
+     *  security={{"sanctum":{}}},
+     *  summary="Logs out the user",
+     *  description="Logs out the user and removes token",
+     *  tags={"Authentication"},
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     *  @OA\Response(
+     *      response=500,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        $this->userService->logout();
+
+        return $this->returnOk(null);
     }
 
 }

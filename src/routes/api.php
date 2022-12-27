@@ -13,6 +13,10 @@ Route::prefix("/user/")
         Route::post('register/request', [UserApiController::class, 'registerRequest'])->name('register.request');
         Route::post('login/request', [UserApiController::class, 'loginRequest'])->name('login.request');
         Route::post('login/token', [UserApiController::class, 'loginToken'])->name('login.token');
+
+        Route::get('logout', [UserApiController::class, 'logout'])
+            ->name('logout')
+            ->middleware('auth:sanctum');
     });
 
 /**
