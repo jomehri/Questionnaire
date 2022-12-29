@@ -70,15 +70,9 @@ class QuestionerService extends BaseService
     /**
      * @param Questioner $questioner
      * @return void
-     * @throws QuestionerWithQuestionsCantBeDeletedException
      */
     public function delete(Questioner $questioner): void
     {
-        // TODO @aliJo check no question groups are assigned to this questioner, else throw error
-        if (1 === 2) {
-            throw new QuestionerWithQuestionsCantBeDeletedException();
-        }
-
         $questioner->delete();
     }
 

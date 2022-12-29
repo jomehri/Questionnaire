@@ -5,9 +5,9 @@ namespace App\Http\Requests\Api\Questions;
 use App\Models\BaseModel;
 use Illuminate\Validation\Rule;
 use App\Models\Questions\Questioner;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Api\BaseRequest;
 
-class QuestionerUpdateRequest extends FormRequest
+class QuestionerUpdateRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,10 +16,7 @@ class QuestionerUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        /**
-         * No user authentication needed for this action
-         */
-        return true;
+        return $this->authorizePermission('admin');
     }
 
     /**

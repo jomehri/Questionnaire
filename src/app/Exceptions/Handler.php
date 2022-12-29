@@ -64,7 +64,8 @@ class Handler extends ExceptionHandler
             if ($e instanceof AuthorizationException) {
                 return (new BaseApiController())
                     ->returnError(
-                        __('shared::unAuthorizedException.unAuthorizedExceptionMessage'),
+                        __('general.exceptions.unAuthorizedExceptionMessage'),
+
                         null,
                         403
                     );

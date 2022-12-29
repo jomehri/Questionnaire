@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
+use App\Http\Requests\Api\Questions\QuestionerDeleteRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Questioner;
@@ -222,11 +223,11 @@ class QuestionerApiController extends BaseApiController
      *  ),
      * ),
      *
+     * @param QuestionerDeleteRequest $questionerDeleteRequest
      * @param Questioner $questioner
      * @return JsonResponse
-     * @throws QuestionerWithQuestionsCantBeDeletedException
      */
-    public function delete(Questioner $questioner): JsonResponse
+    public function delete(QuestionerDeleteRequest $questionerDeleteRequest, Questioner $questioner): JsonResponse
     {
         $this->questionerService->delete($questioner);
 
