@@ -25,7 +25,7 @@ class QuestionerDeleteRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $this->throwIfQuestionHasChilds();
+        $this->throwIfQuestionHasChildren();
 
         return [];
     }
@@ -42,7 +42,7 @@ class QuestionerDeleteRequest extends BaseRequest
      * @return void
      * @throws QuestionerWithQuestionsCantBeDeletedException
      */
-    public function throwIfQuestionHasChilds(): void
+    public function throwIfQuestionHasChildren(): void
     {
         // TODO @aliJo check no question groups are assigned to this questioner, else throw error
         if (1 === 2) {
