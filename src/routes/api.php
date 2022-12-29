@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\User\UserApiController;
 use App\Http\Controllers\Api\Profile\ProfileApiController;
+use App\Http\Controllers\Api\Questions\QuestionerApiController;
 
 /**
  * Authentication routes
@@ -27,4 +28,14 @@ Route::prefix("/profile/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('general', [ProfileApiController::class, 'general'])->name('general');
+    });
+
+/**
+ * Questioner routes
+ */
+Route::prefix("/questioner/")
+    ->as('questioner.')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('', [QuestionerApiController::class, 'store'])->name('store');
     });

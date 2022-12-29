@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Sanctum\HasApiTokens;
 
 abstract class BaseModel extends Model implements IBaseModel
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, HasApiTokens;
 
     const COLUMN_ID = 'id';
     const COLUMN_DELETED_AT = 'deleted_at';

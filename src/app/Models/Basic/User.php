@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends BaseModel
 {
-    use Notifiable, HasApiTokens, Authenticatable;
+    use Notifiable, Authenticatable;
 
     /**
      * @return string

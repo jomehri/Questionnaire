@@ -48,5 +48,3 @@ class CreateUsersTable extends BaseMigration
         }
     }
 }
-
-;
