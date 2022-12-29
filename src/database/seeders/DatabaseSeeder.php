@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Sale\Coin;
-use App\Models\Basic\User;
-use Database\Seeders\Basic\PermissionSeeder;
+use Illuminate\Database\Seeder;
 use Database\Seeders\Basic\RoleSeeder;
 use Database\Seeders\Basic\UserSeeder;
-use Illuminate\Database\Seeder;
+use Database\Seeders\Basic\PermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
