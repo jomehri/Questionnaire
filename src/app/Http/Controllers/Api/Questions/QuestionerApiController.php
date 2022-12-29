@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Questions;
 
 use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
+use App\Http\Requests\Api\Questions\QuestionerUpdateRequest;
 use App\Models\Questions\Questioner;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,7 @@ class QuestionerApiController extends BaseApiController
      *  tags={"Questioner"},
      *  @OA\RequestBody(
      *      required=true,
-     *      description="Registers new user",
+     *      description="Add new questioner",
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 1", nullable="false"),
      *          @OA\Property(property="slug", type="string",example="porseshnameh_tahlili_shomareh_1", nullable="false"),
@@ -59,6 +60,55 @@ class QuestionerApiController extends BaseApiController
         $data = $this->questionerService->sanitizeStoreRequestData($this->request);
 
         $this->questionerService->store($data);
+
+        return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\post (
+     *  path="/api/questioners/{questioner}",
+     *  security={{"sanctum":{}}},
+     *  summary="Update a questioner",
+     *  description="Update a quesioner",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="questioner",
+     *      in="path",
+     *      description="Questioner Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\RequestBody(
+     *      required=true,
+     *      description="Update a quesioner",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 2", nullable="true"),
+     *          @OA\Property(property="slug", type="string",example="porseshnameh_tahlili_shomareh_2", nullable="true"),
+     *      ),
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionerUpdateRequest $questionerUpdateRequest
+     * @param Questioner $questioner
+     * @return JsonResponse
+     */
+    public function update(QuestionerUpdateRequest $questionerUpdateRequest, Questioner $questioner): JsonResponse
+    {
+        $data = $this->questionerService->sanitizeStoreRequestData($this->request);
+
+        $this->questionerService->update($questioner, $data);
 
         return $this->returnOk(null);
     }

@@ -36,6 +36,18 @@ class QuestionerService extends BaseService
 
     /**
      * @param Questioner $questioner
+     * @param array $data
+     * @return void
+     */
+    public function update(Questioner $questioner, array $data): void
+    {
+        $questioner->setTitle($data[Questioner::COLUMN_TITLE])
+            ->setSlug($data[Questioner::COLUMN_SLUG])
+            ->save();
+    }
+
+    /**
+     * @param Questioner $questioner
      * @return void
      * @throws QuestionerWithQuestionsCantBeDeletedException
      */

@@ -38,5 +38,6 @@ Route::prefix("/questioners/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('', [QuestionerApiController::class, 'store'])->name('create');
+        Route::post('{questioner:id}', [QuestionerApiController::class, 'update'])->name('update');
         Route::delete('{questioner:id}/delete', [QuestionerApiController::class, 'delete'])->name('delete');
     });
