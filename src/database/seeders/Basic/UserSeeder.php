@@ -4,6 +4,7 @@ namespace Database\Seeders\Basic;
 
 use App\Models\Basic\User;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
@@ -32,7 +33,20 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->users as $user) {
-            User::firstOrCreate($user);
+
+            /**
+             * Create default users
+             */
+            $user = User::firstOrCreate($user);
+
+            /**
+             * Also assign manager role to these users
+             */
+            foreach (User::ROLES as $role) {
+                $role = Role::findByName($role, 'api');
+                $user->assignRole($role);
+            }
         }
     }
+
 }

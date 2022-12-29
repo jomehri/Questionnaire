@@ -4,13 +4,33 @@ namespace App\Models\Basic;
 
 use App\Models\BaseModel;
 use Illuminate\Support\Carbon;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 
 class User extends BaseModel
 {
-    use Notifiable, Authenticatable;
+    use Notifiable, Authenticatable, HasRoles;
+
+    /**
+     * User roles
+     */
+    const ROLE_ADMIN = 'admin';
+    const ROLES = [
+        self::ROLE_ADMIN => self::ROLE_ADMIN,
+    ];
+
+    /**
+     * Permissions
+     */
+    const PERMISSION_QUESTION = 'question';
+    const PERMISSION_REPORT = 'report';
+    const PERMISSIONS = [
+        self::PERMISSION_QUESTION => self::PERMISSION_QUESTION,
+        self::PERMISSION_REPORT => self::PERMISSION_REPORT,
+    ];
+
+    protected string $guard_name = 'api';
 
     /**
      * @return string
