@@ -23,6 +23,8 @@ class CreateQuestionersTable extends BaseMigration
     {
         $table->string(Questioner::COLUMN_TITLE, 250)
             ->nullable();
+        $table->string(Questioner::COLUMN_SLUG, 250)
+            ->nullable();
     }
 
     /**
@@ -31,5 +33,13 @@ class CreateQuestionersTable extends BaseMigration
      */
     protected function alterTable(Blueprint $table): void
     {
+        /**
+         * Add Columns
+         */
+        if (!$this->hasColumn(Questioner::COLUMN_SLUG)) {
+            $table->string(Questioner::COLUMN_SLUG, 250)
+                ->nullable()
+                ->after(Questioner::COLUMN_TITLE);
+        }
     }
 }

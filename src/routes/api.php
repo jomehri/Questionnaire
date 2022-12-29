@@ -33,9 +33,10 @@ Route::prefix("/profile/")
 /**
  * Questioner routes
  */
-Route::prefix("/questioner/")
-    ->as('questioner.')
+Route::prefix("/questioners/")
+    ->as('questioners.')
     ->middleware('auth:sanctum')
     ->group(function () {
-        Route::post('', [QuestionerApiController::class, 'store'])->name('store');
+        Route::post('', [QuestionerApiController::class, 'store'])->name('create');
+        Route::delete('{questioner:id}/delete', [QuestionerApiController::class, 'delete'])->name('delete');
     });

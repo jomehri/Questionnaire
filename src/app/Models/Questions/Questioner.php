@@ -27,6 +27,7 @@ class Questioner extends BaseModel
      * Columns
      */
     const COLUMN_TITLE = 'title';
+    const COLUMN_SLUG = 'slug';
 
     /**
      * @return string
@@ -44,6 +45,26 @@ class Questioner extends BaseModel
     public function setTitle(string $value): self
     {
         $this->{self::COLUMN_TITLE} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->{self::COLUMN_SLUG};
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setSlug(string $value): self
+    {
+        $this->{self::COLUMN_SLUG} = $value;
 
         return $this;
     }

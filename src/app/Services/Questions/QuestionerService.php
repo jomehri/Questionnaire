@@ -2,6 +2,7 @@
 
 namespace App\Services\Questions;
 
+use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Models\Questions\Questioner;
@@ -17,6 +18,7 @@ class QuestionerService extends BaseService
     {
         return [
             Questioner::COLUMN_TITLE => $request->post('title'),
+            Questioner::COLUMN_SLUG => $request->post('slug'),
         ];
     }
 
@@ -28,7 +30,23 @@ class QuestionerService extends BaseService
     {
         $item = new Questioner();
         $item->setTitle($data[Questioner::COLUMN_TITLE])
+            ->setSlug($data[Questioner::COLUMN_SLUG])
             ->save();
+    }
+
+    /**
+     * @param Questioner $questioner
+     * @return void
+     * @throws QuestionerWithQuestionsCantBeDeletedException
+     */
+    public function delete(Questioner $questioner): void
+    {
+        // TODO @aliJo check no question groups are assigned to this questioner, else throw error
+        if (1 === 2) {
+            throw new QuestionerWithQuestionsCantBeDeletedException();
+        }
+
+        $questioner->delete();
     }
 
 }

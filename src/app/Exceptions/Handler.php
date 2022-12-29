@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\FlareClient\Http\Exceptions\NotFound;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -77,6 +79,18 @@ class Handler extends ExceptionHandler
                         null,
                         $e->errors(),
                         422
+                    );
+            }
+
+            /**
+             * Not found error handler
+             */
+            if ($e instanceof ModelNotFoundException) {
+                return (new BaseApiController())
+                    ->returnError(
+                        __('general.errors.notFound'),
+                        [__('general.errors.notFound')],
+                        404
                     );
             }
 

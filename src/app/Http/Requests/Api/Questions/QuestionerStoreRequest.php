@@ -3,9 +3,9 @@
 namespace App\Http\Requests\Api\Questions;
 
 use App\Models\BaseModel;
+use Illuminate\Validation\Rule;
 use App\Models\Questions\Questioner;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class QuestionerStoreRequest extends FormRequest
 {
@@ -23,7 +23,7 @@ class QuestionerStoreRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validations rules that apply to the request.
      *
      * @return array
      */
@@ -31,6 +31,8 @@ class QuestionerStoreRequest extends FormRequest
     {
         return [
             Questioner::COLUMN_TITLE => ['required', 'string', 'max:250',
+                Rule::unique(Questioner::getDBTable())->whereNull(BaseModel::COLUMN_DELETED_AT)],
+            Questioner::COLUMN_SLUG => ['required', 'string', 'max:250',
                 Rule::unique(Questioner::getDBTable())->whereNull(BaseModel::COLUMN_DELETED_AT)],
         ];
     }
@@ -41,9 +43,12 @@ class QuestionerStoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            Questioner::COLUMN_TITLE . '.required' => __("questions/questioner.validation.titleIsRequired"),
-            Questioner::COLUMN_TITLE . '.max' => __("questions/questioner.validation.titleIsTooLong"),
-            Questioner::COLUMN_TITLE . '.unique' => __("questions/questioner.validation.titleAlreadyExists"),
+            Questioner::COLUMN_TITLE . '.required' => __("questions/questioner.validations.titleIsRequired"),
+            Questioner::COLUMN_TITLE . '.max' => __("questions/questioner.validations.titleIsTooLong"),
+            Questioner::COLUMN_TITLE . '.unique' => __("questions/questioner.validations.titleAlreadyExists"),
+            Questioner::COLUMN_SLUG . '.required' => __("questions/questioner.validations.slugIsRequired"),
+            Questioner::COLUMN_SLUG . '.max' => __("questions/questioner.validations.slugIsTooLong"),
+            Questioner::COLUMN_SLUG . '.unique' => __("questions/questioner.validations.slugAlreadyExists"),
         ];
     }
 
