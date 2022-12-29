@@ -8,6 +8,14 @@ class BaseService
 {
 
     /**
+     *
+     */
+    public function __construct()
+    {
+        $this->perPage = config('settings.per_page');
+    }
+
+    /**
      * @param JsonResponse $response
      * @return array|null
      */

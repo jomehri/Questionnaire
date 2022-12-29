@@ -39,6 +39,7 @@ Route::prefix("/questioners/")
     ->group(function () {
         Route::post('', [QuestionerApiController::class, 'store'])->name('create');
         Route::post('{questioner:id}', [QuestionerApiController::class, 'update'])->name('update');
+        Route::get('', [QuestionerApiController::class, 'index'])->name('index');
         Route::get('{questioner:id}', [QuestionerApiController::class, 'item'])->name('item');
         Route::delete('{questioner:id}/delete', [QuestionerApiController::class, 'delete'])->name('delete');
     });

@@ -2,10 +2,12 @@
 
 namespace App\Services\Questions;
 
-use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Models\Questions\Questioner;
+use App\Http\Resources\Questions\QuestionerResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 
 class QuestionerService extends BaseService
 {
@@ -20,6 +22,25 @@ class QuestionerService extends BaseService
             Questioner::COLUMN_TITLE => $request->post('title'),
             Questioner::COLUMN_SLUG => $request->post('slug'),
         ];
+    }
+
+    /**
+     * @param int $page
+     * @return AnonymousResourceCollection
+     */
+    public function getAll(int $page): AnonymousResourceCollection
+    {
+        $items = Questioner::all()->forPage($page, $this->perPage);
+
+        return QuestionerResource::collection($items);
+    }
+
+    /**
+     * @return int
+     */
+    public function countTotal(): int
+    {
+        return Questioner::all()->count();
     }
 
     /**

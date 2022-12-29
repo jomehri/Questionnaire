@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
-use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
-use App\Http\Requests\Api\Questions\QuestionerUpdateRequest;
-use App\Http\Resources\Questions\QuestionerResource;
-use App\Models\Questions\Questioner;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Models\Questions\Questioner;
 use App\Services\Questions\QuestionerService;
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\Questions\QuestionerResource;
 use App\Http\Requests\Api\Questions\QuestionerStoreRequest;
+use App\Http\Requests\Api\Questions\QuestionerUpdateRequest;
+use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 
 class QuestionerApiController extends BaseApiController
 {
@@ -23,6 +23,86 @@ class QuestionerApiController extends BaseApiController
     {
         $this->request = $request;
         $this->questionerService = $questionerService;
+    }
+
+    /**
+     * @OA\get (
+     *  path="/api/questioners",
+     *  security={{"sanctum":{}}},
+     *  summary="Get all questioners",
+     *  description="Gets all questioners",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->questionerService->getAll($page),
+            'total' => $this->questionerService->countTotal(),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\get (
+     *  path="/api/questioners/{questioner}",
+     *  security={{"sanctum":{}}},
+     *  summary="Get a single questioner",
+     *  description="Gets a single questioner",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="questioner",
+     *      in="path",
+     *      description="Questioner Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param Questioner $questioner
+     * @return JsonResponse
+     */
+    public function item(Questioner $questioner): JsonResponse
+    {
+        $data = QuestionerResource::make($questioner);
+
+        return $this->returnOk(null, [$data]);
     }
 
     /**
@@ -112,44 +192,6 @@ class QuestionerApiController extends BaseApiController
         $this->questionerService->update($questioner, $data);
 
         return $this->returnOk(null);
-    }
-
-    /**
-     * @OA\get (
-     *  path="/api/questioners/{questioner}",
-     *  security={{"sanctum":{}}},
-     *  summary="Get a single questioner",
-     *  description="Gets a single questioner",
-     *  tags={"Questioner"},
-     *
-     *  @OA\Parameter(
-     *      name="questioner",
-     *      in="path",
-     *      description="Questioner Id",
-     *      required=true
-     *  ),
-     *
-     *  @OA\Response(
-     *      response=200,
-     *      description="success",
-     *      @OA\JsonContent(
-     *          @OA\Property(property="sucess", type="string", example="success"),
-     *      )
-     *  ),
-     *  @OA\Response(
-     *      response=422,
-     *      description="bad request",
-     *  ),
-     * ),
-     *
-     * @param Questioner $questioner
-     * @return JsonResponse
-     */
-    public function item(Questioner $questioner): JsonResponse
-    {
-        $data = QuestionerResource::make($questioner);
-
-        return $this->returnOk(null, [$data]);
     }
 
     /**
