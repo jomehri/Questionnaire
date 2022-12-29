@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Api\Questions;
 
-use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 use App\Http\Requests\Api\BaseRequest;
+use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 
 class QuestionerDeleteRequest extends BaseRequest
 {
