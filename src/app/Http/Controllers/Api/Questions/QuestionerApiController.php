@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Questions;
 
 use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 use App\Http\Requests\Api\Questions\QuestionerUpdateRequest;
+use App\Http\Resources\Questions\QuestionerResource;
 use App\Models\Questions\Questioner;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -111,6 +112,44 @@ class QuestionerApiController extends BaseApiController
         $this->questionerService->update($questioner, $data);
 
         return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\get (
+     *  path="/api/questioners/{questioner}",
+     *  security={{"sanctum":{}}},
+     *  summary="Get a single questioner",
+     *  description="Gets a single questioner",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="questioner",
+     *      in="path",
+     *      description="Questioner Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param Questioner $questioner
+     * @return JsonResponse
+     */
+    public function item(Questioner $questioner): JsonResponse
+    {
+        $data = QuestionerResource::make($questioner);
+
+        return $this->returnOk(null, [$data]);
     }
 
     /**
