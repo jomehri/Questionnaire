@@ -32,9 +32,15 @@ class QuestionGroupApiController extends BaseApiController
      *  tags={"Question Group"},
      *  @OA\RequestBody(
      *      required=true,
-     *      description="Add new question group",
+     *      description="Add new question group, <br><strong>optional:</strong> you can attach this question group to multiple questioners by questioner_ids array",
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="دسته سوالات شماره 1", nullable="false"),
+     *          @OA\Property(
+     *              property="questioner_ids",
+     *              type="array",
+     *              example="[1, 2]",
+     *              @OA\Items(),
+     *          ),
      *      ),
      *  ),
      *  @OA\Response(
