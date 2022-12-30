@@ -2,9 +2,10 @@
 
 use App\Models\Questions\Questioner;
 use App\Database\Migration\BaseMigration;
+use App\Models\Questions\QuestionGroup;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateQuestionersTable extends BaseMigration
+class CreateQuestionerQuestionGroupTable extends BaseMigration
 {
 
     /**
@@ -12,7 +13,7 @@ class CreateQuestionersTable extends BaseMigration
      */
     public function __construct()
     {
-        parent::__construct(Questioner::getDBTable());
+        parent::__construct('questioner_question_group');
     }
 
     /**
@@ -21,9 +22,9 @@ class CreateQuestionersTable extends BaseMigration
      */
     protected function createTable(Blueprint $table): void
     {
-        $table->string(Questioner::COLUMN_TITLE, 250)
+        $table->unsignedInteger('questioner_id')
             ->nullable(false);
-        $table->string(Questioner::COLUMN_SLUG, 250)
+        $table->unsignedInteger('question_group_id')
             ->nullable(false);
     }
 
@@ -33,13 +34,5 @@ class CreateQuestionersTable extends BaseMigration
      */
     protected function alterTable(Blueprint $table): void
     {
-        /**
-         * Add Columns
-         */
-        if (!$this->hasColumn(Questioner::COLUMN_SLUG)) {
-            $table->string(Questioner::COLUMN_SLUG, 250)
-                ->nullable(false)
-                ->after(Questioner::COLUMN_TITLE);
-        }
     }
 }

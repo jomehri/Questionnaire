@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
-use App\Http\Requests\Api\Questions\QuestionerDeleteRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Questioner;
@@ -10,8 +9,8 @@ use App\Services\Questions\QuestionerService;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\Questions\QuestionerResource;
 use App\Http\Requests\Api\Questions\QuestionerStoreRequest;
+use App\Http\Requests\Api\Questions\QuestionerDeleteRequest;
 use App\Http\Requests\Api\Questions\QuestionerUpdateRequest;
-use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 
 class QuestionerApiController extends BaseApiController
 {
@@ -29,7 +28,6 @@ class QuestionerApiController extends BaseApiController
     /**
      * @OA\get (
      *  path="/api/questioners",
-     *  security={{"sanctum":{}}},
      *  summary="Get all questioners",
      *  description="Gets all questioners",
      *  tags={"Questioner"},
@@ -71,7 +69,6 @@ class QuestionerApiController extends BaseApiController
     /**
      * @OA\get (
      *  path="/api/questioners/{questioner}",
-     *  security={{"sanctum":{}}},
      *  summary="Get a single questioner",
      *  description="Gets a single questioner",
      *  tags={"Questioner"},
