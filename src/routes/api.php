@@ -48,7 +48,7 @@ Route::prefix("/questioners/")
 /**
  * Question Group routes
  */
-Route::prefix("/question-group/")
+Route::prefix("/question-groups/")
     ->as('question_group.')
     ->middleware('auth:sanctum')
     ->group(function () {

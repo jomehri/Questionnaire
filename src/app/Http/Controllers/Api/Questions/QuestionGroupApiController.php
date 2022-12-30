@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
+use App\Http\Requests\Api\Questions\QuestionGroupStoreRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Questions\QuestionerService;
@@ -49,10 +50,10 @@ class QuestionGroupApiController extends BaseApiController
      *  ),
      * ),
      *
-     * @param QuestionerStoreRequest $questionerStoreRequest
+     * @param QuestionGroupStoreRequest $questionGroupStoreRequest
      * @return JsonResponse
      */
-    public function store(QuestionerStoreRequest $questionerStoreRequest): JsonResponse
+    public function store(QuestionGroupStoreRequest $questionGroupStoreRequest): JsonResponse
     {
         $data = $this->questionGroupService->sanitizeStoreRequestData($this->request);
 
