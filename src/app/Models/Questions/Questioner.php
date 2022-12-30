@@ -3,9 +3,12 @@
 namespace App\Models\Questions;
 
 use App\Models\BaseModel;
+use App\Models\Questions\Relations\QuestionerRelationTrait;
 
 class Questioner extends BaseModel
 {
+
+    use QuestionerRelationTrait;
 
     /**
      * @return string

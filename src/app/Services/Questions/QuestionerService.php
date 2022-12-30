@@ -30,7 +30,7 @@ class QuestionerService extends BaseService
      */
     public function getAll(int $page): AnonymousResourceCollection
     {
-        $items = Questioner::all()->forPage($page, $this->perPage);
+        $items = Questioner::with('questionGroups')->forPage($page, $this->perPage)->get();
 
         return QuestionerResource::collection($items);
     }
