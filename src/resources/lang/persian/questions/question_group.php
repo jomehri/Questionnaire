@@ -13,7 +13,7 @@ return [
     ],
 
     'exceptions' => [
-        'questionGroupCantBeDeletedSinceHasQuestionGroups' => 'از آنجایی که گروه سوالاتی به این پرسشنامه متصل هستند امکان حذف آن موجود نمی باشد.'
+        'questionGroupCantBeDeletedSinceHasQuestions' => 'از آنجایی که سوالاتی به این گروه سوال متصل هستند امکان حذف آن موجود نمی باشد.'
     ]
 
 ];

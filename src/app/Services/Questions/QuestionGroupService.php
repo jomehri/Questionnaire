@@ -85,4 +85,13 @@ class QuestionGroupService extends BaseService
         $item->questioners()->sync($questionerIds);
     }
 
+    /**
+     * @param QuestionGroup $questionGroup
+     * @return void
+     */
+    public function delete(QuestionGroup $questionGroup): void
+    {
+        $questionGroup->delete();
+    }
+
 }

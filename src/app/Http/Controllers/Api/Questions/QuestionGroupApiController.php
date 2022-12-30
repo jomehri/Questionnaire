@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
+use App\Http\Requests\Api\Questions\QuestionGroupDeleteRequest;
 use App\Http\Requests\Api\Questions\QuestionGroupStoreRequest;
 use App\Http\Resources\Questions\QuestionGroupResource;
 use App\Models\Questions\QuestionGroup;
@@ -144,6 +145,45 @@ class QuestionGroupApiController extends BaseApiController
         $data = $this->questionGroupService->sanitizeStoreRequestData($this->request);
 
         $this->questionGroupService->store($data);
+
+        return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\delete (
+     *  path="/api/question-groups/{question_group}/delete",
+     *  security={{"sanctum":{}}},
+     *  summary="Delete a question group",
+     *  description="Deletes a question group",
+     *  tags={"Question Group"},
+     *
+     *  @OA\Parameter(
+     *      name="question_group",
+     *      in="path",
+     *      description="Question Group Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionGroupDeleteRequest $questionGroupDeleteRequest
+     * @param QuestionGroup $questionGroup
+     * @return JsonResponse
+     */
+    public function delete(QuestionGroupDeleteRequest $questionGroupDeleteRequest, QuestionGroup $questionGroup): JsonResponse
+    {
+        $this->questionGroupService->delete($questionGroup);
 
         return $this->returnOk(null);
     }
