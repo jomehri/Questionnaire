@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\Questions;
 
+use App\Models\Questions\Questioner;
 use App\Http\Requests\Api\BaseRequest;
 use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 
@@ -44,8 +45,13 @@ class QuestionerDeleteRequest extends BaseRequest
      */
     public function throwIfQuestionHasChildren(): void
     {
-        // TODO @aliJo check no question groups are assigned to this questioner, else throw error
-        if (1 === 2) {
+        /** @var Questioner $questioner */
+        $questioner = $this->route('questioner');
+
+        /**
+         * If there are question groups connected to this questioner, should not be allowed to delete
+         */
+        if ($questioner->questionGroups()->get()->count()) {
             throw new QuestionerWithQuestionsCantBeDeletedException();
         }
     }
