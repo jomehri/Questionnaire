@@ -4,8 +4,10 @@ namespace App\Services\Questions;
 
 use Illuminate\Http\Request;
 use App\Services\BaseService;
-use App\Models\Questions\QuestionGroup;
 use Illuminate\Support\Facades\DB;
+use App\Models\Questions\QuestionGroup;
+use App\Http\Resources\Questions\QuestionGroupResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionGroupService extends BaseService
 {
@@ -40,17 +42,47 @@ class QuestionGroupService extends BaseService
             /**
              * 2- Also add them to questioners
              */
-            if (!empty($data['questioner_ids'])) {
-                $questionerIds = [];
-                foreach ($data['questioner_ids'] as $questionerId) {
-                    $questionerIds[] = [
-                        'questioner_id' => $questionerId,
-                    ];
-                }
-
-                $item->questioners()->sync($questionerIds);
-            }
+            $this->syncQuestionerPivot($item);
         });
+    }
+
+    /**
+     * @param int $page
+     * @return AnonymousResourceCollection
+     */
+    public function getAll(int $page): AnonymousResourceCollection
+    {
+        $items = QuestionGroup::all()->forPage($page, $this->perPage);
+
+        return QuestionGroupResource::collection($items);
+    }
+
+    /**
+     * @return int
+     */
+    public function countTotal(): int
+    {
+        return QuestionGroup::all()->count();
+    }
+
+    /**
+     * @param QuestionGroup $item
+     * @return void
+     */
+    private function syncQuestionerPivot(QuestionGroup $item): void
+    {
+        if (empty($data['questioner_ids'])) {
+            return;
+        }
+
+        $questionerIds = [];
+        foreach ($data['questioner_ids'] as $questionerId) {
+            $questionerIds[] = [
+                'questioner_id' => $questionerId,
+            ];
+        }
+
+        $item->questioners()->sync($questionerIds);
     }
 
 }

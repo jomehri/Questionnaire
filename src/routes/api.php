@@ -53,4 +53,5 @@ Route::prefix("/question-groups/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('', [QuestionGroupApiController::class, 'store'])->name('create');
+        Route::get('', [QuestionGroupApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
     });
