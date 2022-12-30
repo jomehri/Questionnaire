@@ -3,10 +3,10 @@
 namespace App\Http\Resources\Questions;
 
 use App\Models\BaseModel;
-use App\Models\Questions\QuestionGroup;
+use App\Models\Questions\Questioner;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionGroupResource extends JsonResource
+class QuestionerWithoutQuestionGroupResource extends JsonResource
 {
     /**
      * @param $request
@@ -16,8 +16,8 @@ class QuestionGroupResource extends JsonResource
     {
         return [
             BaseModel::COLUMN_ID => $this->{BaseModel::COLUMN_ID},
-            QuestionGroup::COLUMN_TITLE => $this->{QuestionGroup::COLUMN_TITLE},
-            'questioners' => QuestionerWithoutQuestionGroupResource::collection($this->questioners)
+            Questioner::COLUMN_TITLE => $this->{Questioner::COLUMN_TITLE},
+            Questioner::COLUMN_SLUG => $this->{Questioner::COLUMN_SLUG},
         ];
     }
 }
