@@ -52,7 +52,7 @@ class QuestionGroupService extends BaseService
      */
     public function getAll(int $page): AnonymousResourceCollection
     {
-        $items = QuestionGroup::all()->forPage($page, $this->perPage);
+        $items = QuestionGroup::with('questioners')->forPage($page, $this->perPage)->get();
 
         return QuestionGroupResource::collection($items);
     }
