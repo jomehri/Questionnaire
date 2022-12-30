@@ -28,12 +28,12 @@ class QuestionGroupApiController extends BaseApiController
      *  security={{"sanctum":{}}},
      *  summary="Add new question group",
      *  description="Add new question group (connected to several questioners)",
-     *  tags={"Questioner"},
+     *  tags={"Question Group"},
      *  @OA\RequestBody(
      *      required=true,
      *      description="Add new question group",
      *      @OA\JsonContent(
-     *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 1", nullable="false"),
+     *          @OA\Property(property="title", type="string",example="دسته سوالات شماره 1", nullable="false"),
      *      ),
      *  ),
      *  @OA\Response(
