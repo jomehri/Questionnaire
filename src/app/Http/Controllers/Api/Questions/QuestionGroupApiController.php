@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Questions;
 
 use App\Http\Requests\Api\Questions\QuestionGroupDeleteRequest;
 use App\Http\Requests\Api\Questions\QuestionGroupStoreRequest;
+use App\Http\Requests\Api\Questions\QuestionGroupUpdateRequest;
 use App\Http\Resources\Questions\QuestionGroupResource;
 use App\Models\Questions\QuestionGroup;
 use Illuminate\Http\Request;
@@ -145,6 +146,60 @@ class QuestionGroupApiController extends BaseApiController
         $data = $this->questionGroupService->sanitizeStoreRequestData($this->request);
 
         $this->questionGroupService->store($data);
+
+        return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\post (
+     *  path="/api/question-groups/{question_group}",
+     *  security={{"sanctum":{}}},
+     *  summary="Update a question group",
+     *  description="Updates a question group",
+     *  tags={"Question Group"},
+     *
+     *  @OA\Parameter(
+     *      name="question_group",
+     *      in="path",
+     *      description="Question Group Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\RequestBody(
+     *      required=true,
+     *      description="Updates a question group",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 2", nullable="true"),
+     *          @OA\Property(
+     *              property="questioner_ids",
+     *              type="array",
+     *              example="[3, 4]",
+     *              @OA\Items(),
+     *          ),
+     *      ),
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionGroupUpdateRequest $questionGroupUpdateRequest
+     * @param QuestionGroup $questionGroup
+     * @return JsonResponse
+     */
+    public function update(QuestionGroupUpdateRequest $questionGroupUpdateRequest, QuestionGroup $questionGroup): JsonResponse
+    {
+        $data = $this->questionGroupService->sanitizeStoreRequestData($this->request);
+
+        $this->questionGroupService->update($questionGroup, $data);
 
         return $this->returnOk(null);
     }

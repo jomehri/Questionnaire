@@ -53,6 +53,7 @@ Route::prefix("/question-groups/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('', [QuestionGroupApiController::class, 'store'])->name('create');
+        Route::post('{question_group:id}', [QuestionGroupApiController::class, 'update'])->name('update');
         Route::get('', [QuestionGroupApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
         Route::get('{question_group:id}', [QuestionGroupApiController::class, 'item'])->name('item')->withoutMiddleware('auth:sanctum');
         Route::delete('{question_group:id}/delete', [QuestionGroupApiController::class, 'delete'])->name('delete');

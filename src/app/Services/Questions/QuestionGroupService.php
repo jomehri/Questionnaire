@@ -42,7 +42,29 @@ class QuestionGroupService extends BaseService
             /**
              * 2- Also add them to questioners
              */
-            $this->syncQuestionerPivot($item);
+            $this->syncQuestionerPivot($item, $data);
+        });
+    }
+
+    /**
+     * @param QuestionGroup $questionGroup
+     * @param array $data
+     * @return void
+     */
+    public function update(QuestionGroup $questionGroup, array $data): void
+    {
+        DB::transaction(function () use ($questionGroup, $data) {
+
+            /**
+             * 1- Add new question group
+             */
+            $questionGroup->setTitle($data[QuestionGroup::COLUMN_TITLE])
+                ->save();
+
+            /**
+             * 2- Also add them to questioners
+             */
+            $this->syncQuestionerPivot($questionGroup, $data);
         });
     }
 
@@ -67,14 +89,11 @@ class QuestionGroupService extends BaseService
 
     /**
      * @param QuestionGroup $item
+     * @param array $data
      * @return void
      */
-    private function syncQuestionerPivot(QuestionGroup $item): void
+    private function syncQuestionerPivot(QuestionGroup $item, array $data): void
     {
-        if (empty($data['questioner_ids'])) {
-            return;
-        }
-
         $questionerIds = [];
         foreach ($data['questioner_ids'] as $questionerId) {
             $questionerIds[] = [
