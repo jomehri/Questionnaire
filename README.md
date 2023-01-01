@@ -15,7 +15,7 @@
 
 - cd docker
 - sudo docker-compose build
-- docker-compose up
+- sudo docker-compose up
 - cd ../src
 - composer install --ignore-platform-reqs
 - cp .env.example .env
