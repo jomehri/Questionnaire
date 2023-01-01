@@ -14,7 +14,7 @@
 ## Installation:
 
 - cd docker
-- docker-compose build
+- sudo docker-compose build
 - docker-compose up
 - cd ../src
 - composer install --ignore-platform-reqs
