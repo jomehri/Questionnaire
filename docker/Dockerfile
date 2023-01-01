@@ -36,6 +36,10 @@ RUN docker-php-ext-configure intl \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install opcache \
     && docker-php-ext-install bcmath \
+    && docker-php-ext-install dom \
+    && docker-php-ext-enable dom \
+    && docker-php-ext-install xml \
+    && docker-php-ext-enable xml \
     && docker-php-ext-install pcntl \
     && docker-php-ext-install sockets \
     && pecl install apcu \

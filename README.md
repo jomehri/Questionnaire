@@ -19,8 +19,8 @@
 - cd ../src
 - cp .env.example .env
 - cp .env.testing.example .env.testing
-- composer install --ignore-platform-reqs
+- composer install
 - sudo chmod 777 storage/ -R
 - cd ../docker
-- docker-compose exec qst-php-web php /var/www/html/artisan migrate
+- sudo docker-compose exec qst-php-web php /var/www/html/artisan migrate
 - visit http://localhost:9085 
