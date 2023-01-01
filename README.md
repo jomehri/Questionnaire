@@ -14,13 +14,13 @@
 ## Installation:
 
 - cd docker
-- sudo docker-compose build
-- sudo docker-compose up
+- docker-compose build (do not sudo)
+- docker-compose up
 - cd ../src
 - cp .env.example .env
 - cp .env.testing.example .env.testing
 - composer install
 - sudo chmod 777 storage/ -R
 - cd ../docker
-- sudo docker-compose exec qst-php-web php /var/www/html/artisan migrate
+- docker-compose exec qst-php-web php /var/www/html/artisan migrate
 - visit http://localhost:9085 
