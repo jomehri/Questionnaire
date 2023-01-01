@@ -17,9 +17,9 @@
 - sudo docker-compose build
 - sudo docker-compose up
 - cd ../src
-- composer install --ignore-platform-reqs
 - cp .env.example .env
 - cp .env.testing.example .env.testing
+- composer install --ignore-platform-reqs
 - sudo chmod 777 storage/ -R
 - cd ../docker
 - docker-compose exec qst-php-web php /var/www/html/artisan migrate
