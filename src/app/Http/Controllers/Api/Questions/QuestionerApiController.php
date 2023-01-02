@@ -26,7 +26,7 @@ class QuestionerApiController extends BaseApiController
     }
 
     /**
-     * @OA\get (
+     * @OA\Get (
      *  path="/api/questioners",
      *  summary="Get all questioners",
      *  description="Gets all questioners",
@@ -67,7 +67,7 @@ class QuestionerApiController extends BaseApiController
     }
 
     /**
-     * @OA\get (
+     * @OA\Get (
      *  path="/api/questioners/{questioner}",
      *  summary="Get a single questioner",
      *  description="Gets a single questioner",
@@ -104,7 +104,7 @@ class QuestionerApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/questioners",
      *  security={{"sanctum":{}}},
      *  summary="Add new questioner",
@@ -144,7 +144,7 @@ class QuestionerApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/questioners/{questioner}",
      *  security={{"sanctum":{}}},
      *  summary="Update a questioner",
@@ -193,7 +193,7 @@ class QuestionerApiController extends BaseApiController
     }
 
     /**
-     * @OA\delete (
+     * @OA\Delete (
      *  path="/api/questioners/{questioner}/delete",
      *  security={{"sanctum":{}}},
      *  summary="Delete a questioner",

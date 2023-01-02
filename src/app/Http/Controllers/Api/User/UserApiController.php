@@ -27,7 +27,7 @@ class UserApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/user/register/request",
      *  summary="Registers new user",
      *  description="Registers new user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
@@ -67,7 +67,7 @@ class UserApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/user/login/request",
      *  summary="Login request for a user",
      *  description="Login request for a user, a 7 digit pin code will be sent to user's mobile, which will be expired in 2 minutes",
@@ -111,7 +111,7 @@ class UserApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/user/login/token",
      *  summary="Logs user in by pincode",
      *  description="Logs user in by inserting mobile and received pin code, returns generated token",

@@ -28,7 +28,7 @@ class QuestionGroupApiController extends BaseApiController
     }
 
     /**
-     * @OA\get (
+     * @OA\Get (
      *  path="/api/question-groups",
      *  summary="Get all question groups",
      *  description="Gets all question groups with their attached questioners",
@@ -69,7 +69,7 @@ class QuestionGroupApiController extends BaseApiController
     }
 
     /**
-     * @OA\get (
+     * @OA\Get (
      *  path="/api/question-groups/{question_group}",
      *  summary="Get a single question group",
      *  description="Gets a single question group with their attached questioners",
@@ -106,7 +106,7 @@ class QuestionGroupApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/question-groups",
      *  security={{"sanctum":{}}},
      *  summary="Add new question group",
@@ -151,7 +151,7 @@ class QuestionGroupApiController extends BaseApiController
     }
 
     /**
-     * @OA\post (
+     * @OA\Post (
      *  path="/api/question-groups/{question_group}",
      *  security={{"sanctum":{}}},
      *  summary="Update a question group",
@@ -205,7 +205,7 @@ class QuestionGroupApiController extends BaseApiController
     }
 
     /**
-     * @OA\delete (
+     * @OA\Delete (
      *  path="/api/question-groups/{question_group}/delete",
      *  security={{"sanctum":{}}},
      *  summary="Delete a question group",
