@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'apikey' => env('KAVEH_NEGAR_API_KEY'),
+    'apikey' => env('KAVENEGAR_API_KEY'),
 ];
