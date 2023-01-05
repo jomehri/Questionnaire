@@ -82,6 +82,8 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
                 ->from($sender)
                 ->to($receptor);
 
+            dump($result);
+
             if ($result) {
                 $item = new SmsMessage();
                 $item->setReceiver($this->to)
