@@ -2,17 +2,26 @@
 
 namespace App\Notifications\Channels;
 
+use Exception;
 use Illuminate\Notifications\Notification;
 
 class SmsChannels
 {
+
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
-        $this->channel = match (env("NOTIFICATION_CHANNEL")) {
+        $notificationChannel = env("NOTIFICATION_CHANNEL");
+
+        if (!$notificationChannel) {
+            throw new Exception("Notification channel not selected!");
+        }
+
+        $this->channel = match ($notificationChannel) {
             'kavenegar' => new KavenegarSmsChannel(),
         };
-
-        dd($this->channel);
     }
 
     /**

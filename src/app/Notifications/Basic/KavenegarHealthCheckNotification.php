@@ -2,8 +2,8 @@
 
 namespace App\Notifications\Basic;
 
+use App\Models\Basic\SmsMessage;
 use App\Notifications\Channels\KavenegarSmsChannel;
-use App\Notifications\Channels\SmsChannels;
 use Illuminate\Bus\Queueable;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -21,16 +21,9 @@ class KavenegarHealthCheckNotification extends BaseNotification
     {
     }
 
-    /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function toSms($notifiable)
+    public function getMessage(): string
     {
-        return (new KavenegarSmsChannel())
-            ->from('ObiWan')
-            ->to($notifiable->telephone)
-            ->line("These aren't the droids you are looking for.");
+        return 'some valid texts directly inside notification';
     }
 
 }

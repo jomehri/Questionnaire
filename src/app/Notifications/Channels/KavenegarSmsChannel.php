@@ -2,15 +2,15 @@
 
 namespace App\Notifications\Channels;
 
+use Kavenegar\Laravel\Message\KavenegarMessage;
 use Throwable;
 use Exception;
-use Kavenegar;
 use App\Models\Basic\SmsMessage;
 use Illuminate\Support\Facades\Log;
+use Kavenegar\Laravel\Notification\KavenegarBaseNotification;
 
-class KavenegarSmsChannel
+class KavenegarSmsChannel extends KavenegarBaseNotification
 {
-    use Kavenegar;
 
     protected array $lines = [];
     protected string $from;
@@ -46,7 +46,7 @@ class KavenegarSmsChannel
      */
     public function to($to): static
     {
-        $this->to = $to;
+        $this->to = $to->mobile;
 
         return $this;
     }
@@ -62,6 +62,7 @@ class KavenegarSmsChannel
         return $this;
     }
 
+
     /**
      * @return void
      * @throws Exception
@@ -74,19 +75,21 @@ class KavenegarSmsChannel
 
         try {
             $sender = $this->sender;
+            $message = implode("\r\n", $this->lines);
+            $receptor = $this->to;
 
-            $message = $this->lines;
-
-            $receptor = [$this->receptor];
-
-            $result = Kavenegar::Send($sender, $receptor, $message);
+            $result = (new KavenegarMessage($message))
+                ->from($sender)
+                ->to($receptor);
 
             if ($result) {
-                SmsMessage::creat([
-                    SmsMessage::COLUMN_RECEIVER => $this->receptor,
-                    SmsMessage::COLUMN_MESSAGE => $this->lines,
-                    SmsMessage::COLUMN_SENT => true,
-                ]);
+                $item = new SmsMessage();
+                $item->setReceiver($this->to)
+                    ->setMessage($message)
+                    ->setSent(true)
+                    ->save();
+
+                Log::info("Message send through Kavenegar to " . $this->receptor);
             }
         } catch (Throwable $e) {
             Log::error("Kavenegar error!", [$e]);
