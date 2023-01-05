@@ -2,6 +2,8 @@
 
 namespace App\Notifications\Basic;
 
+use App\Notifications\Channels\KavenegarSmsChannel;
+use App\Notifications\Channels\SmsChannels;
 use Illuminate\Bus\Queueable;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -17,44 +19,18 @@ class KavenegarHealthCheckNotification extends BaseNotification
      */
     public function __construct()
     {
-        //
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['sms'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param $notifiable
+     * @return mixed
      */
     public function toSms($notifiable)
     {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        return (new KavenegarSmsChannel())
+            ->from('ObiWan')
+            ->to($notifiable->telephone)
+            ->line("These aren't the droids you are looking for.");
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
 }

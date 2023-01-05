@@ -17,18 +17,6 @@ class UserPinCodeNotification extends BaseNotification
      */
     public function __construct()
     {
-        //
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['sms'];
     }
 
     /**
@@ -45,16 +33,4 @@ class UserPinCodeNotification extends BaseNotification
             ->line('Thank you for using our application!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
 }
