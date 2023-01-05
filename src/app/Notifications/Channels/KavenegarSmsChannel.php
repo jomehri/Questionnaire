@@ -12,9 +12,9 @@ use Kavenegar\Laravel\Notification\KavenegarBaseNotification;
 class KavenegarSmsChannel extends KavenegarBaseNotification
 {
 
-    protected array $lines = [];
-    protected string $from;
-    protected string $to;
+    public array $lines = [];
+    public string $from;
+    public string $to;
 
     /**
      * @param array $lines

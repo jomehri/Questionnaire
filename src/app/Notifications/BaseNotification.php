@@ -3,10 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use App\Notifications\Channels\SmsChannels;
 use Illuminate\Notifications\Notification;
+use App\Notifications\Channels\SmsChannels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Notifications\Channels\KavenegarSmsChannel;
 
 class BaseNotification extends Notification implements ShouldQueue
 {
@@ -28,10 +27,12 @@ class BaseNotification extends Notification implements ShouldQueue
      *
      * @param mixed $notifiable
      */
-    public function toSms($notifiable): KavenegarSmsChannel
+    public function toSms($notifiable)
     {
-        return (new KavenegarSmsChannel())
-            ->from('ObiWan')
+        $smsChannel = new SmsChannels();
+
+        return $smsChannel->smsChannel
+            ->from($smsChannel->from)
             ->to($notifiable)
             ->line($this->getMessage());
     }

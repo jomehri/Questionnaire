@@ -19,9 +19,19 @@ class SmsChannels
             throw new Exception("Notification channel not selected!");
         }
 
-        $this->channel = match ($notificationChannel) {
+        $this->smsChannel = match ($notificationChannel) {
             'kavenegar' => new KavenegarSmsChannel(),
         };
+
+        $this->setFrom();
+    }
+
+    /**
+     * @return void
+     */
+    public function setFrom(): void
+    {
+        $this->from = $this->smsChannel->sender;
     }
 
     /**
