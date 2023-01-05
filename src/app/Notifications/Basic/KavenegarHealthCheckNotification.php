@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Notifications\User;
+namespace App\Notifications\Basic;
 
 use Illuminate\Bus\Queueable;
 use App\Notifications\BaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class UserPinCodeNotification extends BaseNotification
+class KavenegarHealthCheckNotification extends BaseNotification
 {
     use Queueable;
 
