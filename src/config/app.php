@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
         Ybazli\Faker\FakerServiceProvider::class,
+        Kavenegar\Laravel\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -232,6 +233,7 @@ return [
          * Package Aliases
          */
         'Faker' => Ybazli\Faker\Facades\Faker::class,
+        'Kavenegar' => Kavenegar\Laravel\Facade::class,
 
     ],
 
