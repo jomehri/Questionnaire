@@ -2,11 +2,11 @@
 
 namespace App\Notifications\Channels;
 
-use Kavenegar\Laravel\Message\KavenegarMessage;
 use Throwable;
 use Exception;
 use App\Models\Basic\SmsMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Kavenegar\Laravel\Notification\KavenegarBaseNotification;
 
 class KavenegarSmsChannel extends KavenegarBaseNotification
@@ -22,6 +22,7 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
     public function __construct(array $lines = [])
     {
         $this->lines = $lines;
+        $this->apiUrl = config("kavenegar.url");
         $this->apikey = config("kavenegar.apikey");
         $this->sender = config("kavenegar.sender");
         $this->receptor = config("kavenegar.receptor");
@@ -69,34 +70,63 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
      */
     public function send(): void
     {
-        if (!$this->from || !$this->to || !count($this->lines)) {
+        if ($this->isSmsDataIncomplete()) {
+            Log::error('SMS sending data not correct!', [$this->from, $this->to, $this->lines]);
+            throw new Exception('SMS sending data not correct!');
+        }
+
+        if ($this->isKavenegarConfigIncomplete()) {
+            Log::error('SMS config not correct!', [$this->apiUrl, $this->apikey, $this->sender, $this->receptor]);
             throw new Exception('SMS config not correct!');
         }
 
         try {
-            $sender = $this->sender;
+            $url = $this->apiUrl . $this->apikey . '/sms/send.json?';
+
             $message = implode("\r\n", $this->lines);
-            $receptor = $this->to;
 
-            $result = (new KavenegarMessage($message))
-                ->from($sender)
-                ->to($receptor);
+            $data = [
+                'sender' => $this->sender,
+                'receptor' => $this->to,
+                'message' => $message,
+            ];
 
-            dump($result);
+            $url .= http_build_query($data);
 
-            if ($result) {
+            $result = Http::get($url, $data);
+
+            if ($result->ok()) {
                 $item = new SmsMessage();
                 $item->setReceiver($this->to)
                     ->setMessage($message)
                     ->setSent(true)
                     ->save();
 
-                Log::info("Message send through Kavenegar to " . $this->receptor);
+                Log::info("Message sent successfully through Kavenegar to " . $this->receptor);
+            } else {
+                Log::error('Kavenegar failed: ' . $result->body(), [$result]);
+                throw new Exception('Kavenegar failed: ' . $result->body());
             }
         } catch (Throwable $e) {
             Log::error("Kavenegar error!", [$e]);
             throw new Exception("Kavenegar error: " . $e->errorMessage(), []);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isKavenegarConfigIncomplete(): bool
+    {
+        return !$this->apiUrl || !$this->apikey || !$this->sender || !$this->receptor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSmsDataIncomplete(): bool
+    {
+        return !$this->from || !$this->to || !count($this->lines);
     }
 
 }

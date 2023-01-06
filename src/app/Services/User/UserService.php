@@ -92,7 +92,7 @@ class UserService extends BaseService
         /**
          * Send pin-code to user's cell phone
          */
-        $user->notify(new UserPinCodeNotification());
+        $user->notify(new UserPinCodeNotification($user, $data[User::COLUMN_PIN_CODE]));
     }
 
     /**
@@ -126,7 +126,7 @@ class UserService extends BaseService
         /**
          * Send pin-code to user's cell phone
          */
-        $user->notify(new UserPinCodeNotification());
+        $user->notify(new UserPinCodeNotification($user, $data[User::COLUMN_PIN_CODE]));
 
         // TODO @aliJo return void when sms panel launched
         return $data[User::COLUMN_PIN_CODE];

@@ -2,26 +2,33 @@
 
 namespace App\Notifications\User;
 
+use App\Models\Basic\User;
 use Illuminate\Bus\Queueable;
 use App\Notifications\BaseNotification;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class UserPinCodeNotification extends BaseNotification
 {
     use Queueable;
 
     /**
-     * Create a new notification instance.
-     *
-     * @return void
+     * @param User $user
+     * @param string $pinCode
      */
-    public function __construct()
+    public function __construct(User $user, string $pinCode)
     {
+        $this->user = $user;
+        $this->pinCode = $pinCode;
     }
 
     public function getMessage(): string
     {
-        return 'some valid texts directly inside notification';
+        return
+            (($this->user->getFirstName()) ?? "کاربر") .
+            " عزیز" .
+            "\r\n" .
+            "کد شما جهت ورود به سایت: " .
+            "\r\n" .
+            $this->pinCode;
     }
 
 }

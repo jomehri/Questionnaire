@@ -2,11 +2,8 @@
 
 namespace App\Notifications\Basic;
 
-use App\Models\Basic\SmsMessage;
-use App\Notifications\Channels\KavenegarSmsChannel;
 use Illuminate\Bus\Queueable;
 use App\Notifications\BaseNotification;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class KavenegarHealthCheckNotification extends BaseNotification
 {
@@ -21,9 +18,12 @@ class KavenegarHealthCheckNotification extends BaseNotification
     {
     }
 
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
-        return 'some valid texts directly inside notification';
+        return 'کاوه نگار بالاست و اس ام اس با موفقیت ارسال می شود.';
     }
 
 }
