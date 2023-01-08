@@ -36,6 +36,25 @@ services:
       - qst-redis
     networks:
       - docker-network
+  qst-supervisor:
+    container_name: "docker-qst-supervisor"
+    build:
+      context: .
+      dockerfile: supervisor/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - "../src:/var/www/html"
+      - "./supervisor/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf"
+      - "./supervisor/logs/supervisor:/var/log/supervisor"
+    depends_on:
+      - qst-php-web
+    links:
+      - qst-php-web
+      - qst-mysql
+      - qst-redis
+    command: [ "/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf" ]
+    networks:
+      - docker-network
   qst-mysql:
     image: mysql:8.0.25
     container_name: "docker-qst-mysql"

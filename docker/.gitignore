@@ -8,3 +8,5 @@
 /nginx/auth/logs/*
 /nginx/link/logs/*
 /nginx/logs/*
+/supervisor/logs/*
+/supervisor/logs/supervisor/*
