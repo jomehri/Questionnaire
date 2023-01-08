@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     libmagickwand-dev --no-install-recommends \
     libzip-dev \
     libonig-dev \
+    supervisor \
     procps \
     locales \
     tesseract-ocr-fas
