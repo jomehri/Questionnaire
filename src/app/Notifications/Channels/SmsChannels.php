@@ -13,7 +13,7 @@ class SmsChannels
      */
     public function __construct()
     {
-        $notificationChannel = env("NOTIFICATION_CHANNEL");
+        $notificationChannel = config("settings.notification_channel");
 
         if (!$notificationChannel) {
             throw new Exception("Notification channel not selected!");

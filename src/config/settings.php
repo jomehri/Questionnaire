@@ -16,5 +16,10 @@ return [
     /**
      * Number of results per page for index pages
      */
-    'per_page' => env('RESULTS_PER_PAGE', 10)
+    'per_page' => env('RESULTS_PER_PAGE', 10),
+
+    /**
+     * Current SMS panel
+     */
+    'notification_channel' => env('NOTIFICATION_CHANNEL'),
 ];
