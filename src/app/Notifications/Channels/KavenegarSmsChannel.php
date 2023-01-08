@@ -109,7 +109,7 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
             }
         } catch (Throwable $e) {
             Log::error("Kavenegar error!", [$e]);
-            throw new Exception("Kavenegar error: " . $e->errorMessage(), []);
+            throw new Exception("Kavenegar error: " . $e->getMessage());
         }
     }
 
