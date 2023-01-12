@@ -47,6 +47,24 @@ class QuestionService extends BaseService
     }
 
     /**
+     * @param Question $question
+     * @param array $data
+     * @return void
+     */
+    public function update(Question $question, array $data): void
+    {
+        DB::transaction(function () use ($question, $data) {
+            /**
+             * 1- Add new question
+             */
+            $question->setTitle($data[Question::COLUMN_TITLE])
+                ->setType($data[Question::COLUMN_TYPE])
+                ->setDescription($data[Question::COLUMN_DESCRIPTION])
+                ->save();
+        });
+    }
+
+    /**
      * @param QuestionGroup $questionGroup
      * @param int $page
      * @return AnonymousResourceCollection

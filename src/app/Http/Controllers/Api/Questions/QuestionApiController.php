@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
+use App\Http\Requests\Api\Questions\QuestionUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Question;
@@ -121,7 +122,7 @@ class QuestionApiController extends BaseApiController
      *  path="/api/question-groups/{question_group}/questions",
      *  security={{"sanctum":{}}},
      *  summary="Add new question to a question group",
-     *  description="Add new question to a question group (connected to several questioners)",
+     *  description="Add new question to a question group",
      *  tags={"Question"},
      *  @OA\Parameter(
      *      name="question_group",
@@ -161,6 +162,62 @@ class QuestionApiController extends BaseApiController
         $data = $this->questionService->sanitizeStoreRequestData($this->request);
 
         $this->questionService->store($questionGroup, $data);
+
+        return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\Post (
+     *  path="/api/question-groups/{question_group}/questions/{question}",
+     *  security={{"sanctum":{}}},
+     *  summary="Updates a question",
+     *  description="Updates a question on a question group",
+     *  tags={"Question"},
+     *
+     *  @OA\Parameter(
+     *      name="question_group",
+     *      in="path",
+     *      description="Question Group Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="question",
+     *      in="path",
+     *      description="Question Id",
+     *      required=true
+     *  ),
+     *  @OA\RequestBody(
+     *      required=true,
+     *      description="Add new question to a question group",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="title", type="string",example="عنوان سوال", nullable="false"),
+     *          @OA\Property(property="type", type="string",example="text", nullable="false"),
+     *          @OA\Property(property="description", type="string",example="متن سوال", nullable="false"),
+     *      ),
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionUpdateRequest $questionUpdateRequest
+     * @param QuestionGroup $questionGroup
+     * @param Question $question
+     * @return JsonResponse
+     */
+    public function update(QuestionUpdateRequest $questionUpdateRequest, QuestionGroup $questionGroup, Question $question): JsonResponse
+    {
+        $data = $this->questionService->sanitizeStoreRequestData($this->request);
+
+        $this->questionService->update($question, $data);
 
         return $this->returnOk(null);
     }
