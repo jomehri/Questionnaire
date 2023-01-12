@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
-use App\Http\Requests\Api\Questions\QuestionStoreRequest;
-use App\Http\Resources\Questions\QuestionResource;
-use App\Models\Questions\Question;
-use App\Models\Questions\QuestionGroup;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Models\Questions\Question;
+use App\Models\Questions\QuestionGroup;
 use App\Services\Questions\QuestionService;
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Resources\Questions\QuestionResource;
+use App\Http\Requests\Api\Questions\QuestionStoreRequest;
 
 class QuestionApiController extends BaseApiController
 {
