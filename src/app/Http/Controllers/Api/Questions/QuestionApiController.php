@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api\Questions;
 
 use App\Http\Requests\Api\Questions\QuestionStoreRequest;
+use App\Http\Resources\Questions\QuestionResource;
+use App\Models\Questions\Question;
 use App\Models\Questions\QuestionGroup;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Questions\QuestionService;
 use App\Http\Controllers\Api\BaseApiController;
-use App\Http\Requests\Api\Questions\QuestionGroupStoreRequest;
 
 class QuestionApiController extends BaseApiController
 {
@@ -69,6 +70,50 @@ class QuestionApiController extends BaseApiController
         ];
 
         return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/question-groups/{question_group}/questions/{question}",
+     *  summary="Get all questions for a question group",
+     *  description="Gets all questions for a question group",
+     *  tags={"Question"},
+     *
+     *  @OA\Parameter(
+     *      name="question_group",
+     *      in="path",
+     *      description="Question Group Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="question",
+     *      in="path",
+     *      description="Question Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionGroup $questionGroup
+     * @param Question $question
+     * @return JsonResponse
+     */
+    public function item(QuestionGroup $questionGroup, Question $question): JsonResponse
+    {
+        $data = QuestionResource::make($question);
+
+        return $this->returnOk(null, [$data]);
     }
 
     /**
