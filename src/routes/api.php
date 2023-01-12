@@ -75,4 +75,5 @@ Route::prefix("/question-groups/{question_group:id}/questions/")
         Route::post('{question:id}', [QuestionApiController::class, 'update'])->name('update');
         Route::get('', [QuestionApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
         Route::get('{question:id}', [QuestionApiController::class, 'item'])->name('item')->withoutMiddleware('auth:sanctum');
+        Route::delete('{question:id}', [QuestionApiController::class, 'delete'])->name('delete');
     });

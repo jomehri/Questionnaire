@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
+use App\Http\Requests\Api\Questions\QuestionDeleteRequest;
 use App\Http\Requests\Api\Questions\QuestionUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -218,6 +219,51 @@ class QuestionApiController extends BaseApiController
         $data = $this->questionService->sanitizeStoreRequestData($this->request);
 
         $this->questionService->update($question, $data);
+
+        return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\Delete (
+     *  path="/api/question-groups/{question_group}/questions/{question}",
+     *  security={{"sanctum":{}}},
+     *  summary="Deletes a question",
+     *  description="Deletes a question on a question group",
+     *  tags={"Question"},
+     *
+     *  @OA\Parameter(
+     *      name="question_group",
+     *      in="path",
+     *      description="Question Group Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="question",
+     *      in="path",
+     *      description="Question Id",
+     *      required=true
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionDeleteRequest $questionDeleteRequest
+     * @param QuestionGroup $questionGroup
+     * @param Question $question
+     * @return JsonResponse
+     */
+    public function delete(QuestionDeleteRequest $questionDeleteRequest, QuestionGroup $questionGroup, Question $question): JsonResponse
+    {
+        $this->questionService->delete($question);
 
         return $this->returnOk(null);
     }

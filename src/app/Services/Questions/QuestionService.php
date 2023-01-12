@@ -54,13 +54,21 @@ class QuestionService extends BaseService
     public function update(Question $question, array $data): void
     {
         DB::transaction(function () use ($question, $data) {
-            /**
-             * 1- Add new question
-             */
             $question->setTitle($data[Question::COLUMN_TITLE])
                 ->setType($data[Question::COLUMN_TYPE])
                 ->setDescription($data[Question::COLUMN_DESCRIPTION])
                 ->save();
+        });
+    }
+
+    /**
+     * @param Question $question
+     * @return void
+     */
+    public function delete(Question $question): void
+    {
+        DB::transaction(function () use ($question) {
+            $question->delete();
         });
     }
 
