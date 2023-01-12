@@ -10,6 +10,9 @@ class UserPinCodeNotification extends BaseNotification
 {
     use Queueable;
 
+    protected User $user;
+    protected string $pinCode;
+
     /**
      * @param User $user
      * @param string $pinCode
