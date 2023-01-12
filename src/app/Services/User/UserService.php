@@ -2,10 +2,12 @@
 
 namespace App\Services\User;
 
+use App\Http\Resources\User\UserResource;
 use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Helpers\StringHelper;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\User\UserPinHasExpiredException;
@@ -169,6 +171,24 @@ class UserService extends BaseService
         /** @var User $user */
         $user = Auth::user();
         $user->currentAccessToken()->delete();
+    }
+
+    /**
+     * @return AnonymousResourceCollection
+     */
+    public function getAll(): AnonymousResourceCollection
+    {
+        $items = User::all();
+
+        return UserResource::collection($items);
+    }
+
+    /**
+     * @return int
+     */
+    public function countTotal(): int
+    {
+        return User::count();
     }
 
 }

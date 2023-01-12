@@ -23,6 +23,16 @@ Route::prefix("/user/")
     });
 
 /**
+ * Admin users routes
+ */
+Route::prefix("/users/")
+    ->as('users.')
+    ->middleware(['auth:sanctum', 'role:admins'])
+    ->group(function () {
+        Route::get('', [UserApiController::class, 'index'])->name('index');
+    });
+
+/**
  * Profile routes
  */
 Route::prefix("/profile/")
@@ -74,6 +84,8 @@ Route::prefix("/question-groups/{question_group:id}/questions/")
         Route::post('', [QuestionApiController::class, 'store'])->name('create');
         Route::post('{question:id}', [QuestionApiController::class, 'update'])->name('update');
         Route::get('', [QuestionApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
-        Route::get('{question:id}', [QuestionApiController::class, 'item'])->name('item')->withoutMiddleware('auth:sanctum');
+        Route::get('{question:id}', [QuestionApiController::class, 'item'])->name('item')->withoutMiddleware(
+            'auth:sanctum'
+        );
         Route::delete('{question:id}', [QuestionApiController::class, 'delete'])->name('delete');
     });

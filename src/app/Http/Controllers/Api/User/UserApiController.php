@@ -189,4 +189,50 @@ class UserApiController extends BaseApiController
         return $this->returnOk(null);
     }
 
+    /**
+     * @OA\get (
+     *  path="/api/users",
+     *  security={{"sanctum":{}}},
+     *  summary="List users on admin panel",
+     *  description="Lists all users on admin panel",
+     *  tags={"User"},
+     *
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     *  @OA\Response(
+     *      response=500,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->userService->getAll(),
+            'total' => $this->userService->countTotal(),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
+    }
+
 }

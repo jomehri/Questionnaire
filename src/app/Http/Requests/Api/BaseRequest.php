@@ -14,7 +14,7 @@ class BaseRequest extends FormRequest
      * @param string $permission
      * @return bool
      */
-    public function authorizePermission(string $permission): bool
+    public function authorizeUserRole(string $permission): bool
     {
         /** @var User $user */
         $user = Auth::user();

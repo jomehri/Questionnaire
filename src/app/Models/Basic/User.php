@@ -25,10 +25,6 @@ class User extends BaseModel
      */
     const PERMISSION_QUESTION = 'question';
     const PERMISSION_REPORT = 'report';
-    const PERMISSIONS = [
-        self::PERMISSION_QUESTION => self::PERMISSION_QUESTION,
-        self::PERMISSION_REPORT => self::PERMISSION_REPORT,
-    ];
 
     protected string $guard_name = 'api';
 

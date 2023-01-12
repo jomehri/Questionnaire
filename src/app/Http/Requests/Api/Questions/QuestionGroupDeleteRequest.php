@@ -14,7 +14,7 @@ class QuestionGroupDeleteRequest extends BaseRequest
      */
     public function authorize(): bool
     {
-        return $this->authorizePermission('admin');
+        return $this->authorizeUserRole('admin');
     }
 
     /**

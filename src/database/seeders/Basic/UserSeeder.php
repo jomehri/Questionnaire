@@ -44,6 +44,7 @@ class UserSeeder extends Seeder
              */
             foreach (User::ROLES as $role) {
                 $role = Role::findByName($role, 'api');
+
                 $user->assignRole($role);
             }
         }
