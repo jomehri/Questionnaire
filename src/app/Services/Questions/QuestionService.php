@@ -2,11 +2,13 @@
 
 namespace App\Services\Questions;
 
-use App\Models\Questions\QuestionGroup;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Questions\Question;
+use App\Models\Questions\QuestionGroup;
+use App\Http\Resources\Questions\QuestionResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuestionService extends BaseService
 {
@@ -42,6 +44,27 @@ class QuestionService extends BaseService
                 ->setDescription($data[Question::COLUMN_DESCRIPTION])
                 ->save();
         });
+    }
+
+    /**
+     * @param QuestionGroup $questionGroup
+     * @param int $page
+     * @return AnonymousResourceCollection
+     */
+    public function getAll(QuestionGroup $questionGroup, int $page): AnonymousResourceCollection
+    {
+        $items = Question::forQuestionGroup($questionGroup->id)->forPage($page, $this->perPage)->get();
+
+        return QuestionResource::collection($items);
+    }
+
+    /**
+     * @param QuestionGroup $questionGroup
+     * @return int
+     */
+    public function countTotal(QuestionGroup $questionGroup): int
+    {
+        return Question::forQuestionGroup($questionGroup->id)->count();
     }
 
 }

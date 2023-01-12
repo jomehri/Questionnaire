@@ -3,12 +3,13 @@
 namespace App\Models\Questions;
 
 use App\Models\BaseModel;
+use App\Models\Questions\Scopes\QuestionScopeTrait;
 use App\Models\Questions\Relations\QuestionRelationTrait;
 
 class Question extends BaseModel
 {
 
-    use QuestionRelationTrait;
+    use QuestionRelationTrait, QuestionScopeTrait;
 
     /**
      * @return string

@@ -24,6 +24,54 @@ class QuestionApiController extends BaseApiController
     }
 
     /**
+     * @OA\Get (
+     *  path="/api/question-groups/{question_group}/questions",
+     *  summary="Get all questions for a question group",
+     *  description="Gets all questions for a question group",
+     *  tags={"Question"},
+     *
+     *  @OA\Parameter(
+     *      name="question_group",
+     *      in="path",
+     *      description="Question Group Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionGroup $questionGroup
+     * @return JsonResponse
+     */
+    public function index(QuestionGroup $questionGroup): JsonResponse
+    {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->questionService->getAll($questionGroup, $page),
+            'total' => $this->questionService->countTotal($questionGroup),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
      * @OA\Post (
      *  path="/api/question-groups/{question_group}/questions",
      *  security={{"sanctum":{}}},
