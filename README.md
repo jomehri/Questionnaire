@@ -24,3 +24,11 @@
 - cd ../docker
 - docker-compose exec qst-php-web php /var/www/html/artisan migrate
 - visit http://localhost:9085 
+
+## To run
+- cd src
+- bash start.sh
+
+## To stop
+- cd src
+- bash stop.sh
