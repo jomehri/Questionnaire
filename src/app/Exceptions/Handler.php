@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\FlareClient\Http\Exceptions\NotFound;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -59,7 +60,7 @@ class Handler extends ExceptionHandler
          */
         if ($request->wantsJson()) {
             /**
-             * laravel unAuthorizedHttException handler
+             * Laravel unAuthorizedHttException handler
              */
             if ($e instanceof AuthorizationException) {
                 return (new BaseApiController())
@@ -72,7 +73,20 @@ class Handler extends ExceptionHandler
             }
 
             /**
-             * laravel formRequests error handler
+             * Spatie unAuthorizedHttException handler
+             */
+            if ($e instanceof UnauthorizedException) {
+                return (new BaseApiController())
+                    ->returnError(
+                        __('general.exceptions.unAuthorizedExceptionMessage'),
+
+                        null,
+                        403
+                    );
+            }
+
+            /**
+             * Laravel formRequests error handler
              */
             if ($e instanceof ValidationException) {
                 return (new BaseApiController())
@@ -96,7 +110,7 @@ class Handler extends ExceptionHandler
             }
 
             /**
-             * other customized exception handler
+             * Other customized exception handler
              */
             if ($e instanceof BaseApiException) {
                 return (new BaseApiController())->returnError(

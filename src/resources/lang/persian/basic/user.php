@@ -27,6 +27,8 @@ return [
         'userMobileNotFound' => 'چنین کاربری با شماره همراه :mobile یافت نشد.',
         'userPinHasExpired' => 'پین کد شما منقضی شده است. لطفا مجدد اقدام نمایید.',
         'userPinIsIncorrect' => 'پین کد وارد شده صحیح نیست. لطفا مجدد تلاش نمایید.',
+        'userDoesNotHaveAdminRole' => 'این کاربر  سوپر ادمین نیست.',
+        'userIsAlreadySuperAdmin' => 'این کاربر در حال حاضر  سوپر ادمین است.',
     ],
 
     'registerSuccess' => 'ثبت نام شما با موفقیت انجاد شد و رمز یک بار مصرف به شماره همراه :mobile ارسال شد.',

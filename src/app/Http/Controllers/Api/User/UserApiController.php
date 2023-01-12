@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Http\Requests\Api\User\UserRoleAddRequest;
+use App\Http\Requests\Api\User\UserRoleRemoveRequest;
+use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\User\UserService;
@@ -107,7 +110,10 @@ class UserApiController extends BaseApiController
         // TODO @aliJo return void when sms panel launched
         $result = $this->userService->loginRequest($data);
 
-        return $this->returnOk($this->userService->getPinRequestSuccessMessage('login', $data['mobile']), ['token_temp_remove_when_sms_panel_launched' => $result]);
+        return $this->returnOk(
+            $this->userService->getPinRequestSuccessMessage('login', $data['mobile']),
+            ['token_temp_remove_when_sms_panel_launched' => $result]
+        );
     }
 
     /**
@@ -233,6 +239,92 @@ class UserApiController extends BaseApiController
         ];
 
         return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\delete (
+     *  path="/api/users/{user}/super-admin",
+     *  security={{"sanctum":{}}},
+     *  summary="Remove super admin role for a user",
+     *  description="Removes super admin role for a user",
+     *  tags={"User"},
+     *
+     *  @OA\Parameter(
+     *      name="user",
+     *      in="path",
+     *      description="User Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     *  @OA\Response(
+     *      response=500,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param UserRoleRemoveRequest $userRoleRemoveRequest
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function removeSuperAdmin(UserRoleRemoveRequest $userRoleRemoveRequest, User $user): JsonResponse
+    {
+        $this->userService->removeSuperAdmin($user);
+
+        return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\post (
+     *  path="/api/users/{user}/super-admin",
+     *  security={{"sanctum":{}}},
+     *  summary="Add super admin role for a user",
+     *  description="Adds super admin role for a user",
+     *  tags={"User"},
+     *
+     *  @OA\Parameter(
+     *      name="user",
+     *      in="path",
+     *      description="User Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     *  @OA\Response(
+     *      response=500,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param UserRoleAddRequest $userRoleAddRequest
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function addSuperAdmin(UserRoleAddRequest $userRoleAddRequest, User $user): JsonResponse
+    {
+        $this->userService->addSuperAdmin($user);
+
+        return $this->returnOk(null);
     }
 
 }

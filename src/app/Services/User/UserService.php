@@ -191,4 +191,22 @@ class UserService extends BaseService
         return User::count();
     }
 
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function removeSuperAdmin(User $user): void
+    {
+        $user->removeRole('admin');
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function addSuperAdmin(User $user): void
+    {
+        $user->assignRole('admin');
+    }
+
 }

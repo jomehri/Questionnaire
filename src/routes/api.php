@@ -27,9 +27,11 @@ Route::prefix("/user/")
  */
 Route::prefix("/users/")
     ->as('users.')
-    ->middleware(['auth:sanctum', 'role:admins'])
+    ->middleware(['auth:sanctum', 'role:admin'])
     ->group(function () {
         Route::get('', [UserApiController::class, 'index'])->name('index');
+        Route::delete('{user:id}/super-admin', [UserApiController::class, 'removeSuperAdmin'])->name('super-admin.remove');
+        Route::post('{user:id}/super-admin', [UserApiController::class, 'addSuperAdmin'])->name('super-admin.add');
     });
 
 /**
