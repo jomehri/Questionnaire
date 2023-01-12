@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Http\Requests\Api\User\UserRoleAddRequest;
-use App\Http\Requests\Api\User\UserRoleRemoveRequest;
 use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\User\UserService;
 use App\Http\Controllers\Api\BaseApiController;
+use App\Http\Requests\Api\User\UserRoleAddRequest;
 use App\Exceptions\User\UserPinHasExpiredException;
 use App\Exceptions\User\UserPinIsIncorrectException;
+use App\Http\Requests\Api\User\UserRoleRemoveRequest;
 use App\Http\Requests\Api\User\UserLoginTokenValidation;
 use App\Http\Requests\Api\User\UserLoginPinRequestValidation;
 use App\Exceptions\User\UserPreviousPinNotExpiredYetException;

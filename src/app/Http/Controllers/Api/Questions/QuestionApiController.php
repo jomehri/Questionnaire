@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
-use App\Http\Requests\Api\Questions\QuestionDeleteRequest;
-use App\Http\Requests\Api\Questions\QuestionUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Question;
@@ -12,6 +10,8 @@ use App\Services\Questions\QuestionService;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\Questions\QuestionResource;
 use App\Http\Requests\Api\Questions\QuestionStoreRequest;
+use App\Http\Requests\Api\Questions\QuestionUpdateRequest;
+use App\Http\Requests\Api\Questions\QuestionDeleteRequest;
 
 class QuestionApiController extends BaseApiController
 {
