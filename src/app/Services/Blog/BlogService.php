@@ -41,7 +41,7 @@ class BlogService extends BaseService
              * File Upload
              */
             $directoryPath = 'blog/' . Carbon::now()->year . '/' . Carbon::now()->month . '/' . Carbon::now()->day;
-            $filePath = Storage::disk('local')->put($directoryPath, $data['image']);
+            $filePath = Storage::put($directoryPath, $data['image']);
 
             /**
              * DB create
