@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Blog\BlogApiController;
 use App\Http\Controllers\Api\User\UserApiController;
 use App\Http\Controllers\Api\Profile\ProfileApiController;
 use App\Http\Controllers\Api\Questions\QuestionApiController;
@@ -30,7 +31,9 @@ Route::prefix("/users/")
     ->middleware(['auth:sanctum', 'role:admin'])
     ->group(function () {
         Route::get('', [UserApiController::class, 'index'])->name('index');
-        Route::delete('{user:id}/super-admin', [UserApiController::class, 'removeSuperAdmin'])->name('super-admin.remove');
+        Route::delete('{user:id}/super-admin', [UserApiController::class, 'removeSuperAdmin'])->name(
+            'super-admin.remove'
+        );
         Route::post('{user:id}/super-admin', [UserApiController::class, 'addSuperAdmin'])->name('super-admin.add');
     });
 
@@ -90,4 +93,14 @@ Route::prefix("/question-groups/{question_group:id}/questions/")
             'auth:sanctum'
         );
         Route::delete('{question:id}', [QuestionApiController::class, 'delete'])->name('delete');
+    });
+
+/**
+ * Blog routes
+ */
+Route::prefix("/blogs/")
+    ->as('blog.')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('', [BlogApiController::class, 'store'])->name('create');
     });
