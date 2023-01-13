@@ -40,7 +40,7 @@ class BlogService extends BaseService
             /**
              * File Upload
              */
-            $directoryPath = 'blog/' . Carbon::now()->year . '/' . Carbon::now()->month . '/' . Carbon::now()->day;
+            $directoryPath = 'public/blog/' . Carbon::now()->year . '/' . Carbon::now()->month . '/' . Carbon::now()->day;
             $filePath = Storage::put($directoryPath, $data['image']);
 
             /**
@@ -49,7 +49,7 @@ class BlogService extends BaseService
             $item = new Blog();
             $item->setTitle($data[Blog::COLUMN_TITLE])
                 ->setSlug($data[Blog::COLUMN_SLUG])
-                ->setImagePath($filePath)
+                ->setImagePath(str_replace('public/', '', $filePath))
                 ->setBody($data[Blog::COLUMN_BODY])
                 ->save();
         });
