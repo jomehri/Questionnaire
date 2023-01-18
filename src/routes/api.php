@@ -17,6 +17,7 @@ Route::prefix("/user/")
         Route::post('register/request', [UserApiController::class, 'registerRequest'])->name('register.request');
         Route::post('login/request', [UserApiController::class, 'loginRequest'])->name('login.request');
         Route::post('login/token', [UserApiController::class, 'loginToken'])->name('login.token');
+        Route::get('is-admin', [UserApiController::class, 'isAdmin'])->name('isAdmin')->middleware('auth:sanctum');
 
         Route::get('logout', [UserApiController::class, 'logout'])
             ->name('logout')

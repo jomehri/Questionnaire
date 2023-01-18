@@ -209,4 +209,14 @@ class UserService extends BaseService
         $user->assignRole('admin');
     }
 
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        return $user->hasRole('admin', 'api');
+    }
+
 }

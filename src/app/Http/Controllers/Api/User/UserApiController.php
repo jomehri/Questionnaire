@@ -327,4 +327,38 @@ class UserApiController extends BaseApiController
         return $this->returnOk(null);
     }
 
+    /**
+     * @OA\get (
+     *  path="/api/user/is-admin",
+     *  security={{"sanctum":{}}},
+     *  summary="User is admin or not",
+     *  description="Checks whether the logged in user is admin or not",
+     *  tags={"Authentication"},
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     *  @OA\Response(
+     *      response=500,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function isAdmin(): JsonResponse
+    {
+        $result = $this->userService->isAdmin();
+
+        return $this->returnOk(null, ['data' => ['is_admin' => $result]]);
+    }
+
 }
