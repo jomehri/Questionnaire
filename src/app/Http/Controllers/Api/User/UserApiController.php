@@ -358,7 +358,7 @@ class UserApiController extends BaseApiController
     {
         $result = $this->userService->isAdmin();
 
-        return $this->returnOk(null, ['data' => ['is_admin' => $result]]);
+        return $this->returnOk(null, ['is_admin' => $result]);
     }
 
 }
