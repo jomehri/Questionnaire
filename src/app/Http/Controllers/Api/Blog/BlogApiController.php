@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\Blog;
 
+use App\Http\Requests\Api\Blog\BlogDeleteRequest;
+use App\Http\Resources\Blog\BlogItemResource;
 use App\Models\Blog\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -137,7 +139,6 @@ class BlogApiController extends BaseApiController
     /**
      * @OA\Get (
      *  path="/api/blogs",
-     *  security={{"sanctum":{}}},
      *  summary="Get blog posts",
      *  description="Gets all blog posts by pagination",
      *  tags={"Blog"},
@@ -174,6 +175,82 @@ class BlogApiController extends BaseApiController
         ];
 
         return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/blogs/{blog}",
+     *  summary="Get a blog post",
+     *  description="Gets a blog post by its slug",
+     *  tags={"Blog"},
+     *
+     *  @OA\Parameter(
+     *      name="blog",
+     *      in="path",
+     *      description="Blog Post Slug",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param Blog $blog
+     * @return JsonResponse
+     */
+    public function item(Blog $blog): JsonResponse
+    {
+        $data = BlogItemResource::make($blog);
+
+        return $this->returnOk(null, [$data]);
+    }
+
+    /**
+     * @OA\Delete (
+     *  path="/api/blogs/{blog}",
+     *  security={{"sanctum":{}}},
+     *  summary="Delete a blog post",
+     *  description="Deletes a blog post by its id",
+     *  tags={"Blog"},
+     *
+     *  @OA\Parameter(
+     *      name="blog",
+     *      in="path",
+     *      description="Blog Post Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param BlogDeleteRequest $blogDeleteRequest
+     * @param Blog $blog
+     * @return JsonResponse
+     */
+    public function delete(BlogDeleteRequest $blogDeleteRequest, Blog $blog): JsonResponse
+    {
+        $this->blogService->delete($blog);
+
+        return $this->returnOk(null);
     }
 
 }

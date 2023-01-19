@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\Blog\BlogResource;
+use App\Http\Resources\Blog\BlogIndexResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BlogService extends BaseService
@@ -62,7 +62,6 @@ class BlogService extends BaseService
     public function update(Blog $blog, array $data): void
     {
         DB::transaction(function () use ($blog, $data) {
-
             if (!empty($data[Blog::COLUMN_TITLE])) {
                 $blog->setTitle($data[Blog::COLUMN_TITLE]);
             }
@@ -72,7 +71,6 @@ class BlogService extends BaseService
             }
 
             if (!empty($data['image'])) {
-
                 /**
                  * File Upload
                  */
@@ -99,7 +97,7 @@ class BlogService extends BaseService
     {
         $items = Blog::forPage($page, config('blog.posts_per_page'))->get();
 
-        return BlogResource::collection($items);
+        return BlogIndexResource::collection($items);
     }
 
     /**
@@ -108,6 +106,17 @@ class BlogService extends BaseService
     public function countTotal(): int
     {
         return Blog::count();
+    }
+
+    /**
+     * @param Blog $blog
+     * @return void
+     */
+    public function delete(Blog $blog): void
+    {
+        DB::transaction(function () use ($blog) {
+            $blog->delete();
+        });
     }
 
 }

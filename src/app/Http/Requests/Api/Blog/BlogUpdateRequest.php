@@ -60,5 +60,4 @@ class BlogUpdateRequest extends BaseRequest
         ];
     }
 
-
 }

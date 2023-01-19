@@ -65,5 +65,4 @@ class BlogStoreRequest extends BaseRequest
         ];
     }
 
-
 }

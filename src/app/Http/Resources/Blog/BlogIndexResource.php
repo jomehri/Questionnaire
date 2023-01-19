@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class BlogResource extends JsonResource
+class BlogIndexResource extends JsonResource
 {
     /**
      * @param $request
@@ -24,7 +24,6 @@ class BlogResource extends JsonResource
             Blog::COLUMN_SLUG => $this->{Blog::COLUMN_SLUG},
             Blog::COLUMN_IMAGE_PATH => asset('storage/' . $this->{Blog::COLUMN_IMAGE_PATH}),
             'description' => Str::limit(strip_tags(trim(preg_replace('/\s+/', ' ', $this->{Blog::COLUMN_BODY}))), config('blog.post_description_length')),
-            Blog::COLUMN_BODY => $this->{Blog::COLUMN_BODY},
         ];
     }
 }

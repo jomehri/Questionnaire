@@ -106,4 +106,6 @@ Route::prefix("/blogs/")
         Route::post('', [BlogApiController::class, 'store'])->name('create');
         Route::post('{blog:id}', [BlogApiController::class, 'update'])->name('update');
         Route::get('', [BlogApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
+        Route::get('{blog:slug}', [BlogApiController::class, 'item'])->name('item')->withoutMiddleware('auth:sanctum');
+        Route::delete('{blog:id}', [BlogApiController::class, 'delete'])->name('delete');
     });
