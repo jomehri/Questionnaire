@@ -23,8 +23,8 @@ class BlogResource extends JsonResource
             Blog::COLUMN_TITLE => $this->{Blog::COLUMN_TITLE},
             Blog::COLUMN_SLUG => $this->{Blog::COLUMN_SLUG},
             Blog::COLUMN_IMAGE_PATH => asset('storage/' . $this->{Blog::COLUMN_IMAGE_PATH}),
-            'description' => Str::limit(strip_tags($this->{Blog::COLUMN_BODY}), config('blog.post_description_length')),
-            Blog::COLUMN_BODY => strip_tags(nl2br($this->{Blog::COLUMN_BODY})),
+            'description' => Str::limit(strip_tags(trim(preg_replace('/\s+/', ' ', $this->{Blog::COLUMN_BODY}))), config('blog.post_description_length')),
+            Blog::COLUMN_BODY => $this->{Blog::COLUMN_BODY},
         ];
     }
 }
