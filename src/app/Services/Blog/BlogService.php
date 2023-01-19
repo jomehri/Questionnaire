@@ -97,7 +97,7 @@ class BlogService extends BaseService
      */
     public function getAll(int $page): AnonymousResourceCollection
     {
-        $items = Blog::forPage($page, $this->perPage)->get();
+        $items = Blog::forPage($page, config('blog.posts_per_page'))->get();
 
         return BlogResource::collection($items);
     }
