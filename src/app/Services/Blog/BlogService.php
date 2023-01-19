@@ -7,10 +7,8 @@ use App\Models\Blog\Blog;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
-use App\Models\Questions\Question;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Questions\QuestionGroup;
-use App\Http\Resources\Questions\QuestionResource;
+use App\Http\Resources\Blog\BlogResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class BlogService extends BaseService
@@ -94,24 +92,22 @@ class BlogService extends BaseService
     }
 
     /**
-     * @param QuestionGroup $questionGroup
      * @param int $page
      * @return AnonymousResourceCollection
      */
-    public function getAll(QuestionGroup $questionGroup, int $page): AnonymousResourceCollection
+    public function getAll(int $page): AnonymousResourceCollection
     {
-        $items = Question::forQuestionGroup($questionGroup->id)->forPage($page, $this->perPage)->get();
+        $items = Blog::forPage($page, $this->perPage)->get();
 
-        return QuestionResource::collection($items);
+        return BlogResource::collection($items);
     }
 
     /**
-     * @param QuestionGroup $questionGroup
      * @return int
      */
-    public function countTotal(QuestionGroup $questionGroup): int
+    public function countTotal(): int
     {
-        return Question::forQuestionGroup($questionGroup->id)->count();
+        return Blog::count();
     }
 
 }

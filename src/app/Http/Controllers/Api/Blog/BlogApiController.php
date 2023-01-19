@@ -134,4 +134,46 @@ class BlogApiController extends BaseApiController
         return $this->returnOk(null);
     }
 
+    /**
+     * @OA\Get (
+     *  path="/api/blogs",
+     *  security={{"sanctum":{}}},
+     *  summary="Get blog posts",
+     *  description="Gets all blog posts by pagination",
+     *  tags={"Blog"},
+     *
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->blogService->getAll($page),
+            'total' => $this->blogService->countTotal(),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
+    }
+
 }

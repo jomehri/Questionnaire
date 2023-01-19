@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\Blog;
 
 use App\Models\Blog\Blog;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\Api\BaseRequest;
 
 class BlogStoreRequest extends BaseRequest
@@ -26,8 +27,19 @@ class BlogStoreRequest extends BaseRequest
     {
         return [
             Blog::COLUMN_TITLE => ['required', 'string', 'max:250'],
-            'image' => ['required', 'image', 'mimes:' . implode(',', Blog::IMAGE_MIME_TYPES), 'max:' . Blog::IMAGE_FILE_MAX_SIZE],
-            Blog::COLUMN_SLUG => ['required', 'string', 'max:250'],
+            'image' => [
+                'required',
+                'image',
+                'mimes:' . implode(',', Blog::IMAGE_MIME_TYPES),
+                'max:' . Blog::IMAGE_FILE_MAX_SIZE
+            ],
+            Blog::COLUMN_SLUG => [
+                'required',
+                'string',
+                'max:250',
+                Rule::unique(Blog::getDBTable())
+                    ->whereNull(Blog::COLUMN_DELETED_AT)
+            ],
             Blog::COLUMN_BODY => ['required', 'string'],
         ];
     }
@@ -49,6 +61,7 @@ class BlogStoreRequest extends BaseRequest
             'image.max' => __("blog/blog.validations.imageFileIsTooBig", ['size' => Blog::IMAGE_FILE_MAX_SIZE]),
             Blog::COLUMN_SLUG . '.required' => __("blog/blog.validations.slugIsRequired"),
             Blog::COLUMN_SLUG . '.max' => __("blog/blog.validations.slugIsTooLong"),
+            Blog::COLUMN_SLUG . '.unique' => __("blog/blog.validations.slugIsTaken"),
         ];
     }
 
