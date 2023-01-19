@@ -40,7 +40,8 @@ class BlogService extends BaseService
             /**
              * File Upload
              */
-            $directoryPath = 'public/blog/' . Carbon::now()->year . '/' . Carbon::now()->month . '/' . Carbon::now()->day;
+            $directoryPath = 'public/blog/' . Carbon::now()->year . '/' . Carbon::now()->month . '/' . Carbon::now(
+                )->day;
             $filePath = Storage::put($directoryPath, $data['image']);
 
             /**
@@ -52,6 +53,43 @@ class BlogService extends BaseService
                 ->setImagePath(str_replace('public/', '', $filePath))
                 ->setBody($data[Blog::COLUMN_BODY])
                 ->save();
+        });
+    }
+
+    /**
+     * @param Blog $blog
+     * @param array $data
+     * @return void
+     */
+    public function update(Blog $blog, array $data): void
+    {
+        DB::transaction(function () use ($blog, $data) {
+
+            if (!empty($data[Blog::COLUMN_TITLE])) {
+                $blog->setTitle($data[Blog::COLUMN_TITLE]);
+            }
+
+            if (!empty($data[Blog::COLUMN_SLUG])) {
+                $blog->setSlug($data[Blog::COLUMN_SLUG]);
+            }
+
+            if (!empty($data['image'])) {
+
+                /**
+                 * File Upload
+                 */
+                $directoryPath = 'public/blog/' . Carbon::now()->year . '/' . Carbon::now()->month . '/' . Carbon::now(
+                    )->day;
+                $filePath = Storage::put($directoryPath, $data['image']);
+
+                $blog->setImagePath(str_replace('public/', '', $filePath));
+            }
+
+            if (!empty($data[Blog::COLUMN_BODY])) {
+                $blog->setBody($data[Blog::COLUMN_BODY]);
+            }
+
+            $blog->save();
         });
     }
 

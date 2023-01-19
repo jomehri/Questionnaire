@@ -104,4 +104,5 @@ Route::prefix("/blogs/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('', [BlogApiController::class, 'store'])->name('create');
+        Route::post('{blog:id}', [BlogApiController::class, 'update'])->name('update');
     });
