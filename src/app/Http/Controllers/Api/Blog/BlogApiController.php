@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Blog;
 
-use App\Http\Requests\Api\Blog\BlogUpdateRequest;
 use App\Models\Blog\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Blog\BlogService;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Requests\Api\Blog\BlogStoreRequest;
+use App\Http\Requests\Api\Blog\BlogUpdateRequest;
 
 class BlogApiController extends BaseApiController
 {
@@ -43,7 +43,7 @@ class BlogApiController extends BaseApiController
      *                  ),
      *                  @OA\Property(property="title", type="string",example="عنوان پست شماره ۱ وبلاگ", nullable="false"),
      *                  @OA\Property(property="slug", type="string",example="آدرس_پست_وبلاگ_شماره_۱", nullable="false"),
-     *                  @OA\Property(property="body", type="string",example="بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد
+     *                  @OA\Property(property="body", type="string", format="textarea",example="بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد
      * بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشدبدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد
      *     بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشدبدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد"),
      *                  required={"image", "title", "slug", "body"},
@@ -102,7 +102,7 @@ class BlogApiController extends BaseApiController
      *                  ),
      *                  @OA\Property(property="title", type="string",example="عنوان پست شماره ۱ وبلاگ", nullable="false"),
      *                  @OA\Property(property="slug", type="string",example="آدرس_پست_وبلاگ_شماره_۱", nullable="false"),
-     *                  @OA\Property(property="body", type="string",example="بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد
+     *                  @OA\Property(property="body", type="string", format="textarea",example="بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد
      * بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشدبدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد
      *     بدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشدبدنه پست وبلاگ و سازگار با تگ های <u><b><i>HTML</i></b></u> می باشد"),
      *             ),
