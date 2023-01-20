@@ -22,6 +22,7 @@ class QuestionService extends BaseService
         return [
             Question::COLUMN_TITLE => $request->post('title'),
             Question::COLUMN_TYPE => $request->post('type'),
+            Question::COLUMN_OPTIONS => $request->post('options'),
             Question::COLUMN_DESCRIPTION => $request->post('description'),
             Question::COLUMN_IS_REQUIRED => $request->post('is_required'),
         ];
@@ -42,6 +43,7 @@ class QuestionService extends BaseService
             $item->setQuestionGroupId($questionGroup->getId())
                 ->setTitle($data[Question::COLUMN_TITLE])
                 ->setType($data[Question::COLUMN_TYPE])
+                ->setOptions($data[Question::COLUMN_OPTIONS] ?? null)
                 ->setDescription($data[Question::COLUMN_DESCRIPTION])
                 ->setIsRequired((bool)$data[Question::COLUMN_IS_REQUIRED])
                 ->save();
@@ -56,9 +58,10 @@ class QuestionService extends BaseService
     public function update(Question $question, array $data): void
     {
         DB::transaction(function () use ($question, $data) {
-            $question->setTitle($data[Question::COLUMN_TITLE])
-                ->setType($data[Question::COLUMN_TYPE])
-                ->setDescription($data[Question::COLUMN_DESCRIPTION])
+            $question->setTitle($data[Question::COLUMN_TITLE] ?? $question->getTitle())
+                ->setType($data[Question::COLUMN_TYPE] ?? $question->getType())
+                ->setOptions($data[Question::COLUMN_OPTIONS] ?? $question->getOptions())
+                ->setDescription($data[Question::COLUMN_DESCRIPTION] ?? $question->getDescription())
                 ->setIsRequired(
                     isset($data[Question::COLUMN_IS_REQUIRED]) ? (bool)$data[Question::COLUMN_IS_REQUIRED] : $question->getIsRequired(
                     )

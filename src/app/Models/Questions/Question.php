@@ -102,21 +102,26 @@ class Question extends BaseModel
      */
     public function getOptions(): ?array
     {
-        if (!$this->{self::COLUMN_OPTIONS}) {
+        if (empty($this->{self::COLUMN_OPTIONS})) {
             return null;
         }
 
-        return json_decode($this->{self::COLUMN_OPTIONS}, false);
+        return json_decode($this->{self::COLUMN_OPTIONS}, true);
     }
 
     /**
-     * @param array $value
+     * @param array|null $value
      *
      * @return $this
      */
-    public function setOptions(array $value): self
+    public function setOptions(?array $value): self
     {
-        $this->{self::COLUMN_OPTIONS} = json_encode($value);
+        if ($this->isText()) {
+            $this->{self::COLUMN_OPTIONS} = null;
+        }
+        elseif (!!$value) {
+            $this->{self::COLUMN_OPTIONS} = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT);
+        }
 
         return $this;
     }
@@ -159,6 +164,14 @@ class Question extends BaseModel
         $this->{self::COLUMN_DESCRIPTION} = $value;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isText(): bool
+    {
+        return $this->getType() === 'text';
     }
 
 }

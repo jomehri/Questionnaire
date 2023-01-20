@@ -30,6 +30,13 @@ class QuestionStoreRequest extends BaseRequest
         return [
             Question::COLUMN_TITLE => ['required', 'string', 'max:250'],
             Question::COLUMN_TYPE => ['required', 'string', 'max:250'],
+            Question::COLUMN_OPTIONS => [ Rule::requiredIf( function () {
+                return $this->request->get(Question::COLUMN_TYPE) !== 'text';
+            }), function($key, $value, $fail) {
+                if ($this->request->get(Question::COLUMN_TYPE) === 'text' && !empty($value)) {
+                    $fail(__("questions/question.validations.optionMustBeEmptyOnTypeText"));
+                }
+            }, 'array'],
             Question::COLUMN_DESCRIPTION => ['required', 'string'],
         ];
     }
@@ -44,6 +51,8 @@ class QuestionStoreRequest extends BaseRequest
             Question::COLUMN_TITLE . '.max' => __("questions/question.validations.titleIsTooLong"),
             Question::COLUMN_TYPE . '.required' => __("questions/question.validations.typeIsRequired"),
             Question::COLUMN_TYPE . '.max' => __("questions/question.validations.typeIsTooLong"),
+            Question::COLUMN_OPTIONS . '.required' => __("questions/question.validations.optionIsRequired"),
+            Question::COLUMN_OPTIONS . '.array' => __("questions/question.validations.optionMustBeArray"),
             Question::COLUMN_DESCRIPTION . '.required' => __("questions/question.validations.descriptionIsRequired"),
         ];
     }

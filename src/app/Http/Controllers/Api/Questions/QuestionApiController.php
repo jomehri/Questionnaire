@@ -136,7 +136,13 @@ class QuestionApiController extends BaseApiController
      *      description="Add new question to a question group",
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="عنوان سوال", nullable="false"),
-     *          @OA\Property(property="type", type="string",example="text", nullable="false"),
+     *          @OA\Property(property="type", type="string",example="multiple-choice", nullable="false"),
+     *          @OA\Property(property="options", type="object", nullable="true",
+     *                   @OA\Property(property="0", type="string",example="بله درست است"),
+     *                   @OA\Property(property="1", type="string",example="خیر درست نیست"),
+     *                   @OA\Property(property="2", type="string",example="گزینه ۱ و ۲"),
+     *                   @OA\Property(property="3", type="string",example="هیچکدام"),
+     *          ),
      *          @OA\Property(property="description", type="string",example="متن سوال", nullable="false"),
      *          @OA\Property(property="is_required", type="bool",example="true", nullable="true"),
      *      ),
@@ -216,8 +222,11 @@ class QuestionApiController extends BaseApiController
      * @param Question $question
      * @return JsonResponse
      */
-    public function update(QuestionUpdateRequest $questionUpdateRequest, QuestionGroup $questionGroup, Question $question): JsonResponse
-    {
+    public function update(
+        QuestionUpdateRequest $questionUpdateRequest,
+        QuestionGroup $questionGroup,
+        Question $question
+    ): JsonResponse {
         $data = $this->questionService->sanitizeStoreRequestData($this->request);
 
         $this->questionService->update($question, $data);
@@ -263,8 +272,11 @@ class QuestionApiController extends BaseApiController
      * @param Question $question
      * @return JsonResponse
      */
-    public function delete(QuestionDeleteRequest $questionDeleteRequest, QuestionGroup $questionGroup, Question $question): JsonResponse
-    {
+    public function delete(
+        QuestionDeleteRequest $questionDeleteRequest,
+        QuestionGroup $questionGroup,
+        Question $question
+    ): JsonResponse {
         $this->questionService->delete($question);
 
         return $this->returnOk(null);
