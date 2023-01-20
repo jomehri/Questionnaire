@@ -129,6 +129,22 @@ class UserQuestionGroup extends BaseModel
     }
 
     /**
+     * @return bool
+     */
+    public function notStartedYet(): bool
+    {
+        return !$this->getStartedAt();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        return (bool)$this->getCompletedAt();
+    }
+
+    /**
      * @return Carbon|null
      */
     public function getStartedAt(): ?Carbon

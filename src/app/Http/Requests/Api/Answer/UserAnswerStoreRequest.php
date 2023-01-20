@@ -25,6 +25,7 @@ class UserAnswerStoreRequest extends BaseRequest
      * Get the validations rules that apply to the request.
      *
      * @return array
+     * @throws BuyQuestionGroupFirstException
      */
     public function rules(): array
     {

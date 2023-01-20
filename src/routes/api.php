@@ -114,9 +114,10 @@ Route::prefix("/blogs/")
 /**
  * Answer routes
  */
-Route::prefix("/questions/{question}/answer")
+Route::prefix("/question-groups/{question_group:id}/")
     ->as('question.answer.')
     ->middleware('auth:sanctum')
     ->group(function () {
-        Route::post('', [AnswerApiController::class, 'store'])->name('create');
+        Route::post('questions/{question}/answer', [AnswerApiController::class, 'store'])->name('create');
+        Route::get('finish', [AnswerApiController::class, 'finish'])->name('finish');
     });

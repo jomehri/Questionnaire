@@ -30,6 +30,21 @@ class AnswerService extends BaseService
     }
 
     /**
+     * @param QuestionGroup $questionGroup
+     * @return void
+     */
+    public function finish(QuestionGroup $questionGroup): void
+    {
+        DB::transaction(function () use ($questionGroup) {
+            $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionGroupId(Auth::id(), $questionGroup->getId());
+
+            $userQuestionGroup->setCompletedAt(Carbon::now())
+                ->setStatus(UserQuestionGroup::STATUS_COMPLETED)
+                ->save();
+        });
+    }
+
+    /**
      * @param Question $question
      * @param array $data
      * @return void
@@ -50,27 +65,6 @@ class AnswerService extends BaseService
             $item->setAnswer($data[UserAnswer::COLUMN_ANSWER])
                 ->save();
         });
-    }
-
-    /**
-     * @param QuestionGroup $questionGroup
-     * @param int $page
-     * @return AnonymousResourceCollection
-     */
-    public function getAll(QuestionGroup $questionGroup, int $page): AnonymousResourceCollection
-    {
-        $items = Question::forQuestionGroup($questionGroup->id)->forPage($page, $this->perPage)->get();
-
-        return QuestionResource::collection($items);
-    }
-
-    /**
-     * @param QuestionGroup $questionGroup
-     * @return int
-     */
-    public function countTotal(QuestionGroup $questionGroup): int
-    {
-        return Question::forQuestionGroup($questionGroup->id)->count();
     }
 
     /**

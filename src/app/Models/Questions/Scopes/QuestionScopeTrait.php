@@ -6,7 +6,8 @@ use App\Models\Questions\Question;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @method Builder forQuestionGroup
+ * @method static Question|Builder forQuestionGroup(int $questionGroupId)
+ * @method static Question|Builder required()
  */
 trait QuestionScopeTrait
 {
@@ -19,5 +20,14 @@ trait QuestionScopeTrait
     public function scopeForQuestionGroup(Builder $query, int $questionGroupId): void
     {
         $query->where(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupId);
+    }
+
+    /**
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeRequired(Builder $query): void
+    {
+        $query->where(Question::COLUMN_IS_REQUIRED, true);
     }
 }
