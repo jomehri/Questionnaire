@@ -33,6 +33,8 @@ class Question extends BaseModel
     const COLUMN_QUESTION_GROUP_ID = 'question_group_id';
     const COLUMN_TITLE = 'title';
     const COLUMN_TYPE = 'type';
+    const COLUMN_OPTIONS = 'options';
+    const COLUMN_IS_REQUIRED = 'is_required';
     const COLUMN_DESCRIPTION = 'description';
 
     /**
@@ -91,6 +93,50 @@ class Question extends BaseModel
     public function setType(string $value): self
     {
         $this->{self::COLUMN_TYPE} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getOptions(): ?array
+    {
+        if (!$this->{self::COLUMN_OPTIONS}) {
+            return null;
+        }
+
+        return json_decode($this->{self::COLUMN_OPTIONS}, false);
+    }
+
+    /**
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function setOptions(array $value): self
+    {
+        $this->{self::COLUMN_OPTIONS} = json_encode($value);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsRequired(): bool
+    {
+        return (bool)$this->{self::COLUMN_IS_REQUIRED};
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function setIsRequired(bool $value): self
+    {
+        $this->{self::COLUMN_IS_REQUIRED} = $value;
 
         return $this;
     }

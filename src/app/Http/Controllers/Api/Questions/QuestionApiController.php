@@ -138,6 +138,7 @@ class QuestionApiController extends BaseApiController
      *          @OA\Property(property="title", type="string",example="عنوان سوال", nullable="false"),
      *          @OA\Property(property="type", type="string",example="text", nullable="false"),
      *          @OA\Property(property="description", type="string",example="متن سوال", nullable="false"),
+     *          @OA\Property(property="is_required", type="bool",example="true", nullable="true"),
      *      ),
      *  ),
      *  @OA\Response(
@@ -194,6 +195,7 @@ class QuestionApiController extends BaseApiController
      *          @OA\Property(property="title", type="string",example="عنوان سوال", nullable="false"),
      *          @OA\Property(property="type", type="string",example="text", nullable="false"),
      *          @OA\Property(property="description", type="string",example="متن سوال", nullable="false"),
+     *          @OA\Property(property="is_required", type="bool",example="true", nullable="true"),
      *      ),
      *  ),
      *  @OA\Response(

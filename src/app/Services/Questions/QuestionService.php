@@ -23,6 +23,7 @@ class QuestionService extends BaseService
             Question::COLUMN_TITLE => $request->post('title'),
             Question::COLUMN_TYPE => $request->post('type'),
             Question::COLUMN_DESCRIPTION => $request->post('description'),
+            Question::COLUMN_IS_REQUIRED => $request->post('is_required'),
         ];
     }
 
@@ -42,6 +43,7 @@ class QuestionService extends BaseService
                 ->setTitle($data[Question::COLUMN_TITLE])
                 ->setType($data[Question::COLUMN_TYPE])
                 ->setDescription($data[Question::COLUMN_DESCRIPTION])
+                ->setIsRequired((bool)$data[Question::COLUMN_IS_REQUIRED])
                 ->save();
         });
     }
@@ -57,6 +59,10 @@ class QuestionService extends BaseService
             $question->setTitle($data[Question::COLUMN_TITLE])
                 ->setType($data[Question::COLUMN_TYPE])
                 ->setDescription($data[Question::COLUMN_DESCRIPTION])
+                ->setIsRequired(
+                    isset($data[Question::COLUMN_IS_REQUIRED]) ? (bool)$data[Question::COLUMN_IS_REQUIRED] : $question->getIsRequired(
+                    )
+                )
                 ->save();
         });
     }

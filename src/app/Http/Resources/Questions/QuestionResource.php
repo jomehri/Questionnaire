@@ -19,6 +19,7 @@ class QuestionResource extends JsonResource
             Question::COLUMN_TITLE => $this->{Question::COLUMN_TITLE},
             Question::COLUMN_TYPE => $this->{Question::COLUMN_TYPE},
             Question::COLUMN_DESCRIPTION => $this->{Question::COLUMN_DESCRIPTION},
+            Question::COLUMN_IS_REQUIRED => (bool) $this->{Question::COLUMN_IS_REQUIRED},
         ];
     }
 }
