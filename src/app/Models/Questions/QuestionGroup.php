@@ -30,6 +30,7 @@ class QuestionGroup extends BaseModel
      * Columns
      */
     const COLUMN_TITLE = 'title';
+    const COLUMN_PRICE = 'price';
 
     /**
      * @return string
@@ -47,6 +48,26 @@ class QuestionGroup extends BaseModel
     public function setTitle(string $value): self
     {
         $this->{self::COLUMN_TITLE} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->{self::COLUMN_PRICE};
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setPrice(?int $value): self
+    {
+        $this->{self::COLUMN_PRICE} = $value;
 
         return $this;
     }

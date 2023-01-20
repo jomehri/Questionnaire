@@ -9,6 +9,8 @@ return [
         'titleAlreadyExists' => 'پرسشنامه ای با این عنوان قبلا ثبت شده است.',
         'questionerIdsMustBeArray' => 'آرایه شماره پرسشنامه ها به شکل صحیح اسال نشده است.',
         'questionerIdNotFound' => 'شماره پرسشنامه ارسال شده :attribute یافت نشد.',
+        'priceMustBeInteger' => 'قیمت باید به صورت عددی وارد شود.',
+        'PriceMustBePositive' => 'قیمت نمی تواند عدد منفی باشد.',
 
     ],
 

@@ -20,6 +20,7 @@ class QuestionGroupService extends BaseService
     {
         return [
             QuestionGroup::COLUMN_TITLE => $request->post('title'),
+            QuestionGroup::COLUMN_PRICE => $request->post('price'),
             'questioner_ids' => $request->post('questioner_ids'),
         ];
     }
@@ -31,12 +32,12 @@ class QuestionGroupService extends BaseService
     public function store(array $data): void
     {
         DB::transaction(function () use ($data) {
-
             /**
              * 1- Add new question group
              */
             $item = new QuestionGroup();
             $item->setTitle($data[QuestionGroup::COLUMN_TITLE])
+                ->setPrice($data[QuestionGroup::COLUMN_PRICE] ?? 0)
                 ->save();
 
             /**
@@ -54,11 +55,11 @@ class QuestionGroupService extends BaseService
     public function update(QuestionGroup $questionGroup, array $data): void
     {
         DB::transaction(function () use ($questionGroup, $data) {
-
             /**
              * 1- Add new question group
              */
             $questionGroup->setTitle($data[QuestionGroup::COLUMN_TITLE])
+                ->setPrice($data[QuestionGroup::COLUMN_PRICE] ?? $questionGroup->getPrice())
                 ->save();
 
             /**
@@ -94,9 +95,13 @@ class QuestionGroupService extends BaseService
      */
     private function syncQuestionerPivot(QuestionGroup $item, array $data): void
     {
+        if (!$data['questioner_ids']) {
+            return;
+        }
+
         $questionerIds = [];
         foreach ($data['questioner_ids'] as $questionerId) {
-            $questionerIds[] = [
+            $questionerIds[$questionerId] = [
                 'questioner_id' => $questionerId,
             ];
         }

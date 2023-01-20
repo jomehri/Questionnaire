@@ -115,6 +115,7 @@ class QuestionGroupApiController extends BaseApiController
      *      description="Add new question group, <br><strong>optional:</strong> you can attach this question group to multiple questioners by questioner_ids array",
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="دسته سوالات شماره 1", nullable="false"),
+     *          @OA\Property(property="price", type="integer",example="250000", nullable="true"),
      *          @OA\Property(
      *              property="questioner_ids",
      *              type="array",
@@ -168,6 +169,7 @@ class QuestionGroupApiController extends BaseApiController
      *      description="Updates a question group",
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 2", nullable="true"),
+     *          @OA\Property(property="price", type="integer",example="250000", nullable="true"),
      *          @OA\Property(
      *              property="questioner_ids",
      *              type="array",

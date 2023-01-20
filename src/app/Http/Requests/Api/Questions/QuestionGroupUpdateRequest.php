@@ -27,11 +27,15 @@ class QuestionGroupUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            QuestionGroup::COLUMN_TITLE => ['required', 'string', 'max:250',
+            QuestionGroup::COLUMN_TITLE => [
+                'required',
+                'string',
+                'max:250',
                 Rule::unique(QuestionGroup::getDBTable())
                     ->whereNull(BaseModel::COLUMN_DELETED_AT)
                     ->whereNot(BaseModel::COLUMN_ID, $this->route('question_group')->id)
             ],
+            QuestionGroup::COLUMN_PRICE => ['nullable', 'integer', 'min:0'],
             'questioner_ids' => ['nullable', 'array'],
             'questioner_ids.*' => ['exists:questioners,id'],
         ];
@@ -46,6 +50,8 @@ class QuestionGroupUpdateRequest extends BaseRequest
             QuestionGroup::COLUMN_TITLE . '.required' => __("questions/question_group.validations.titleIsRequired"),
             QuestionGroup::COLUMN_TITLE . '.max' => __("questions/question_group.validations.titleIsTooLong"),
             QuestionGroup::COLUMN_TITLE . '.unique' => __("questions/question_group.validations.titleAlreadyExists"),
+            QuestionGroup::COLUMN_PRICE . '.integer' => __("questions/question_group.validations.priceMustBeInteger"),
+            QuestionGroup::COLUMN_PRICE . '.min' => __("questions/question_group.validations.PriceMustBePositive"),
             'questioner_ids' . '.array' => __("questions/question_group.validations.questionerIdsMustBeArray"),
             'questioner_ids.*' . '.exists' => __("questions/question_group.validations.questionerIdNotFound"),
         ];

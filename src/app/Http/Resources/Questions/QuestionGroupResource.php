@@ -17,6 +17,7 @@ class QuestionGroupResource extends JsonResource
         return [
             BaseModel::COLUMN_ID => $this->{BaseModel::COLUMN_ID},
             QuestionGroup::COLUMN_TITLE => $this->{QuestionGroup::COLUMN_TITLE},
+            QuestionGroup::COLUMN_PRICE => $this->{QuestionGroup::COLUMN_PRICE},
             'questioners' => QuestionerWithoutQuestionGroupResource::collection($this->questioners)
         ];
     }
