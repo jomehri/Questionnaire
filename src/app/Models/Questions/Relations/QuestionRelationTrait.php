@@ -5,6 +5,9 @@ namespace App\Models\Questions\Relations;
 use App\Models\Questions\QuestionGroup;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property QuestionGroup $questionGroup
+ */
 trait QuestionRelationTrait
 {
 

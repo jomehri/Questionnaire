@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Blog\BlogApiController;
 use App\Http\Controllers\Api\User\UserApiController;
 use App\Http\Controllers\Api\Profile\ProfileApiController;
+use App\Http\Controllers\Api\Questions\AnswerApiController;
 use App\Http\Controllers\Api\Questions\QuestionApiController;
 use App\Http\Controllers\Api\Questions\QuestionerApiController;
 use App\Http\Controllers\Api\Questions\QuestionGroupApiController;
@@ -108,4 +109,14 @@ Route::prefix("/blogs/")
         Route::get('', [BlogApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
         Route::get('{blog:slug}', [BlogApiController::class, 'item'])->name('item')->withoutMiddleware('auth:sanctum');
         Route::delete('{blog:id}', [BlogApiController::class, 'delete'])->name('delete');
+    });
+
+/**
+ * Answer routes
+ */
+Route::prefix("/questions/{question}/answer")
+    ->as('question.answer.')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('', [AnswerApiController::class, 'store'])->name('create');
     });
