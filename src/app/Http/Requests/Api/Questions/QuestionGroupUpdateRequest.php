@@ -36,7 +36,7 @@ class QuestionGroupUpdateRequest extends BaseRequest
                     ->whereNot(BaseModel::COLUMN_ID, $this->route('question_group')->id)
             ],
             QuestionGroup::COLUMN_PRICE => ['nullable', 'integer', 'min:0'],
-            'questioner_ids' => ['nullable', 'array'],
+            'questioner_ids' => ['nullable', 'array', 'max:1'],
             'questioner_ids.*' => ['exists:questioners,id'],
         ];
     }
@@ -53,6 +53,7 @@ class QuestionGroupUpdateRequest extends BaseRequest
             QuestionGroup::COLUMN_PRICE . '.integer' => __("questions/question_group.validations.priceMustBeInteger"),
             QuestionGroup::COLUMN_PRICE . '.min' => __("questions/question_group.validations.PriceMustBePositive"),
             'questioner_ids' . '.array' => __("questions/question_group.validations.questionerIdsMustBeArray"),
+            'questioner_ids' . '.max' => __("questions/question_group.validations.questionerIdsCanTakeOnlyOneId"),
             'questioner_ids.*' . '.exists' => __("questions/question_group.validations.questionerIdNotFound"),
         ];
     }
