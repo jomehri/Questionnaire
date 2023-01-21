@@ -4,13 +4,18 @@ namespace App\Models\Questions\Relations;
 
 use App\Models\Questions\Question;
 use App\Models\Questions\Questioner;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property Collection $questioners
+ */
 trait QuestionGroupRelationTrait
 {
 
     /**
+     * @deprecate @aliJo
      * @return BelongsToMany
      */
     public function questioners(): BelongsToMany

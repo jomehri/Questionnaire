@@ -23,9 +23,6 @@ class CreateQuestionGroupsTable extends BaseMigration
     {
         $table->string(QuestionGroup::COLUMN_TITLE, 250)
             ->nullable(false);
-        $table->unsignedInteger(QuestionGroup::COLUMN_PRICE)
-            ->default(0)
-            ->nullable(false);
     }
 
     /**
@@ -34,12 +31,9 @@ class CreateQuestionGroupsTable extends BaseMigration
      */
     protected function alterTable(Blueprint $table): void
     {
-        // add new columns
-        if (!$this->hasColumn(QuestionGroup::COLUMN_PRICE)) {
-            $table->unsignedInteger(QuestionGroup::COLUMN_PRICE)
-                ->default(0)
-                ->nullable(false)
-                ->after(QuestionGroup::COLUMN_TITLE);
+        // drop columns
+        if ($this->hasColumn(QuestionGroup::COLUMN_PRICE)) {
+            $table->dropColumn(QuestionGroup::COLUMN_PRICE);
         }
     }
 }

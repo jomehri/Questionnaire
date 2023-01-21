@@ -25,6 +25,9 @@ class CreateQuestionersTable extends BaseMigration
             ->nullable(false);
         $table->string(Questioner::COLUMN_SLUG, 250)
             ->nullable(false);
+        $table->unsignedInteger(Questioner::COLUMN_PRICE)
+            ->default(0)
+            ->nullable(false);
     }
 
     /**
@@ -40,6 +43,14 @@ class CreateQuestionersTable extends BaseMigration
             $table->string(Questioner::COLUMN_SLUG, 250)
                 ->nullable(false)
                 ->after(Questioner::COLUMN_TITLE);
+        }
+
+        // add new columns
+        if (!$this->hasColumn(Questioner::COLUMN_PRICE)) {
+            $table->unsignedInteger(Questioner::COLUMN_PRICE)
+                ->default(0)
+                ->nullable(false)
+                ->after(Questioner::COLUMN_SLUG);
         }
     }
 }

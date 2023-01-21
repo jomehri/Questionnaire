@@ -30,6 +30,10 @@ class QuestionGroup extends BaseModel
      * Columns
      */
     const COLUMN_TITLE = 'title';
+
+    /**
+     * Omitted
+     */
     const COLUMN_PRICE = 'price';
 
     /**
@@ -54,6 +58,7 @@ class QuestionGroup extends BaseModel
 
     /**
      * @return int
+     * @deprecated TODO @aliJo
      */
     public function getPrice(): int
     {
@@ -61,9 +66,10 @@ class QuestionGroup extends BaseModel
     }
 
     /**
-     * @param string $value
+     * @param int|null $value
      *
      * @return $this
+     * @deprecated TODO @aliJo
      */
     public function setPrice(?int $value): self
     {

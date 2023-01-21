@@ -31,6 +31,7 @@ class Questioner extends BaseModel
      */
     const COLUMN_TITLE = 'title';
     const COLUMN_SLUG = 'slug';
+    const COLUMN_PRICE = 'price';
 
     /**
      * @return string
@@ -68,6 +69,26 @@ class Questioner extends BaseModel
     public function setSlug(string $value): self
     {
         $this->{self::COLUMN_SLUG} = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->{self::COLUMN_PRICE};
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function setPrice(int $value): self
+    {
+        $this->{self::COLUMN_PRICE} = $value;
 
         return $this;
     }
