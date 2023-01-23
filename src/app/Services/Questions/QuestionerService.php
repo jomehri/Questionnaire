@@ -21,6 +21,7 @@ class QuestionerService extends BaseService
         return [
             Questioner::COLUMN_TITLE => $request->post('title'),
             Questioner::COLUMN_SLUG => $request->post('slug'),
+            Questioner::COLUMN_PRICE => $request->post('price'),
         ];
     }
 
@@ -52,6 +53,7 @@ class QuestionerService extends BaseService
         $item = new Questioner();
         $item->setTitle($data[Questioner::COLUMN_TITLE])
             ->setSlug($data[Questioner::COLUMN_SLUG])
+            ->setPrice($data[Questioner::COLUMN_PRICE] ?? 0)
             ->save();
     }
 
@@ -62,8 +64,9 @@ class QuestionerService extends BaseService
      */
     public function update(Questioner $questioner, array $data): void
     {
-        $questioner->setTitle($data[Questioner::COLUMN_TITLE])
-            ->setSlug($data[Questioner::COLUMN_SLUG])
+        $questioner->setTitle($data[Questioner::COLUMN_TITLE] ?? $questioner->getTitle())
+            ->setSlug($data[Questioner::COLUMN_SLUG] ?? $questioner->getSlug())
+            ->setPrice($data[Questioner::COLUMN_PRICE] ?? $questioner->getPrice())
             ->save();
     }
 

@@ -31,6 +31,7 @@ class QuestionerStoreRequest extends BaseRequest
                 Rule::unique(Questioner::getDBTable())->whereNull(BaseModel::COLUMN_DELETED_AT)],
             Questioner::COLUMN_SLUG => ['required', 'string', 'max:250',
                 Rule::unique(Questioner::getDBTable())->whereNull(BaseModel::COLUMN_DELETED_AT)],
+            Questioner::COLUMN_PRICE => ['nullable', 'integer'],
         ];
     }
 
@@ -46,6 +47,7 @@ class QuestionerStoreRequest extends BaseRequest
             Questioner::COLUMN_SLUG . '.required' => __("questions/questioner.validations.slugIsRequired"),
             Questioner::COLUMN_SLUG . '.max' => __("questions/questioner.validations.slugIsTooLong"),
             Questioner::COLUMN_SLUG . '.unique' => __("questions/questioner.validations.slugAlreadyExists"),
+            Questioner::COLUMN_PRICE . '.integer' => __("questions/questioner.validations.priceMustBeInteger"),
         ];
     }
 

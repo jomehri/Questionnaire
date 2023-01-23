@@ -30,6 +30,7 @@ class QuestionGroup extends BaseModel
      * Columns
      */
     const COLUMN_TITLE = 'title';
+    const COLUMN_QUESTIONER_ID = 'questioner_id';
 
     /**
      * Omitted
@@ -66,14 +67,20 @@ class QuestionGroup extends BaseModel
     }
 
     /**
-     * @param int|null $value
-     *
-     * @return $this
-     * @deprecated TODO @aliJo
+     * @return int
      */
-    public function setPrice(?int $value): self
+    public function getQuestionerId(): int
     {
-        $this->{self::COLUMN_PRICE} = $value;
+        return $this->{self::COLUMN_QUESTIONER_ID};
+    }
+
+    /**
+     * @param int $value
+     * @return QuestionGroup
+     */
+    public function setQuestionerId(int $value): self
+    {
+        $this->{self::COLUMN_QUESTIONER_ID} = $value;
 
         return $this;
     }

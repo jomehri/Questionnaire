@@ -116,12 +116,7 @@ class QuestionGroupApiController extends BaseApiController
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="دسته سوالات شماره 1", nullable="false"),
      *          @OA\Property(property="price", type="integer",example="250000", nullable="true"),
-     *          @OA\Property(
-     *              property="questioner_ids",
-     *              type="array",
-     *              example="[1, 2]",
-     *              @OA\Items(),
-     *          ),
+     *          @OA\Property(property="questioner_id", type="integer",example="1", nullable="false"),
      *      ),
      *  ),
      *  @OA\Response(
@@ -170,12 +165,7 @@ class QuestionGroupApiController extends BaseApiController
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 2", nullable="true"),
      *          @OA\Property(property="price", type="integer",example="250000", nullable="true"),
-     *          @OA\Property(
-     *              property="questioner_ids",
-     *              type="array",
-     *              example="[3, 4]",
-     *              @OA\Items(),
-     *          ),
+     *          @OA\Property(property="questioner_id", type="integer",example="1", nullable="false"),
      *      ),
      *  ),
      *  @OA\Response(

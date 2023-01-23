@@ -27,14 +27,23 @@ class QuestionerUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            Questioner::COLUMN_TITLE => ['nullable', 'string', 'max:250',
+            Questioner::COLUMN_TITLE => [
+                'nullable',
+                'string',
+                'max:250',
                 Rule::unique(Questioner::getDBTable())
                     ->whereNot(BaseModel::COLUMN_ID, $this->route('questioner')->id)
-                    ->whereNull(BaseModel::COLUMN_DELETED_AT)],
-            Questioner::COLUMN_SLUG => ['nullable', 'string', 'max:250',
+                    ->whereNull(BaseModel::COLUMN_DELETED_AT)
+            ],
+            Questioner::COLUMN_SLUG => [
+                'nullable',
+                'string',
+                'max:250',
                 Rule::unique(Questioner::getDBTable())
                     ->whereNot(BaseModel::COLUMN_ID, $this->route('questioner')->id)
-                    ->whereNull(BaseModel::COLUMN_DELETED_AT)],
+                    ->whereNull(BaseModel::COLUMN_DELETED_AT)
+            ],
+            Questioner::COLUMN_PRICE => ['nullable', 'integer'],
         ];
     }
 
@@ -48,6 +57,7 @@ class QuestionerUpdateRequest extends BaseRequest
             Questioner::COLUMN_TITLE . '.unique' => __("questions/questioner.validations.titleAlreadyExists"),
             Questioner::COLUMN_SLUG . '.max' => __("questions/questioner.validations.slugIsTooLong"),
             Questioner::COLUMN_SLUG . '.unique' => __("questions/questioner.validations.slugAlreadyExists"),
+            Questioner::COLUMN_PRICE . '.integer' => __("questions/questioner.validations.priceMustBeInteger"),
         ];
     }
 

@@ -20,8 +20,7 @@ class QuestionGroupService extends BaseService
     {
         return [
             QuestionGroup::COLUMN_TITLE => $request->post('title'),
-            QuestionGroup::COLUMN_PRICE => $request->post('price'),
-            'questioner_ids' => $request->post('questioner_ids'),
+            QuestionGroup::COLUMN_QUESTIONER_ID => $request->post('questioner_id'),
         ];
     }
 
@@ -32,18 +31,10 @@ class QuestionGroupService extends BaseService
     public function store(array $data): void
     {
         DB::transaction(function () use ($data) {
-            /**
-             * 1- Add new question group
-             */
             $item = new QuestionGroup();
             $item->setTitle($data[QuestionGroup::COLUMN_TITLE])
-                ->setPrice($data[QuestionGroup::COLUMN_PRICE] ?? 0)
+                ->setQuestionerId($data[QuestionGroup::COLUMN_QUESTIONER_ID])
                 ->save();
-
-            /**
-             * 2- Also add them to questioners
-             */
-            $this->syncQuestionerPivot($item, $data);
         });
     }
 
@@ -55,17 +46,9 @@ class QuestionGroupService extends BaseService
     public function update(QuestionGroup $questionGroup, array $data): void
     {
         DB::transaction(function () use ($questionGroup, $data) {
-            /**
-             * 1- Add new question group
-             */
-            $questionGroup->setTitle($data[QuestionGroup::COLUMN_TITLE])
-                ->setPrice($data[QuestionGroup::COLUMN_PRICE] ?? $questionGroup->getPrice())
+            $questionGroup->setTitle($data[QuestionGroup::COLUMN_TITLE] ?? $questionGroup->getTitle())
+                ->setQuestionerId($data[QuestionGroup::COLUMN_QUESTIONER_ID] ?? $questionGroup->getQuestionerId())
                 ->save();
-
-            /**
-             * 2- Also add them to questioners
-             */
-            $this->syncQuestionerPivot($questionGroup, $data);
         });
     }
 
@@ -86,27 +69,6 @@ class QuestionGroupService extends BaseService
     public function countTotal(): int
     {
         return QuestionGroup::all()->count();
-    }
-
-    /**
-     * @param QuestionGroup $item
-     * @param array $data
-     * @return void
-     */
-    private function syncQuestionerPivot(QuestionGroup $item, array $data): void
-    {
-        if (!$data['questioner_ids']) {
-            return;
-        }
-
-        $questionerIds = [];
-        foreach ($data['questioner_ids'] as $questionerId) {
-            $questionerIds[$questionerId] = [
-                'questioner_id' => $questionerId,
-            ];
-        }
-
-        $item->questioners()->sync($questionerIds);
     }
 
     /**

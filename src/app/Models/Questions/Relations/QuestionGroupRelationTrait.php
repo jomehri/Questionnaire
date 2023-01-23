@@ -4,30 +4,30 @@ namespace App\Models\Questions\Relations;
 
 use App\Models\Questions\Question;
 use App\Models\Questions\Questioner;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property Collection $questioners
+ * @property Questioner $questioner
  */
 trait QuestionGroupRelationTrait
 {
 
     /**
      * @deprecate @aliJo
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function questioners(): BelongsToMany
+    public function questioner(): BelongsTo
     {
-        return $this->belongsToMany(Questioner::class, 'questioner_question_group');
+        return $this->belongsTo(Questioner::class);
     }
 
     /**
      * @return HasOne
      */
-    public function questions(): HasOne
+    public function questions(): HasMany
     {
-        return $this->hasOne(Question::class);
+        return $this->hasMany(Question::class);
     }
 }

@@ -18,6 +18,7 @@ class QuestionerWithoutQuestionGroupResource extends JsonResource
             BaseModel::COLUMN_ID => $this->{BaseModel::COLUMN_ID},
             Questioner::COLUMN_TITLE => $this->{Questioner::COLUMN_TITLE},
             Questioner::COLUMN_SLUG => $this->{Questioner::COLUMN_SLUG},
+            Questioner::COLUMN_PRICE => $this->{Questioner::COLUMN_PRICE},
         ];
     }
 }

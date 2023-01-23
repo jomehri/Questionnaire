@@ -116,6 +116,7 @@ class QuestionerApiController extends BaseApiController
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 1", nullable="false"),
      *          @OA\Property(property="slug", type="string",example="porseshnameh_tahlili_shomareh_1", nullable="false"),
+     *          @OA\Property(property="price", type="int",example="250000", nullable="true"),
      *      ),
      *  ),
      *  @OA\Response(
@@ -164,6 +165,7 @@ class QuestionerApiController extends BaseApiController
      *      @OA\JsonContent(
      *          @OA\Property(property="title", type="string",example="پرسشنامه تحلیلی شماره 2", nullable="true"),
      *          @OA\Property(property="slug", type="string",example="porseshnameh_tahlili_shomareh_2", nullable="true"),
+     *          @OA\Property(property="price", type="int",example="250000", nullable="true"),
      *      ),
      *  ),
      *  @OA\Response(

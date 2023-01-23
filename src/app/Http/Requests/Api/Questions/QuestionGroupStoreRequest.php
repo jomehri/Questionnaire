@@ -29,10 +29,10 @@ class QuestionGroupStoreRequest extends BaseRequest
     {
         return [
             QuestionGroup::COLUMN_TITLE => ['required', 'string', 'max:250',
-                Rule::unique(QuestionGroup::getDBTable())->whereNull(BaseModel::COLUMN_DELETED_AT)],
-            QuestionGroup::COLUMN_PRICE => ['nullable', 'integer', 'min:0'],
-            'questioner_ids' => ['nullable', 'array', 'max:1'],
-            'questioner_ids.*' => ['exists:questioners,id'],
+                Rule::unique(QuestionGroup::getDBTable())
+                    ->where(QuestionGroup::COLUMN_QUESTIONER_ID, $this->post('questioner_id'))
+                    ->whereNull(BaseModel::COLUMN_DELETED_AT)],
+            QuestionGroup::COLUMN_QUESTIONER_ID => ['required', 'integer', 'exists:questioners,id'],
         ];
     }
 
@@ -45,11 +45,9 @@ class QuestionGroupStoreRequest extends BaseRequest
             QuestionGroup::COLUMN_TITLE . '.required' => __("questions/question_group.validations.titleIsRequired"),
             QuestionGroup::COLUMN_TITLE . '.max' => __("questions/question_group.validations.titleIsTooLong"),
             QuestionGroup::COLUMN_TITLE . '.unique' => __("questions/question_group.validations.titleAlreadyExists"),
-            QuestionGroup::COLUMN_PRICE . '.integer' => __("questions/question_group.validations.priceMustBeInteger"),
-            QuestionGroup::COLUMN_PRICE . '.min' => __("questions/question_group.validations.PriceMustBePositive"),
-            'questioner_ids' . '.array' => __("questions/question_group.validations.questionerIdsMustBeArray"),
-            'questioner_ids' . '.max' => __("questions/question_group.validations.questionerIdsCanTakeOnlyOneId"),
-            'questioner_ids.*' . '.exists' => __("questions/question_group.validations.questionerIdNotFound"),
+            QuestionGroup::COLUMN_QUESTIONER_ID . '.required' => __("questions/question_group.validations.questionerIdIsRequired"),
+            QuestionGroup::COLUMN_QUESTIONER_ID . '.integer' => __("questions/question_group.validations.questionerIdMustBeInteger"),
+            QuestionGroup::COLUMN_QUESTIONER_ID . '.exists' => __("questions/question_group.validations.questionerDoesNotExist"),
         ];
     }
 
