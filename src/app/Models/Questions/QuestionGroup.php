@@ -59,15 +59,6 @@ class QuestionGroup extends BaseModel
 
     /**
      * @return int
-     * @deprecated TODO @aliJo
-     */
-    public function getPrice(): int
-    {
-        return $this->{self::COLUMN_PRICE};
-    }
-
-    /**
-     * @return int
      */
     public function getQuestionerId(): int
     {
