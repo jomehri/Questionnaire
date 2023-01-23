@@ -17,7 +17,7 @@ trait QuestionScopeTrait
      * @param int $questionGroupId
      * @return void
      */
-    public function scopeForQuestionGroup(Builder $query, int $questionGroupId): void
+    public function scopeForQuestioner(Builder $query, int $questionGroupId): void
     {
         $query->where(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupId);
     }
@@ -29,5 +29,15 @@ trait QuestionScopeTrait
     public function scopeRequired(Builder $query): void
     {
         $query->where(Question::COLUMN_IS_REQUIRED, true);
+    }
+
+    /**
+     * @param Builder $query
+     * @param $questionGroupIds
+     * @return void
+     */
+    public function scopeForQuestionGroups(Builder $query, $questionGroupIds): void
+    {
+        $query->whereIn(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupIds);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests\Api\Answer;
 
-use App\Exceptions\Questions\AnsweringAlreadyFinishedException;
-use App\Exceptions\Questions\AnsweringNotStartedYetException;
 use App\Models\Questions\Question;
+use App\Models\Questions\Questioner;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Questions\UserAnswer;
 use App\Http\Requests\Api\BaseRequest;
@@ -12,6 +11,8 @@ use App\Models\Questions\QuestionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Questions\UserQuestionGroup;
 use App\Exceptions\Questions\BuyQuestionGroupFirstException;
+use App\Exceptions\Questions\AnsweringNotStartedYetException;
+use App\Exceptions\Questions\AnsweringAlreadyFinishedException;
 use App\Exceptions\Questions\AnswerAllRequiredQuestionsFirstException;
 
 class UserAnswerFinishRequest extends BaseRequest
@@ -35,23 +36,23 @@ class UserAnswerFinishRequest extends BaseRequest
      */
     public function rules(): array
     {
-        list($questionGroup, $userQuestionGroup) = $this->extractQuestionGroup();
+        list($questioner, $userQuestionGroup) = $this->extractQuestionGroup();
 
-        $this->throwIfNotStartedYet($questionGroup, $userQuestionGroup);
-        $this->throwIfAlreadyFinished($questionGroup, $userQuestionGroup);
-        $this->throwIfUserNeedsToPayFirst($questionGroup, $userQuestionGroup);
+        $this->throwIfNotStartedYet($questioner, $userQuestionGroup);
+        $this->throwIfAlreadyFinished($questioner, $userQuestionGroup);
+        $this->throwIfUserNeedsToPayFirst($questioner, $userQuestionGroup);
         $this->throwIfFoundUnansweredRequiredQuestions();
 
         return [];
     }
 
     /**
-     * @param QuestionGroup $questionGroup
+     * @param Questioner $questioner
      * @param UserQuestionGroup|null $userQuestionGroup
      * @return void
      * @throws AnsweringNotStartedYetException
      */
-    private function throwIfNotStartedYet(QuestionGroup $questionGroup, ?UserQuestionGroup $userQuestionGroup): void
+    private function throwIfNotStartedYet(Questioner $questioner, ?UserQuestionGroup $userQuestionGroup): void
     {
         if (!$userQuestionGroup || $userQuestionGroup->notStartedYet()) {
             throw new AnsweringNotStartedYetException();
@@ -59,12 +60,12 @@ class UserAnswerFinishRequest extends BaseRequest
     }
 
     /**
-     * @param QuestionGroup $questionGroup
+     * @param Questioner $questioner
      * @param UserQuestionGroup|null $userQuestionGroup
      * @return void
      * @throws AnsweringAlreadyFinishedException
      */
-    private function throwIfAlreadyFinished(QuestionGroup $questionGroup, ?UserQuestionGroup $userQuestionGroup): void
+    private function throwIfAlreadyFinished(Questioner $questioner, ?UserQuestionGroup $userQuestionGroup): void
     {
         if ($userQuestionGroup->isCompleted()) {
             throw new AnsweringAlreadyFinishedException();
@@ -72,22 +73,22 @@ class UserAnswerFinishRequest extends BaseRequest
     }
 
     /**
-     * @param QuestionGroup $questionGroup
+     * @param Questioner $questioner
      * @param UserQuestionGroup|null $userQuestionGroup
      * @return void
      * @throws BuyQuestionGroupFirstException
      */
     private function throwIfUserNeedsToPayFirst(
-        QuestionGroup $questionGroup,
+        Questioner $questioner,
         ?UserQuestionGroup $userQuestionGroup
     ): void {
         /**
          * User paid checker
          */
-        if ($questionGroup->getPrice() > 0 && !$userQuestionGroup->getBoughtAt()) {
+        if ($questioner->getPrice() > 0 && !$userQuestionGroup->getBoughtAt()) {
             throw new BuyQuestionGroupFirstException(
                 null,
-                ['price' => number_format($questionGroup->getPrice())]
+                ['price' => number_format($questioner->getPrice())]
             );
         }
     }
@@ -98,14 +99,18 @@ class UserAnswerFinishRequest extends BaseRequest
      */
     private function throwIfFoundUnansweredRequiredQuestions(): void
     {
-        /** @var QuestionGroup $questionGroup */
-        $questionGroup = $this->route('question_group');
+        /** @var Questioner $questioner */
+        $questioner = $this->route('questioner');
+
+        if (!$questioner->questionGroups) {
+            return;
+        }
 
         /**
          * Required questions checker
          */
-        $unansweredRequiredQuestionIds = Question::required()->forQuestionGroup(
-            $questionGroup->getId()
+        $unansweredRequiredQuestionIds = Question::required()->forQuestionGroups(
+            $questioner->questionGroups->pluck('id')
         )->whereDoesntHave('userAnswers', function (Builder $query) {
             $query->where('user_id', Auth::id());
         })->pluck('id')->toArray();
@@ -133,14 +138,14 @@ class UserAnswerFinishRequest extends BaseRequest
      */
     private function extractQuestionGroup(): array
     {
-        /** @var QuestionGroup $questionGroup */
-        $questionGroup = $this->route('question_group');
+        /** @var Questioner $questioner */
+        $questioner = $this->route('questioner');
 
-        $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionGroupId(
+        $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionerId(
             Auth::id(),
-            $questionGroup->getId()
+            $questioner->getId()
         );
-        return array($questionGroup, $userQuestionGroup);
+        return array($questioner, $userQuestionGroup);
     }
 
 

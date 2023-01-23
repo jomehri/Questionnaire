@@ -10,7 +10,6 @@ use App\Models\Questions\UserQuestionGroup;
  * @method static UserQuestionGroup|Builder started()
  * @method static UserQuestionGroup|Builder completed()
  * @method static UserQuestionGroup|Builder forUser(int $userId)
- * @method static UserQuestionGroup|Builder forQuestionGroup(int $questionGroupId)
  * @method static UserQuestionGroup|Builder forQuestioner(int $questionerId)
  */
 trait UserQuestionGroupScopeTrait

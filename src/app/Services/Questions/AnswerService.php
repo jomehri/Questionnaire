@@ -37,7 +37,7 @@ class AnswerService extends BaseService
     public function finish(Questioner $questioner): void
     {
         DB::transaction(function () use ($questioner) {
-            $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionGroupId(Auth::id(), $questioner->getId());
+            $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionerId(Auth::id(), $questioner->getId());
 
             $userQuestionGroup->setCompletedAt(Carbon::now())
                 ->setStatus(UserQuestionGroup::STATUS_COMPLETED)
@@ -75,8 +75,8 @@ class AnswerService extends BaseService
      */
     function findOrCreateUserQuestionGroup($user, Question $question): UserQuestionGroup
     {
-        $item = UserQuestionGroup::forUser($user->getId())->forQuestionGroup(
-            $question->getQuestionGroupId()
+        $item = UserQuestionGroup::forUser($user->getId())->forQuestioner(
+            $question->questionGroup->questioner->getId()
         )->first();
 
         if ($item) {
@@ -89,7 +89,7 @@ class AnswerService extends BaseService
         } else {
             $item = new UserQuestionGroup();
             $item->setUserId($user->getId())
-                ->setQuestionerId($question->getQuestionGroupId())
+                ->setQuestionerId($question->questionGroup->questioner->getId())
                 ->setStatus(UserQuestionGroup::STATUS_STARTED)
                 ->setStartedAt(Carbon::now())
                 ->save();

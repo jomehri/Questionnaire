@@ -3,16 +3,20 @@
 namespace App\Models\Questions\Relations;
 
 use App\Models\Questions\QuestionGroup;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property Collection $questionGroups
+ */
 trait QuestionerRelationTrait
 {
 
     /**
-     * @return BelongsToMany
+     * @return HasMany
      */
-    public function questionGroups(): BelongsToMany
+    public function questionGroups(): HasMany
     {
-        return $this->belongsToMany(QuestionGroup::class, 'questioner_question_group');
+        return $this->hasMany(QuestionGroup::class);
     }
 }

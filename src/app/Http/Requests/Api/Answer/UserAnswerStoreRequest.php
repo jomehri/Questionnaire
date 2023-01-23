@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\Answer;
 
 use App\Models\Questions\Question;
+use App\Models\Questions\Questioner;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Questions\UserAnswer;
 use App\Http\Requests\Api\BaseRequest;
@@ -48,13 +49,13 @@ class UserAnswerStoreRequest extends BaseRequest
      */
     private function throwIfQuestionDoesNotBelongToQuestionGroup(): void
     {
-        /** @var QuestionGroup $questionGroup */
-        $questionGroup = $this->route('question_group');
+        /** @var Questioner $questioner */
+        $questioner = $this->route('questioner');
 
         /** @var Question $question */
         $question = $this->route('question');
 
-        if ($questionGroup->getId() !== $question->questionGroup->getId()) {
+        if ($questioner->getId() !== $question->questionGroup->questioner->getId()) {
             throw new QuestionIsNotLinkedToSelectedQuestionGroupException();
         }
     }
@@ -64,10 +65,10 @@ class UserAnswerStoreRequest extends BaseRequest
      */
     private function throwIfUserCompletedThisQuestionerBefore(): void
     {
-        /** @var QuestionGroup $questionGroup */
-        $questionGroup = $this->route('question_group');
+        /** @var Questioner $questioner */
+        $questioner = $this->route('questioner');
 
-        $userQuestionGroup = UserQuestionGroup::forUser(Auth::id())->forQuestionGroup($questionGroup->getId())->first();
+        $userQuestionGroup = UserQuestionGroup::forUser(Auth::id())->forQuestioner($questioner->getId())->first();
 
         if ($userQuestionGroup?->getCompletedAt()) {
             throw new AnsweringAlreadyFinishedException();
@@ -79,16 +80,16 @@ class UserAnswerStoreRequest extends BaseRequest
      */
     private function throwIfUserNeedsToPayFirst(): void
     {
-        /** @var QuestionGroup $questionGroup */
-        $questionGroup = $this->route('question_group');
+        /** @var Questioner $questioner */
+        $questioner = $this->route('questioner');
 
-        $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionGroupId(
+        $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionerId(
             Auth::id(),
-            $questionGroup->getId()
+            $questioner->getId()
         );
 
-        if ($questionGroup->questioner->getPrice() > 0 && (!$userQuestionGroup || !$userQuestionGroup->getBoughtAt())) {
-            throw new BuyQuestionGroupFirstException(null, ['price' => number_format($questionGroup->questioner->getPrice())]);
+        if ($questioner->getPrice() > 0 && (!$userQuestionGroup || !$userQuestionGroup->getBoughtAt())) {
+            throw new BuyQuestionGroupFirstException(null, ['price' => number_format($questioner->getPrice())]);
         }
     }
 

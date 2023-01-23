@@ -27,16 +27,16 @@ class AnswerApiController extends BaseApiController
 
     /**
      * @OA\Post (
-     *  path="/api/question-groups/{question_group}/questions/{question}/answer",
+     *  path="/api/questioners/{questioner}/questions/{question}/answer",
      *  security={{"sanctum":{}}},
      *  summary="Add/Update question answer",
      *  description="Adds a new answer or update an existing answer on a question",
      *  tags={"Answer"},
      *
      *  @OA\Parameter(
-     *      name="question_group",
+     *      name="questioner",
      *      in="path",
-     *      description="Question Group Id",
+     *      description="Questioner Id",
      *      required=true
      *  ),
      *  @OA\Parameter(
@@ -66,13 +66,13 @@ class AnswerApiController extends BaseApiController
      * ),
      *
      * @param UserAnswerStoreRequest $userAnswerStoreRequest
-     * @param QuestionGroup $questionGroup
+     * @param Questioner $questioner
      * @param Question $question
      * @return JsonResponse
      */
     public function store(
         UserAnswerStoreRequest $userAnswerStoreRequest,
-        QuestionGroup $questionGroup,
+        Questioner $questioner,
         Question $question
     ): JsonResponse {
         $data = $this->answerService->sanitizeStoreRequestData($this->request);

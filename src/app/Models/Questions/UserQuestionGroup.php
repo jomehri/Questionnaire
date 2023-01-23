@@ -223,12 +223,12 @@ class UserQuestionGroup extends BaseModel
 
     /**
      * @param int $userId
-     * @param int $questionGroupId
+     * @param int $questionerId
      * @return static|null
      */
-    public static function findByUserAndQuestionGroupId(int $userId, int $questionGroupId): null|self
+    public static function findByUserAndQuestionerId(int $userId, int $questionerId): null|self
     {
-        return self::forUser($userId)->forQuestionGroup($questionGroupId)->first();
+        return self::forUser($userId)->forQuestioner($questionerId)->first();
     }
 
 }
