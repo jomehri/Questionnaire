@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Questions;
 
 use App\Http\Requests\Api\Answer\UserAnswerFinishRequest;
+use App\Models\Questions\Questioner;
 use App\Models\Questions\QuestionGroup;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -83,16 +84,16 @@ class AnswerApiController extends BaseApiController
 
     /**
      * @OA\Get (
-     *  path="/api/question-groups/{question_group}/finish",
+     *  path="/api/questioners/{questioner}/finish",
      *  security={{"sanctum":{}}},
-     *  summary="Finish answering a question group",
-     *  description="Finish answering a question group and mark it as completed",
+     *  summary="Finish answering a questioner",
+     *  description="Finish answering a questioner and mark it as completed",
      *  tags={"Answer"},
      *
      *  @OA\Parameter(
-     *      name="question_group",
+     *      name="questioner",
      *      in="path",
-     *      description="Question Group Id",
+     *      description="Questioner Id",
      *      required=true
      *  ),
      *
@@ -110,12 +111,12 @@ class AnswerApiController extends BaseApiController
      * ),
      *
      * @param UserAnswerFinishRequest $userAnswerFinishRequest
-     * @param QuestionGroup $questionGroup
+     * @param Questioner $questioner
      * @return JsonResponse
      */
-    public function finish(UserAnswerFinishRequest $userAnswerFinishRequest, QuestionGroup $questionGroup): JsonResponse
+    public function finish(UserAnswerFinishRequest $userAnswerFinishRequest, Questioner $questioner): JsonResponse
     {
-        $this->answerService->finish($questionGroup);
+        $this->answerService->finish($questioner);
 
         return $this->returnOk(null);
     }

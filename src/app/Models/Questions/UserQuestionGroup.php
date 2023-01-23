@@ -32,7 +32,7 @@ class UserQuestionGroup extends BaseModel
      * Columns
      */
     const COLUMN_USER_ID = 'user_id';
-    const COLUMN_QUESTION_GROUP_ID = 'question_group_id';
+    const COLUMN_QUESTIONER_ID = 'questioner_id';
     const COLUMN_PAID_AMOUNT = 'paid_amount';
     const COLUMN_STATUS = 'status';
     const COLUMN_BOUGHT_AT = 'bought_at';
@@ -47,6 +47,11 @@ class UserQuestionGroup extends BaseModel
         self::STATUS_STARTED => self::STATUS_STARTED,
         self::STATUS_COMPLETED => self::STATUS_COMPLETED,
     ];
+
+    /**
+     * Omitted
+     */
+    const COLUMN_QUESTION_GROUP_ID = 'question_group_id';
 
     /**
      * @return int
@@ -71,9 +76,9 @@ class UserQuestionGroup extends BaseModel
     /**
      * @return int
      */
-    public function getQuestionGroupId(): int
+    public function getQuestionerId(): int
     {
-        return $this->{self::COLUMN_QUESTION_GROUP_ID};
+        return $this->{self::COLUMN_QUESTIONER_ID};
     }
 
     /**
@@ -81,9 +86,9 @@ class UserQuestionGroup extends BaseModel
      *
      * @return $this
      */
-    public function setQuestionGroupId(int $value): self
+    public function setQuestionerId(int $value): self
     {
-        $this->{self::COLUMN_QUESTION_GROUP_ID} = $value;
+        $this->{self::COLUMN_QUESTIONER_ID} = $value;
 
         return $this;
     }

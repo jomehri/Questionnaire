@@ -2,6 +2,7 @@
 
 namespace App\Services\Questions;
 
+use App\Models\Questions\Questioner;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use Illuminate\Support\Carbon;
@@ -30,13 +31,13 @@ class AnswerService extends BaseService
     }
 
     /**
-     * @param QuestionGroup $questionGroup
+     * @param Questioner $questioner
      * @return void
      */
-    public function finish(QuestionGroup $questionGroup): void
+    public function finish(Questioner $questioner): void
     {
-        DB::transaction(function () use ($questionGroup) {
-            $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionGroupId(Auth::id(), $questionGroup->getId());
+        DB::transaction(function () use ($questioner) {
+            $userQuestionGroup = UserQuestionGroup::findByUserAndQuestionGroupId(Auth::id(), $questioner->getId());
 
             $userQuestionGroup->setCompletedAt(Carbon::now())
                 ->setStatus(UserQuestionGroup::STATUS_COMPLETED)
@@ -88,7 +89,7 @@ class AnswerService extends BaseService
         } else {
             $item = new UserQuestionGroup();
             $item->setUserId($user->getId())
-                ->setQuestionGroupId($question->getQuestionGroupId())
+                ->setQuestionerId($question->getQuestionGroupId())
                 ->setStatus(UserQuestionGroup::STATUS_STARTED)
                 ->setStartedAt(Carbon::now())
                 ->save();

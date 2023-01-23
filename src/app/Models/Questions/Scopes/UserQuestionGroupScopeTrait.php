@@ -11,6 +11,7 @@ use App\Models\Questions\UserQuestionGroup;
  * @method static UserQuestionGroup|Builder completed()
  * @method static UserQuestionGroup|Builder forUser(int $userId)
  * @method static UserQuestionGroup|Builder forQuestionGroup(int $questionGroupId)
+ * @method static UserQuestionGroup|Builder forQuestioner(int $questionerId)
  */
 trait UserQuestionGroupScopeTrait
 {
@@ -57,8 +58,8 @@ trait UserQuestionGroupScopeTrait
      * @param int $userId
      * @return void
      */
-    public function scopeForQuestionGroup(Builder $query, int $questionGroupId): void
+    public function scopeForQuestioner(Builder $query, int $questionerId): void
     {
-        $query->where(UserQuestionGroup::COLUMN_QUESTION_GROUP_ID, $questionGroupId);
+        $query->where(UserQuestionGroup::COLUMN_QUESTIONER_ID, $questionerId);
     }
 }

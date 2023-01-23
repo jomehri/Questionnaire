@@ -17,7 +17,8 @@ return [
     ],
 
     'exceptions' => [
-        'questionGroupCantBeDeletedSinceHasQuestions' => 'از آنجایی که سوالاتی به این گروه سوال متصل هستند امکان حذف آن موجود نمی باشد.'
+        'questionGroupCantBeDeletedSinceHasQuestions' => 'از آنجایی که سوالاتی به این گروه سوال متصل هستند امکان حذف آن موجود نمی باشد.',
+        'questionIsNotLinkedToSelectedQuestionGroupException' => 'سوال ارسال شده به دسته سوال مورد نظر متصل نمی باشد. لطفا صفحه را مجدد لود نمایید.',
     ]
 
 ];

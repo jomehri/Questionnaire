@@ -119,5 +119,11 @@ Route::prefix("/question-groups/{question_group:id}/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('questions/{question}/answer', [AnswerApiController::class, 'store'])->name('create');
+    });
+
+Route::prefix("/questioners/{questioner:id}/")
+    ->as('question.answer.')
+    ->middleware('auth:sanctum')
+    ->group(function () {
         Route::get('finish', [AnswerApiController::class, 'finish'])->name('finish');
     });

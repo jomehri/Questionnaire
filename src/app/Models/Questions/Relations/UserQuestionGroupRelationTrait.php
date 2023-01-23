@@ -3,9 +3,13 @@
 namespace App\Models\Questions\Relations;
 
 use App\Models\Basic\User;
+use App\Models\Questions\Questioner;
 use App\Models\Questions\QuestionGroup;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Questioner $questioner
+ */
 trait UserQuestionGroupRelationTrait
 {
 
@@ -14,9 +18,9 @@ trait UserQuestionGroupRelationTrait
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function questionGroup(): BelongsTo
+    public function questioner(): BelongsTo
     {
-        return $this->belongsTo(QuestionGroup::class, 'question_group_id');
+        return $this->belongsTo(Questioner::class);
     }
 
 }

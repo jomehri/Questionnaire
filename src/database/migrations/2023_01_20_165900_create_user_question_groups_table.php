@@ -23,7 +23,7 @@ class CreateUserQuestionGroupsTable extends BaseMigration
     {
         $table->unsignedInteger(UserQuestionGroup::COLUMN_USER_ID)
             ->nullable(false);
-        $table->unsignedInteger(UserQuestionGroup::COLUMN_QUESTION_GROUP_ID)
+        $table->unsignedInteger(UserQuestionGroup::COLUMN_QUESTIONER_ID)
             ->nullable(false);
         $table->unsignedInteger(UserQuestionGroup::COLUMN_PAID_AMOUNT)
             ->nullable();
@@ -43,5 +43,16 @@ class CreateUserQuestionGroupsTable extends BaseMigration
      */
     protected function alterTable(Blueprint $table): void
     {
+        // Add columns
+        if (!$this->hasColumn(UserQuestionGroup::COLUMN_QUESTIONER_ID)) {
+            $table->unsignedInteger(UserQuestionGroup::COLUMN_QUESTIONER_ID)
+                ->nullable(false)
+                ->after(UserQuestionGroup::COLUMN_USER_ID);
+        }
+
+        // Drop columns
+        if ($this->hasColumn(UserQuestionGroup::COLUMN_QUESTION_GROUP_ID)) {
+            $table->dropColumn(UserQuestionGroup::COLUMN_QUESTION_GROUP_ID);
+        }
     }
 }
