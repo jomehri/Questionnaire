@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Questions\QuestionGroup;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Questions\QuestionGroupResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -53,22 +54,32 @@ class QuestionGroupService extends BaseService
     }
 
     /**
+     * @param array $filters
      * @param int $page
      * @return AnonymousResourceCollection
      */
-    public function getAll(int $page): AnonymousResourceCollection
+    public function getAll(array $filters, int $page): AnonymousResourceCollection
     {
-        $items = QuestionGroup::with('questioners')->forPage($page, $this->perPage)->get();
+        $items = QuestionGroup::with('questioner')->forPage($page, $this->perPage);
+
+        $this->scopeFilters($filters, $items);
+
+        $items = $items->get();
 
         return QuestionGroupResource::collection($items);
     }
 
     /**
+     * @param array $filters
      * @return int
      */
-    public function countTotal(): int
+    public function countTotal(array $filters): int
     {
-        return QuestionGroup::all()->count();
+        $items = QuestionGroup::query();
+
+        $this->scopeFilters($filters, $items);
+
+        return $items->count();
     }
 
     /**
@@ -78,6 +89,18 @@ class QuestionGroupService extends BaseService
     public function delete(QuestionGroup $questionGroup): void
     {
         $questionGroup->delete();
+    }
+
+    /**
+     * @param array $filters
+     * @param Builder $items
+     * @return void
+     */
+    public function scopeFilters(array $filters, Builder $items): void
+    {
+        if (!empty($filters['questioner_id'])) {
+            $items->forQuestioner($filters['questioner_id']);
+        }
     }
 
 }

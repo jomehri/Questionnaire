@@ -33,6 +33,12 @@ class QuestionGroupApiController extends BaseApiController
      *  tags={"Question Group"},
      *
      *  @OA\Parameter(
+     *      name="questioner_id",
+     *      in="query",
+     *      description="Questioner Id",
+     *      required=false
+     *  ),
+     *  @OA\Parameter(
      *      name="page",
      *      in="query",
      *      description="Page Number",
@@ -58,9 +64,13 @@ class QuestionGroupApiController extends BaseApiController
     {
         $page = ($this->request->query('page')) ?? 1;
 
+        $filters = [
+            'questioner_id' => $this->request->query('questioner_id'),
+        ];
+
         $data = [
-            'items' => $this->questionGroupService->getAll($page),
-            'total' => $this->questionGroupService->countTotal(),
+            'items' => $this->questionGroupService->getAll($filters, $page),
+            'total' => $this->questionGroupService->countTotal($filters),
         ];
 
         return $this->returnOk(null, ['items' => $data]);
