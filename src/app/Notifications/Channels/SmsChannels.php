@@ -35,6 +35,14 @@ class SmsChannels
     }
 
     /**
+     * @return void
+     */
+    public function setTemplate(): void
+    {
+        $this->template = $this->smsChannel->template;
+    }
+
+    /**
      * Send the given notification.
      *
      * @param mixed $notifiable

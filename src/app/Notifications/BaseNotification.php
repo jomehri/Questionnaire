@@ -34,6 +34,17 @@ class BaseNotification extends Notification implements ShouldQueue
         return $smsChannel->smsChannel
             ->from($smsChannel->from)
             ->to($notifiable)
+            ->template($this->getTemplate())
             ->line($this->getMessage());
+    }
+
+    /**
+     * Kavimo sms template sender
+     *
+     * @return array
+     */
+    public function getTemplate(): array
+    {
+        return [];
     }
 }

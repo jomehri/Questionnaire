@@ -6,6 +6,7 @@ use Throwable;
 use Exception;
 use App\Models\Basic\SmsMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Kavenegar\Laravel\Notification\KavenegarBaseNotification;
 
@@ -15,6 +16,7 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
     public array $lines = [];
     public string $from;
     public string $to;
+    public array $template;
 
     /**
      * @param array $lines
@@ -53,6 +55,17 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
     }
 
     /**
+     * @param $template
+     * @return $this
+     */
+    public function template($template): static
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
+    /**
      * @param string $line
      * @return $this
      */
@@ -80,20 +93,14 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
             throw new Exception('SMS config not correct!');
         }
 
+        $message = implode("\r\n", $this->lines);
+
         try {
-            $url = $this->apiUrl . $this->apikey . '/sms/send.json?';
-
-            $message = implode("\r\n", $this->lines);
-
-            $data = [
-                'sender' => $this->sender,
-                'receptor' => $this->to,
-                'message' => $message,
-            ];
-
-            $url .= http_build_query($data);
-
-            $result = Http::get($url, $data);
+            if (sizeof($this->template) > 0) {
+                $result = $this->sendFixTemplateSms($message);
+            } else {
+                $result = $this->sendKhadamatiSms($message);
+            }
 
             if ($result->ok()) {
                 $item = new SmsMessage();
@@ -102,7 +109,6 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
                     ->setSent(true)
                     ->save();
 
-                Log::info("Message sent successfully through Kavenegar to " . $this->receptor);
             } else {
                 Log::error('Kavenegar failed: ' . $result->body(), [$result]);
                 throw new Exception('Kavenegar failed: ' . $result->body());
@@ -127,6 +133,44 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
     public function isSmsDataIncomplete(): bool
     {
         return !$this->from || !$this->to || !count($this->lines);
+    }
+
+    /**
+     * @param string $message
+     * @return Response
+     */
+    public function sendKhadamatiSms(string $message): Response
+    {
+        $url = $this->apiUrl . $this->apikey . '/sms/send.json?';
+
+        $data = [
+            'sender' => $this->sender,
+            'receptor' => $this->to,
+            'message' => $message,
+        ];
+
+        $url .= http_build_query($data);
+
+        return Http::get($url, $data);
+    }
+
+    /**
+     * @param string $message
+     * @return Response
+     */
+    public function sendFixTemplateSms(string $message): Response
+    {
+        $url = $this->apiUrl . $this->apikey . '/sms/send.json?';
+
+        $data = array_merge($this->template, [
+            'receptor' => $this->to,
+        ]);
+
+        $url .= http_build_query($data);
+
+        Log::info('urllllllllllllllll', [$url, $data]);
+
+        return Http::get($url, $data);
     }
 
 }

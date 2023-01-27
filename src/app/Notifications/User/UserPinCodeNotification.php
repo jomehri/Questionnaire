@@ -23,15 +23,30 @@ class UserPinCodeNotification extends BaseNotification
         $this->pinCode = $pinCode;
     }
 
+    /**
+     * @return string
+     */
     public function getMessage(): string
     {
         return
-            (($this->user->getFirstName()) ?? "کاربر") .
-            " عزیز" .
+            (($this->user->getFirstName()) ?? 'کاربر') .
+            ' عزیز' .
             "\r\n" .
-            "کد شما جهت ورود به سایت: " .
+            'کد شما جهت ورود به سایت: ' .
             "\r\n" .
             $this->pinCode;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTemplate(): array
+    {
+        return [
+            'template' => 'otpPinCode',
+            'token' => $this->user->getFirstName() ?? 'کاربر',
+            'token2' => $this->pinCode,
+        ];
     }
 
 }
