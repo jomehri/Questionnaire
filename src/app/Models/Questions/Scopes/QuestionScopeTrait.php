@@ -36,8 +36,8 @@ trait QuestionScopeTrait
      * @param $questionGroupIds
      * @return void
      */
-    public function scopeForQuestionGroups(Builder $query, $questionGroupIds): void
+    public function scopeForQuestionGroup(Builder $query, $questionGroupId): void
     {
-        $query->whereIn(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupIds);
+        $query->where(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupId);
     }
 }
