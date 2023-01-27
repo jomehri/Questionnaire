@@ -160,15 +160,13 @@ class KavenegarSmsChannel extends KavenegarBaseNotification
      */
     public function sendFixTemplateSms(string $message): Response
     {
-        $url = $this->apiUrl . $this->apikey . '/sms/send.json?';
+        $url = $this->apiUrl . $this->apikey . '/verify/lookup.json?';
 
         $data = array_merge($this->template, [
             'receptor' => $this->to,
         ]);
 
         $url .= http_build_query($data);
-
-        Log::info('urllllllllllllllll', [$url, $data]);
 
         return Http::get($url, $data);
     }
