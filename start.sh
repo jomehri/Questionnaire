@@ -18,7 +18,6 @@ then
 else
     git stash &&
     git pull origin main &&
-    cd src &&
     php artisan migrate &&
     php artisan db:seed &&
     php artisan cache:clear
