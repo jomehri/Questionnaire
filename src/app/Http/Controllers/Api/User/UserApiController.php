@@ -112,7 +112,6 @@ class UserApiController extends BaseApiController
 
         return $this->returnOk(
             $this->userService->getPinRequestSuccessMessage('login', $data['mobile']),
-            ['token_temp_remove_when_sms_panel_launched' => $result]
         );
     }
 

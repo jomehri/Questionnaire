@@ -20,5 +20,7 @@ else
     git pull origin main &&
     php artisan migrate --force &&
     php artisan db:seed --force &&
-    php artisan cache:clear
+    php artisan cache:clear &&
+    sudo chmod 777 -R storage/
+
 fi
