@@ -19,6 +19,6 @@ else
     git stash &&
     git pull origin main &&
     php artisan migrate --force &&
-    php artisan db:seed --froce &&
+    php artisan db:seed --force &&
     php artisan cache:clear
 fi
