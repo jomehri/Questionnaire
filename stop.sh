@@ -1,7 +1,7 @@
 cd src && source .env;
 
 APP_ENV=$(echo "$APP_ENV");
-echo "Deploying $APP_ENV";
+echo "Deploying $APP_ENV..........";
 
 if [ "$APP_ENV" == "local" ]
 then
