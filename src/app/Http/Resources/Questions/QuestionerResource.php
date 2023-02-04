@@ -42,6 +42,7 @@ class QuestionerResource extends JsonResource
         return [
             'totalStartedParticipants' => UserQuestionGroup::forQuestioner($questionerId)->started()->count('id'),
             'totalCompletedParticipants' => UserQuestionGroup::forQuestioner($questionerId)->completed()->count('id'),
+            'totalPaidParticipants' => UserQuestionGroup::forQuestioner($questionerId)->bought()->count('id'),
             'totalParticipants' => UserQuestionGroup::forQuestioner($questionerId)->count('id'),
         ];
     }
