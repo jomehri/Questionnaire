@@ -31,6 +31,7 @@ class QuestionApiController extends BaseApiController
     /**
      * @OA\Get (
      *  path="/api/question-groups/{question_group}/questions",
+     *  security={{"sanctum":{}}},
      *  summary="Get all questions for a question group",
      *  description="Gets all questions for a question group",
      *  tags={"Question"},
@@ -45,6 +46,12 @@ class QuestionApiController extends BaseApiController
      *      name="page",
      *      in="query",
      *      description="Page Number",
+     *      required=false
+     *  ),
+     *  @OA\Parameter(
+     *      name="userId",
+     *      in="query",
+     *      description="User Id",
      *      required=false
      *  ),
      *
@@ -62,14 +69,17 @@ class QuestionApiController extends BaseApiController
      * ),
      *
      * @param QuestionGroup $questionGroup
+     * @param Request $request
+     * @param QuestionGetRequest $questionGetRequest
      * @return JsonResponse
      */
-    public function index(QuestionGroup $questionGroup): JsonResponse
+    public function index(QuestionGroup $questionGroup, Request $request, QuestionGetRequest $questionGetRequest): JsonResponse
     {
+        $userId = $request->get('userId') ?? Auth::id();
         $page = ($this->request->query('page')) ?? 1;
 
         $data = [
-            'items' => $this->questionService->getAll($questionGroup, $page),
+            'items' => $this->questionService->getAll($questionGroup, $page, $userId),
             'total' => $this->questionService->countTotal($questionGroup),
         ];
 

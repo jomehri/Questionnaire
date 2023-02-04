@@ -105,11 +105,16 @@ class QuestionService extends BaseService
     /**
      * @param QuestionGroup $questionGroup
      * @param int $page
+     * @param int|null $userId
      * @return AnonymousResourceCollection
      */
-    public function getAll(QuestionGroup $questionGroup, int $page): AnonymousResourceCollection
+    public function getAll(QuestionGroup $questionGroup, int $page, ?int $userId): AnonymousResourceCollection
     {
-        $items = Question::forQuestionGroup($questionGroup->id)->forPage($page, $this->perPage)->get();
+        $items = Question::forQuestionGroup($questionGroup->id)->with([
+            'userAnswer' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            }
+        ])->forPage($page, $this->perPage)->get();
 
         return QuestionResource::collection($items);
     }
