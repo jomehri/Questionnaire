@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\Questions;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Question;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Questions\QuestionGroup;
 use App\Services\Questions\QuestionService;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\Questions\QuestionResource;
+use App\Http\Requests\Api\Questions\QuestionGetRequest;
 use App\Http\Requests\Api\Questions\QuestionStoreRequest;
 use App\Http\Requests\Api\Questions\QuestionUpdateRequest;
 use App\Http\Requests\Api\Questions\QuestionDeleteRequest;
@@ -77,6 +79,7 @@ class QuestionApiController extends BaseApiController
     /**
      * @OA\Get (
      *  path="/api/question-groups/{question_group}/questions/{question}",
+     *  security={{"sanctum":{}}},
      *  summary="Get all questions for a question group",
      *  description="Gets all questions for a question group",
      *  tags={"Question"},
@@ -93,6 +96,12 @@ class QuestionApiController extends BaseApiController
      *      description="Question Id",
      *      required=true
      *  ),
+     *  @OA\Parameter(
+     *      name="userId",
+     *      in="query",
+     *      description="User Id",
+     *      required=false
+     *  ),
      *
      *  @OA\Response(
      *      response=200,
@@ -107,13 +116,18 @@ class QuestionApiController extends BaseApiController
      *  ),
      * ),
      *
+     * @param QuestionGetRequest $questionGetRequest
      * @param QuestionGroup $questionGroup
      * @param Question $question
+     * @param Request $request
      * @return JsonResponse
      */
-    public function item(QuestionGroup $questionGroup, Question $question): JsonResponse
+    public function item(QuestionGroup $questionGroup, Question $question, Request $request, QuestionGetRequest $questionGetRequest): JsonResponse
     {
-        $data = QuestionResource::make($question);
+        $userId = $request->get('userId') ?? Auth::id();
+
+        $result = $this->questionService->loadQuestionWithAnswer($question, $userId);
+        $data = QuestionResource::make($result);
 
         return $this->returnOk(null, [$data]);
     }

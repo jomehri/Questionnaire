@@ -2,6 +2,8 @@
 
 namespace App\Services\Questions;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
@@ -68,6 +70,25 @@ class QuestionService extends BaseService
                 )
                 ->save();
         });
+    }
+
+    /**
+     * @param Question $question
+     * @param int|null $userId
+     * @return Model|Question|Builder|null
+     */
+    public function loadQuestionWithAnswer(Question $question, ?int $userId): Model|Question|Builder|null
+    {
+        if (!$userId) {
+            return $question;
+        }
+
+        return $question::with([
+            'userAnswer' => function ($query) use ($question, $userId) {
+                $query->where('user_id', $userId)
+                    ->where('question_id', $question->getId());
+            }
+        ])->first();
     }
 
     /**

@@ -93,7 +93,7 @@ Route::prefix("/question-groups/{question_group:id}/questions/")
         Route::get('', [QuestionApiController::class, 'index'])->name('index')->withoutMiddleware('auth:sanctum');
         Route::get('{question:id}', [QuestionApiController::class, 'item'])->name('item')->withoutMiddleware(
             'auth:sanctum'
-        );
+        )->middleware('auth.optional:sanctum');
         Route::delete('{question:id}', [QuestionApiController::class, 'delete'])->name('delete');
     });
 

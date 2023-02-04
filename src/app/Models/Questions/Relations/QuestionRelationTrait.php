@@ -7,10 +7,12 @@ use App\Models\Questions\QuestionGroup;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property QuestionGroup $questionGroup
  * @property Collection $userAnswers
+ * @property ?UserAnswer $userAnswer
  */
 trait QuestionRelationTrait
 {
@@ -29,5 +31,13 @@ trait QuestionRelationTrait
     public function userAnswers(): HasMany
     {
         return $this->hasMany(UserAnswer::class);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function userAnswer(): HasOne
+    {
+        return $this->hasOne(UserAnswer::class);
     }
 }
