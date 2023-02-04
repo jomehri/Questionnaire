@@ -20,7 +20,6 @@ else
     git stash &&
     git pull origin main &&
     sudo chown www-data:www-data -R ./ &&
-    php artisan migrate:rollback &&
     php artisan migrate --force &&
     php artisan db:seed --force &&
     php artisan cache:clear &&
