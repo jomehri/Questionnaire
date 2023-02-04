@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Basic\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 abstract class BaseModel extends Model implements IBaseModel
@@ -195,6 +197,22 @@ abstract class BaseModel extends Model implements IBaseModel
      */
     protected function onDeleted()
     {
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isLoggedInAsAdmin(): bool
+    {
+        $userIsAdmin = false;
+
+        /** @var User $user */
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin')) {
+            $userIsAdmin = true;
+        }
+
+        return $userIsAdmin;
     }
 
 }

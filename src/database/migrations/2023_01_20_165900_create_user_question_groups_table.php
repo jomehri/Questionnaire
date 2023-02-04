@@ -31,7 +31,7 @@ class CreateUserQuestionGroupsTable extends BaseMigration
             ->nullable(false);
         $table->dateTime(UserQuestionGroup::COLUMN_BOUGHT_AT)
             ->nullable();
-        $table->dateTime(UserQuestionGroup::STATUS_STARTED)
+        $table->dateTime(UserQuestionGroup::COLUMN_STARTED_AT)
             ->nullable();
         $table->dateTime(UserQuestionGroup::COLUMN_COMPLETED_AT)
             ->nullable();
@@ -50,9 +50,19 @@ class CreateUserQuestionGroupsTable extends BaseMigration
                 ->after(UserQuestionGroup::COLUMN_USER_ID);
         }
 
+        if (!$this->hasColumn(UserQuestionGroup::COLUMN_STARTED_AT)) {
+            $table->dateTime(UserQuestionGroup::COLUMN_STARTED_AT)
+                ->nullable()
+                ->after(UserQuestionGroup::COLUMN_BOUGHT_AT);
+        }
+
         // Drop columns
         if ($this->hasColumn(UserQuestionGroup::COLUMN_QUESTION_GROUP_ID)) {
             $table->dropColumn(UserQuestionGroup::COLUMN_QUESTION_GROUP_ID);
+        }
+
+        if ($this->hasColumn('started')) {
+            $table->dropColumn('started');
         }
     }
 }

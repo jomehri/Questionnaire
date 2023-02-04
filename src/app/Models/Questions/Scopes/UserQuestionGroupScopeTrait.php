@@ -30,7 +30,7 @@ trait UserQuestionGroupScopeTrait
      */
     public function scopeStarted(Builder $query): void
     {
-        $query->whereNotNull(UserQuestionGroup::STATUS_STARTED);
+        $query->whereNotNull(UserQuestionGroup::COLUMN_STARTED_AT);
     }
 
     /**
@@ -39,7 +39,7 @@ trait UserQuestionGroupScopeTrait
      */
     public function scopeCompleted(Builder $query): void
     {
-        $query->whereNotNull(UserQuestionGroup::STATUS_COMPLETED);
+        $query->whereNotNull(UserQuestionGroup::COLUMN_COMPLETED_AT);
     }
 
     /**

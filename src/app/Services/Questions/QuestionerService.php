@@ -2,6 +2,8 @@
 
 namespace App\Services\Questions;
 
+use App\Models\BaseModel;
+use App\Models\Basic\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -10,6 +12,7 @@ use App\Models\Questions\Questioner;
 use App\Http\Resources\Questions\QuestionerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class QuestionerService extends BaseService
