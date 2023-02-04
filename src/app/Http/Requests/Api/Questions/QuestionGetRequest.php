@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Api\Questions;
 
 use App\Http\Requests\Api\BaseRequest;
-use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
 use Illuminate\Support\Facades\Request;
 
 class QuestionGetRequest extends BaseRequest
@@ -29,7 +28,6 @@ class QuestionGetRequest extends BaseRequest
      * Get the validations rules that apply to the request.
      *
      * @return array
-     * @throws QuestionerWithQuestionsCantBeDeletedException
      */
     public function rules(): array
     {
