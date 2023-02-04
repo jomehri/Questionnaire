@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Questions;
 
+use App\Http\Resources\User\UserQuestionGroupResource;
 use App\Models\BaseModel;
 use App\Models\Questions\Question;
 use App\Models\Questions\Questioner;
@@ -23,6 +24,7 @@ class QuestionerResource extends JsonResource
             'question_groups' => QuestionGroupWithoutQuestionerResource::collection($this->questionGroups),
             'question_groups_count' => QuestionGroupWithoutQuestionerResource::collection($this->questionGroups)->count(),
             'questions_count' => Question::forQuestioner($this->id)->count('id'),
+            'userQuestionGroup' => UserQuestionGroupResource::collection($this->whenLoaded('userQuestionGroups'))
         ];
     }
 }

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\Questions;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Questioner;
+use Illuminate\Support\Facades\Auth;
 use App\Services\Questions\QuestionerService;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Resources\Questions\QuestionerResource;
+use App\Http\Requests\Api\Questions\QuestionerGetRequest;
 use App\Http\Requests\Api\Questions\QuestionerStoreRequest;
 use App\Http\Requests\Api\Questions\QuestionerDeleteRequest;
 use App\Http\Requests\Api\Questions\QuestionerUpdateRequest;
@@ -28,6 +30,7 @@ class QuestionerApiController extends BaseApiController
     /**
      * @OA\Get (
      *  path="/api/questioners",
+     *  security={{"sanctum":{}}},
      *  summary="Get all questioners",
      *  description="Gets all questioners",
      *  tags={"Questioner"},
@@ -36,6 +39,12 @@ class QuestionerApiController extends BaseApiController
      *      name="page",
      *      in="query",
      *      description="Page Number",
+     *      required=false
+     *  ),
+     *  @OA\Parameter(
+     *      name="userId",
+     *      in="query",
+     *      description="User Id",
      *      required=false
      *  ),
      *
@@ -52,14 +61,16 @@ class QuestionerApiController extends BaseApiController
      *  ),
      * ),
      *
+     * @param QuestionerGetRequest $questionerGetRequest
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(QuestionerGetRequest $questionerGetRequest): JsonResponse
     {
+        $userId = $this->request->get('userId') ?? Auth::id();
         $page = ($this->request->query('page')) ?? 1;
 
         $data = [
-            'items' => $this->questionerService->getAll($page),
+            'items' => $this->questionerService->getAll($page, $userId),
             'total' => $this->questionerService->countTotal(),
         ];
 
@@ -69,6 +80,7 @@ class QuestionerApiController extends BaseApiController
     /**
      * @OA\Get (
      *  path="/api/questioners/{questioner}",
+     *  security={{"sanctum":{}}},
      *  summary="Get a single questioner",
      *  description="Gets a single questioner",
      *  tags={"Questioner"},
@@ -78,6 +90,12 @@ class QuestionerApiController extends BaseApiController
      *      in="path",
      *      description="Questioner Id",
      *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="userId",
+     *      in="query",
+     *      description="User Id",
+     *      required=false
      *  ),
      *
      *  @OA\Response(
@@ -94,11 +112,15 @@ class QuestionerApiController extends BaseApiController
      * ),
      *
      * @param Questioner $questioner
+     * @param QuestionerGetRequest $questionerGetRequest
      * @return JsonResponse
      */
-    public function item(Questioner $questioner): JsonResponse
+    public function item(Questioner $questioner, QuestionerGetRequest $questionerGetRequest): JsonResponse
     {
-        $data = QuestionerResource::make($questioner);
+        $userId = $this->request->get('userId') ?? Auth::id();
+
+        $data = $this->questionerService->getItem($questioner, $userId);
+        $data = QuestionerResource::make($data);
 
         return $this->returnOk(null, [$data]);
     }

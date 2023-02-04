@@ -2,12 +2,15 @@
 
 namespace App\Services\Questions;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Models\Questions\Questioner;
 use App\Http\Resources\Questions\QuestionerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Exceptions\Questions\QuestionerWithQuestionsCantBeDeletedException;
+use Illuminate\Support\Facades\DB;
 
 class QuestionerService extends BaseService
 {
@@ -27,13 +30,34 @@ class QuestionerService extends BaseService
 
     /**
      * @param int $page
+     * @param int|null $userId
      * @return AnonymousResourceCollection
      */
-    public function getAll(int $page): AnonymousResourceCollection
+    public function getAll(int $page, ?int $userId): AnonymousResourceCollection
     {
-        $items = Questioner::with('questionGroups')->forPage($page, $this->perPage)->get();
+        $items = Questioner::with([
+            'questionGroups',
+            'userQuestionGroups' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            }
+        ])->forPage($page, $this->perPage)->get();
 
         return QuestionerResource::collection($items);
+    }
+
+    /**
+     * @param Questioner $questioner
+     * @param int|null $userId
+     * @return Questioner
+     */
+    public function getItem(Questioner $questioner, ?int $userId): QUestioner
+    {
+        return Questioner::where('id', $questioner->getId())->with([
+            'questionGroups',
+            'userQuestionGroups' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            }
+        ])->first();
     }
 
     /**
