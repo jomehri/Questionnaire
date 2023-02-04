@@ -16,8 +16,10 @@ then
    docker-compose exec qst-php-web chmod 777 storage/ -R &&
    docker-compose exec qst-php-web php artisan l5-swagger:generate
 else
+    sudo chown ubuntu:ubuntu &&
     git stash &&
     git pull origin main &&
+    sudo chown www-data:www-data &&
     php artisan migrate --force &&
     php artisan db:seed --force &&
     php artisan cache:clear &&
