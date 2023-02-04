@@ -3,9 +3,11 @@
 namespace App\Models\Questions\Scopes;
 
 use App\Models\Questions\Question;
+use App\Models\Questions\QuestionGroup;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
+ * @method static Question|Builder forQuestioner(int $questionerId)
  * @method static Question|Builder forQuestionGroup(int $questionGroupId)
  * @method static Question|Builder required()
  */
@@ -14,12 +16,13 @@ trait QuestionScopeTrait
 
     /**
      * @param Builder $query
-     * @param int $questionGroupId
+     * @param int $questionerId
      * @return void
      */
-    public function scopeForQuestioner(Builder $query, int $questionGroupId): void
+    public function scopeForQuestioner(Builder $query, int $questionerId): void
     {
-        $query->where(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupId);
+        $questionGroupIds = QuestionGroup::forQuestioner($questionerId)->pluck('id');
+        $query->whereIn(Question::COLUMN_QUESTION_GROUP_ID, $questionGroupIds);
     }
 
     /**
