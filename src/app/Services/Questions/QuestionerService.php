@@ -129,4 +129,14 @@ class QuestionerService extends BaseService
         return UserQuestionGroup::forQuestioner($questionerId)->count();
     }
 
+    /**
+     * @param int $questionerId
+     * @param int $userId
+     * @return UserQuestionGroup|null
+     */
+    public function getParticipant(int $questionerId, int $userId): null|UserQuestionGroup
+    {
+        return UserQuestionGroup::forQuestioner($questionerId)->forUser($userId)->first();
+    }
+
 }

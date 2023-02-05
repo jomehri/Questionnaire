@@ -6,7 +6,7 @@ use App\Models\Basic\User;
 use App\Models\Questions\UserQuestionGroup;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionerParticipantsResource extends JsonResource
+class QuestionerParticipantResource extends JsonResource
 {
     /**
      * @param $request
@@ -29,7 +29,14 @@ class QuestionerParticipantsResource extends JsonResource
                 'value' => $userQuestionGroup->getStatus(),
                 'translate' => __('questions/user_question_group.statuses.' . $userQuestionGroup->getStatus()),
             ],
+            'paidAmount' => $userQuestionGroup->getPaidAmount(),
+            'paidAt' => $userQuestionGroup->getBoughtAt()?->timestamp,
+            'startedAt' => $userQuestionGroup->getStartedAt()?->timestamp,
             'completedAt' => $userQuestionGroup->getCompletedAt()?->timestamp,
+            'progressPercent' => UserQuestionGroup::getProgressPercent(
+                $userQuestionGroup->getQuestionerId(),
+                $user->getId()
+            ),
         ];
     }
 }

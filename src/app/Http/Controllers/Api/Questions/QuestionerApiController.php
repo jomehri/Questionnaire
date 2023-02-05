@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Questions;
 
 use App\Http\Requests\Api\Questions\QuestionerParticipantsRequest;
+use App\Http\Resources\Questions\QuestionerParticipantResource;
+use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Questioner;
@@ -306,6 +308,57 @@ class QuestionerApiController extends BaseApiController
         ];
 
         return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/questioners/{questioner}/participants/{user}",
+     *  security={{"sanctum":{}}},
+     *  summary="List of participated users on a questioner",
+     *  description="Gets list of participated users on a questioner",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="questioner",
+     *      in="path",
+     *      description="Questioner Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="user",
+     *      in="path",
+     *      description="User Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param Questioner $questioner
+     * @param User $user
+     * @param QuestionerParticipantsRequest $questionerParticipantsRequest
+     * @return JsonResponse
+     */
+    public function participant(
+        Questioner $questioner,
+        User $user,
+        QuestionerParticipantsRequest $questionerParticipantsRequest,
+    ): JsonResponse {
+
+        $data = $this->questionerService->getParticipant($questioner->getId(), $user->getId());
+        $data = $data ? QuestionerParticipantResource::make($data) : null;
+
+        return $this->returnOk(null, $data ? [$data] : null);
     }
 
 }
