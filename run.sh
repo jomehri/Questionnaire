@@ -7,6 +7,7 @@ if [ "$APP_ENV" == "local" ]
 then
    cd ../docker &&
    docker-compose up -d &&
+   docker-compose exec qst-php-web php artisan migrate:rollback &&
    docker-compose exec qst-php-web php artisan migrate &&
    docker-compose exec qst-php-web php artisan db:seed &&
    docker-compose exec qst-php-web php artisan cache:clear &&
