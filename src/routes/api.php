@@ -71,6 +71,9 @@ Route::prefix("/questioners/")
         Route::get('{questioner:id}/participants/{user}', [QuestionerApiController::class, 'participant'])->name(
             'participant'
         );
+        Route::get('{questioner:id}/answers/{user}', [QuestionerApiController::class, 'userAnswers'])->name(
+            'user.answers'
+        );
     });
 
 /**

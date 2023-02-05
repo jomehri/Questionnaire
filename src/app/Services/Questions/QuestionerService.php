@@ -5,8 +5,10 @@ namespace App\Services\Questions;
 use App\Http\Resources\Questions\QuestionerParticipantsResource;
 use App\Models\BaseModel;
 use App\Models\Basic\User;
+use App\Models\Questions\UserAnswer;
 use App\Models\Questions\UserQuestionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
@@ -137,6 +139,16 @@ class QuestionerService extends BaseService
     public function getParticipant(int $questionerId, int $userId): null|UserQuestionGroup
     {
         return UserQuestionGroup::forQuestioner($questionerId)->forUser($userId)->first();
+    }
+
+    /**
+     * @param int $questionerId
+     * @param int $userId
+     * @return Collection
+     */
+    public function getUserAnswers(int $questionerId, int $userId): Collection
+    {
+        return UserAnswer::forQuestioner($questionerId)->forUser($userId)->get();
     }
 
 }

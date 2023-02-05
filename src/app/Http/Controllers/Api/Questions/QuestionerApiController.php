@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Questions;
 
 use App\Http\Requests\Api\Questions\QuestionerParticipantsRequest;
 use App\Http\Resources\Questions\QuestionerParticipantResource;
+use App\Http\Resources\User\UserAnswerResource;
 use App\Models\Basic\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -354,11 +355,60 @@ class QuestionerApiController extends BaseApiController
         User $user,
         QuestionerParticipantsRequest $questionerParticipantsRequest,
     ): JsonResponse {
-
         $data = $this->questionerService->getParticipant($questioner->getId(), $user->getId());
         $data = $data ? QuestionerParticipantResource::make($data) : null;
 
         return $this->returnOk(null, $data ? [$data] : null);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/questioners/{questioner}/answers/{user}",
+     *  security={{"sanctum":{}}},
+     *  summary="List of answers for users on a questioner",
+     *  description="Gets list of answers for a user on a questioner",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="questioner",
+     *      in="path",
+     *      description="Questioner Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="user",
+     *      in="path",
+     *      description="User Id",
+     *      required=true
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param Questioner $questioner
+     * @param User $user
+     * @param QuestionerParticipantsRequest $questionerParticipantsRequest
+     * @return JsonResponse
+     */
+    public function userAnswers(
+        Questioner $questioner,
+        User $user,
+        QuestionerParticipantsRequest $questionerParticipantsRequest,
+    ): JsonResponse {
+        $data = $this->questionerService->getUserAnswers($questioner->getId(), $user->getId());
+        $data = UserAnswerResource::collection($data);
+
+        return $this->returnOk(null, [$data]);
     }
 
 }
