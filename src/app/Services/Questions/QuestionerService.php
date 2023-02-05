@@ -2,8 +2,10 @@
 
 namespace App\Services\Questions;
 
+use App\Http\Resources\Questions\QuestionerParticipantsResource;
 use App\Models\BaseModel;
 use App\Models\Basic\User;
+use App\Models\Questions\UserQuestionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -104,6 +106,27 @@ class QuestionerService extends BaseService
     public function delete(Questioner $questioner): void
     {
         $questioner->delete();
+    }
+
+    /**
+     * @param int $page
+     * @param int $questionerId
+     * @return AnonymousResourceCollection
+     */
+    public function getAllParticipants(int $page, int $questionerId): AnonymousResourceCollection
+    {
+        $items = UserQuestionGroup::forQuestioner($questionerId)->forPage($page, $this->perPage)->get();
+
+        return QuestionerParticipantsResource::collection($items);
+    }
+
+    /**
+     * @param int $questionerId
+     * @return int
+     */
+    public function countTotalParticipants(int $questionerId): int
+    {
+        return UserQuestionGroup::forQuestioner($questionerId)->count();
     }
 
 }

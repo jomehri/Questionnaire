@@ -3,6 +3,7 @@
 namespace App\Models\Questions;
 
 use App\Models\BaseModel;
+use App\Models\Basic\User;
 use Illuminate\Support\Carbon;
 use App\Models\Questions\Scopes\UserQuestionGroupScopeTrait;
 use App\Models\Questions\Relations\UserQuestionGroupRelationTrait;
@@ -71,6 +72,14 @@ class UserQuestionGroup extends BaseModel
         $this->{self::COLUMN_USER_ID} = $value;
 
         return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return User::find($this->{self::COLUMN_USER_ID});
     }
 
     /**
@@ -154,11 +163,11 @@ class UserQuestionGroup extends BaseModel
      */
     public function getStartedAt(): ?Carbon
     {
-        if (!$this->{self::STATUS_STARTED}) {
+        if (!$this->{self::COLUMN_STARTED_AT}) {
             return null;
         }
 
-        return Carbon::parse($this->{self::STATUS_STARTED});
+        return Carbon::parse($this->{self::COLUMN_STARTED_AT});
     }
 
     /**
@@ -229,6 +238,14 @@ class UserQuestionGroup extends BaseModel
     public static function findByUserAndQuestionerId(int $userId, int $questionerId): null|self
     {
         return self::forUser($userId)->forQuestioner($questionerId)->first();
+    }
+
+    public static function getProgressPercent($questionerId, $userId): int
+    {
+        $questionsCount = Question::forQuestioner($questionerId)->count('id');
+        $answeredCount = UserAnswer::forUser($userId)->forQuestioner($questionerId)->count('id');
+
+        return ($answeredCount/$questionsCount) * 100;
     }
 
 }

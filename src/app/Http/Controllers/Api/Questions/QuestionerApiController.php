@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Questions;
 
+use App\Http\Requests\Api\Questions\QuestionerParticipantsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Questions\Questioner;
@@ -253,6 +254,58 @@ class QuestionerApiController extends BaseApiController
         $this->questionerService->delete($questioner);
 
         return $this->returnOk(null);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/questioners/{questioner}/participants",
+     *  security={{"sanctum":{}}},
+     *  summary="List of participated users on a questioner",
+     *  description="Gets list of participated users on a questioner",
+     *  tags={"Questioner"},
+     *
+     *  @OA\Parameter(
+     *      name="questioner",
+     *      in="path",
+     *      description="Questioner Id",
+     *      required=true
+     *  ),
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param QuestionerParticipantsRequest $questionerParticipantsRequest
+     * @param Questioner $questioner
+     * @return JsonResponse
+     */
+    public function participants(
+        QuestionerParticipantsRequest $questionerParticipantsRequest,
+        Questioner $questioner
+    ): JsonResponse {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->questionerService->getAllParticipants($page, $questioner->getId()),
+            'total' => $this->questionerService->countTotalParticipants($questioner->getId()),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
     }
 
 }

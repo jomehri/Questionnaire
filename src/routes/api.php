@@ -65,6 +65,9 @@ Route::prefix("/questioners/")
             'auth:sanctum'
         )->middleware('auth.optional:sanctum');
         Route::delete('{questioner:id}/delete', [QuestionerApiController::class, 'delete'])->name('delete');
+        Route::get('{questioner:id}/participants', [QuestionerApiController::class, 'participants'])->name(
+            'participants'
+        );
     });
 
 /**
