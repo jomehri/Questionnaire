@@ -11,6 +11,7 @@ then
    docker-compose exec qst-php-web php artisan migrate &&
    docker-compose exec qst-php-web php artisan db:seed &&
    docker-compose exec qst-php-web php artisan cache:clear &&
+   docker-compose exec qst-php-web php artisan optimize &&
    rm -Rf ../src/public/storage &&
    docker-compose exec qst-php-web php artisan storage:link &&
    docker-compose exec qst-php-web chmod 777 storage/ -R &&
@@ -24,6 +25,8 @@ else
     php artisan db:seed --force &&
     php artisan cache:clear &&
     php artisan l5-swagger:generate &&
-    sudo chmod 777 -R storage/
+    sudo chmod 777 -R storage/ &&
+    sudo chmod 777 -R bootstrap/ &&
+    php artisan optimize
 
 fi
