@@ -181,13 +181,13 @@ class BlogApiController extends BaseApiController
      * @OA\Get (
      *  path="/api/blogs/{blog}",
      *  summary="Get a blog post",
-     *  description="Gets a blog post by its slug",
+     *  description="Gets a blog post by its id",
      *  tags={"Blog"},
      *
      *  @OA\Parameter(
      *      name="blog",
      *      in="path",
-     *      description="Blog Post Slug",
+     *      description="Blog Post Id",
      *      required=true
      *  ),
      *
