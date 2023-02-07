@@ -177,7 +177,7 @@ class UserQuestionGroup extends BaseModel
      */
     public function setStartedAt(Carbon $value): self
     {
-        $this->{self::STATUS_STARTED} = $value;
+        $this->{self::COLUMN_STARTED_AT} = $value;
 
         return $this;
     }
