@@ -106,11 +106,12 @@ class UserAnswerFinishRequest extends BaseRequest
             return;
         }
 
+
         /**
          * Required questions checker
          */
-        $unansweredRequiredQuestionIds = Question::required()->forQuestionGroups(
-            $questioner->questionGroups->pluck('id')
+        $unansweredRequiredQuestionIds = Question::required()->forQuestioner(
+            $questioner->getId()
         )->whereDoesntHave('userAnswers', function (Builder $query) {
             $query->where('user_id', Auth::id());
         })->pluck('id')->toArray();
