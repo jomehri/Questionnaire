@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User;
 
+use App\Http\Resources\Questions\QuestionResource;
 use App\Models\BaseModel;
 use App\Models\Basic\User;
 use App\Models\Questions\UserAnswer;
@@ -17,6 +18,7 @@ class UserAnswerResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'question' => QuestionResource::make($this->whenLoaded('question')),
             UserAnswer::COLUMN_ANSWER => $this->{UserAnswer::COLUMN_ANSWER},
             Model::CREATED_AT => $this->{Model::CREATED_AT}?->timestamp,
         ];

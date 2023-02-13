@@ -148,7 +148,7 @@ class QuestionerService extends BaseService
      */
     public function getUserAnswers(int $questionerId, int $userId): Collection
     {
-        return UserAnswer::forQuestioner($questionerId)->forUser($userId)->get();
+        return UserAnswer::with('question')->forQuestioner($questionerId)->forUser($userId)->get();
     }
 
 }
