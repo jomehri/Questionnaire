@@ -63,4 +63,34 @@ class SaleApiController extends BaseApiController
         return $this->returnOk(null, [$cartDetails]);
     }
 
+    /**
+     * @OA\Get (
+     *  path="/api/sales/currentCart",
+     *  security={{"sanctum":{}}},
+     *  summary="Get user's cart",
+     *  description="Gets user's active cart",
+     *  tags={"Sale"},
+     *
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function getCurrentCart(): JsonResponse
+    {
+        $cartDetails = $this->saleService->getCurrentCartDetails();
+
+        return $this->returnOk(null, $cartDetails ? [$cartDetails] : null);
+    }
+
 }

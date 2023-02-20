@@ -66,11 +66,15 @@ class SaleService extends BaseService
     }
 
     /**
-     * @return CartResource
+     * @return CartResource|null
      */
-    public function getCurrentCartDetails(): CartResource
+    public function getCurrentCartDetails(): null|CartResource
     {
         $order = Order::forUser(Auth::id())->with('orderItems')->first();
+
+        if (!$order) {
+            return null;
+        }
 
         return CartResource::make($order);
     }
