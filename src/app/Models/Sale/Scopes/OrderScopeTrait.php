@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static static|Builder closed()
  * @method static static|Builder paid()
  * @method static static|Builder rejected()
+ * @method static static|Builder lastOrder()
  */
 trait OrderScopeTrait
 {
@@ -58,6 +59,15 @@ trait OrderScopeTrait
     public function scopeRejected(Builder $query): void
     {
         $query->where(static::COLUMN_STATUS, static::STATUS_REJECTED);
+    }
+
+    /**
+     * @param Builder $query
+     * @return void
+     */
+    public function scopeLastOrder(Builder $query): void
+    {
+        $query->oldest('id');
     }
 
 }

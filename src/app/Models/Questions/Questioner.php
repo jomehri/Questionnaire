@@ -4,6 +4,10 @@ namespace App\Models\Questions;
 
 use App\Models\BaseModel;
 use App\Models\Questions\Relations\QuestionerRelationTrait;
+use App\Models\Sale\Order;
+use App\Models\Sale\OrderItem;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Questioner extends BaseModel
 {
@@ -91,6 +95,53 @@ class Questioner extends BaseModel
         $this->{self::COLUMN_PRICE} = $value;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFree(): bool
+    {
+        return !$this->getPrice();
+    }
+
+    /**
+     * @param int $questionerId
+     * @return bool
+     */
+    public static function userPaidForQuestioner(int $questionerId): bool
+    {
+        return Order::paid()->forUser(Auth::id())->whereHas(
+            'orderItems',
+            function (Builder $query) use ($questionerId) {
+                $query->where(OrderItem::COLUMN_QUESTIONER_ID, $questionerId);
+            }
+        )->exists();
+    }
+
+    /**
+     * @param int $questionerId
+     * @return bool
+     */
+    public static function isQuestionerAlreadyInCurrentCart(int $questionerId): bool
+    {
+        return Order::lastOrder()->open()->forUser(Auth::id())->whereHas(
+            'orderItems',
+            function (Builder $query) use ($questionerId) {
+                $query->where(OrderItem::COLUMN_QUESTIONER_ID, $questionerId);
+            }
+        )->exists();
+    }
+
+    /**
+     * @param int $questionerId
+     * @return int
+     */
+    public static function getQuestionerPrice(int $questionerId): int
+    {
+        $questioner = self::whereId($questionerId)->first();
+
+        return $questioner?->price ?? 0;
     }
 
 }

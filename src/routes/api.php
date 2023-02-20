@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Sale\SaleApiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Blog\BlogApiController;
 use App\Http\Controllers\Api\User\UserApiController;
@@ -133,4 +134,14 @@ Route::prefix("/questioners/{questioner:id}/")
     ->group(function () {
         Route::post('questions/{question}/answer', [AnswerApiController::class, 'store'])->name('create');
         Route::get('finish', [AnswerApiController::class, 'finish'])->name('finish');
+    });
+
+/**
+ * Sale routes
+ */
+Route::prefix("/sales/")
+    ->as('sale.')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('addToCart', [SaleApiController::class, 'addToCart'])->name('addToCart');
     });

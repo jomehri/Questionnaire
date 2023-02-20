@@ -24,6 +24,7 @@ class CreateOrdersTable extends BaseMigration
         $table->unsignedInteger(Order::COLUMN_USER_ID)
             ->nullable(false);
         $table->unsignedBigInteger(Order::COLUMN_AMOUNT)
+            ->default(0)
             ->nullable(false);
         $table->enum(Order::COLUMN_STATUS, Order::STATUSES)
             ->default(Order::STATUS_OPEN)

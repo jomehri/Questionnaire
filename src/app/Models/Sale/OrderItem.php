@@ -34,6 +34,11 @@ class OrderItem extends BaseModel
     const COLUMN_QUESTIONER_ID = 'questioner_id';
     const COLUMN_AMOUNT = 'amount';
 
+    protected $fillable = [
+        self::COLUMN_ORDER_ID,
+        self::COLUMN_QUESTIONER_ID,
+        self::COLUMN_AMOUNT,
+    ];
 
     /**
      * @return int

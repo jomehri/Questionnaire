@@ -48,6 +48,10 @@ class Order extends BaseModel
         self::STATUS_REJECTED => self::STATUS_REJECTED,
     ];
 
+    protected $fillable = [
+        self::COLUMN_USER_ID,
+    ];
+
     /**
      * @return int
      */
