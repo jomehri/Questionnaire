@@ -148,4 +148,5 @@ Route::prefix("/sales/")
             'removeFromCart'
         );
         Route::get('currentCart', [SaleApiController::class, 'getCurrentCart'])->name('currentCart');
+        Route::get('myOrders', [SaleApiController::class, 'getMyOrders'])->name('myOrders');
     });

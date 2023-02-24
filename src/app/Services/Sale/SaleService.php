@@ -8,6 +8,7 @@ use App\Models\Sale\Order;
 use Illuminate\Http\Request;
 use App\Services\BaseService;
 use App\Models\Sale\OrderItem;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -91,6 +92,29 @@ class SaleService extends BaseService
         }
 
         return CartResource::make($order);
+    }
+
+    /**
+     * @param int $page
+     * @return AnonymousResourceCollection|null
+     */
+    public function getMyOrders(int $page): ?AnonymousResourceCollection
+    {
+        $orders = Order::forUser(Auth::id())->forPage($page, $this->perPage)->get();
+
+        if ($orders->isEmpty()) {
+            return null;
+        }
+
+        return CartResource::collection($orders);
+    }
+
+    /**
+     * @return int
+     */
+    public function countMyOrders(): int
+    {
+        return Order::forUser(Auth::id())->count();
     }
 
 }

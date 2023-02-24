@@ -134,4 +134,45 @@ class SaleApiController extends BaseApiController
         return $this->returnOk(null, $cartDetails ? [$cartDetails] : null);
     }
 
+    /**
+     * @OA\Get (
+     *  path="/api/sales/myOrders",
+     *  security={{"sanctum":{}}},
+     *  summary="Get user's orders",
+     *  description="Gets current user's orders history",
+     *  tags={"Sale"},
+     *
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @return JsonResponse
+     */
+    public function getMyOrders(): JsonResponse
+    {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->saleService->getMyOrders($page),
+            'total' => $this->saleService->countMyOrders(),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
+    }
+
 }
