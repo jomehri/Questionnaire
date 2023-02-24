@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Sale;
 
+use App\Http\Requests\Api\Sale\AllOrdersRequest;
 use App\Http\Requests\Api\Sale\MyOrderDetailsRequest;
 use App\Http\Resources\Sale\CartResource;
 use App\Models\Sale\Order;
@@ -172,6 +173,48 @@ class SaleApiController extends BaseApiController
 
         $data = [
             'items' => $this->saleService->getMyOrders($page),
+            'total' => $this->saleService->countMyOrders(),
+        ];
+
+        return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/sales/allOrders",
+     *  security={{"sanctum":{}}},
+     *  summary="Get all orders (admin)",
+     *  description="Gets all orders for admin",
+     *  tags={"Sale"},
+     *
+     *  @OA\Parameter(
+     *      name="page",
+     *      in="query",
+     *      description="Page Number",
+     *      required=false
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param AllOrdersRequest $allOrdersRequest
+     * @return JsonResponse
+     */
+    public function getAllOrders(AllOrdersRequest $allOrdersRequest): JsonResponse
+    {
+        $page = ($this->request->query('page')) ?? 1;
+
+        $data = [
+            'items' => $this->saleService->getAllOrders($page),
             'total' => $this->saleService->countMyOrders(),
         ];
 

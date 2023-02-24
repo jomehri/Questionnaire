@@ -110,11 +110,34 @@ class SaleService extends BaseService
     }
 
     /**
+     * @param int $page
+     * @return AnonymousResourceCollection|null
+     */
+    public function getAllOrders(int $page): ?AnonymousResourceCollection
+    {
+        $orders = Order::forPage($page, $this->perPage)->get();
+
+        if ($orders->isEmpty()) {
+            return null;
+        }
+
+        return CartResource::collection($orders);
+    }
+
+    /**
      * @return int
      */
     public function countMyOrders(): int
     {
         return Order::forUser(Auth::id())->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countAllOrders(): int
+    {
+        return Order::count();
     }
 
     /**
@@ -124,7 +147,7 @@ class SaleService extends BaseService
     public function getOrderDetails(int $orderId): CartResource
     {
         $order = Order::whereId($orderId)->with('orderItems')->first();
-        
+
         return CartResource::make($order);
     }
 

@@ -150,4 +150,5 @@ Route::prefix("/sales/")
         Route::get('currentCart', [SaleApiController::class, 'getCurrentCart'])->name('currentCart');
         Route::get('myOrders', [SaleApiController::class, 'getMyOrders'])->name('myOrders');
         Route::get('myOrders/{order:id}', [SaleApiController::class, 'getMyOrderDetails'])->name('myOrderDetails');
+        Route::get('allOrders', [SaleApiController::class, 'getAllOrders'])->name('allOrders');
     });
