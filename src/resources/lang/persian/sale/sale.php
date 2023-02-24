@@ -13,6 +13,7 @@ return [
         'orderItemIdIsRequired' => 'شماره ردیف سفارش ارسال نشد.',
         'orderItemIdMustBeInteger' => 'شماره ردیف سفارش به درستی ارسال نشد.',
         'orderItemNotForYou' => 'شما اجازه ویرایش این ردیف سفارشی را ندارید.',
+        'orderNotForYou' => 'شما اجازه مشاهده/ویرایش سفارش دیگران را ندارید.',
         'orderIsNotOpen' => 'این سفارش بسته شده است و امکان ویرایش ندارد.',
     ],
 

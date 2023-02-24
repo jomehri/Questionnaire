@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api\Sale;
 
+use App\Http\Requests\Api\Sale\MyOrderDetailsRequest;
+use App\Http\Resources\Sale\CartResource;
+use App\Models\Sale\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Sale\SaleService;
@@ -173,6 +176,44 @@ class SaleApiController extends BaseApiController
         ];
 
         return $this->returnOk(null, ['items' => $data]);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/sales/myOrders/{order}",
+     *  security={{"sanctum":{}}},
+     *  summary="Get user's order details",
+     *  description="Gets current user's order details for a certain order",
+     *  tags={"Sale"},
+     *
+     *  @OA\Parameter(
+     *      name="order",
+     *      in="path",
+     *      description="My Order Id",
+     *      required=false
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param MyOrderDetailsRequest $myOrderDetailsRequest
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function getMyOrderDetails(MyOrderDetailsRequest $myOrderDetailsRequest, Order $order): JsonResponse
+    {
+        $data = $this->saleService->getOrderDetails($order->getId());
+
+        return $this->returnOk(null, [$data]);
     }
 
 }

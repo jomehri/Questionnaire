@@ -117,4 +117,15 @@ class SaleService extends BaseService
         return Order::forUser(Auth::id())->count();
     }
 
+    /**
+     * @param int $orderId
+     * @return CartResource
+     */
+    public function getOrderDetails(int $orderId): CartResource
+    {
+        $order = Order::whereId($orderId)->with('orderItems')->first();
+        
+        return CartResource::make($order);
+    }
+
 }
