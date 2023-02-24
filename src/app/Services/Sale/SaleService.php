@@ -56,6 +56,20 @@ class SaleService extends BaseService
     }
 
     /**
+     * @param int $orderItemId
+     * @return void
+     */
+    public function removeFromCart(int $orderItemId): void
+    {
+        DB::transaction(function () use ($orderItemId) {
+            /** @var OrderItem $orderItem */
+            $orderItem = OrderItem::where('id', $orderItemId)->first();
+            $orderItem->delete();
+            $this->recalculateOrderAmount($orderItem->order);
+        });
+    }
+
+    /**
      * @param Order $order
      * @return void
      */

@@ -156,4 +156,12 @@ class Order extends BaseModel
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return $this->getStatus() === self::STATUS_OPEN;
+    }
+
 }

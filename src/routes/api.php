@@ -144,5 +144,8 @@ Route::prefix("/sales/")
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('addToCart', [SaleApiController::class, 'addToCart'])->name('addToCart');
+        Route::delete('removeFromCart/orderItem/{order_item_id}', [SaleApiController::class, 'removeFromCart'])->name(
+            'removeFromCart'
+        );
         Route::get('currentCart', [SaleApiController::class, 'getCurrentCart'])->name('currentCart');
     });
