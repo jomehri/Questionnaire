@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Sale;
 
-use App\Http\Requests\Api\Sale\AllOrdersRequest;
-use App\Http\Requests\Api\Sale\MyOrderDetailsRequest;
-use App\Http\Resources\Sale\CartResource;
 use App\Models\Sale\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\Sale\SaleService;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Requests\Api\Sale\AddToCartRequest;
+use App\Http\Requests\Api\Sale\AdminAllOrdersRequest;
+use App\Http\Requests\Api\Sale\MyOrderDetailsRequest;
 use App\Http\Requests\Api\Sale\RemoveFromCartRequest;
+use App\Http\Requests\Api\Sale\AdminOrderDetailsRequest;
 
 class SaleApiController extends BaseApiController
 {
@@ -144,7 +144,7 @@ class SaleApiController extends BaseApiController
      *  security={{"sanctum":{}}},
      *  summary="Get user's orders",
      *  description="Gets current user's orders history",
-     *  tags={"Sale"},
+     *  tags={"Order"},
      *
      *  @OA\Parameter(
      *      name="page",
@@ -185,7 +185,7 @@ class SaleApiController extends BaseApiController
      *  security={{"sanctum":{}}},
      *  summary="Get all orders (admin)",
      *  description="Gets all orders for admin",
-     *  tags={"Sale"},
+     *  tags={"Order"},
      *
      *  @OA\Parameter(
      *      name="page",
@@ -206,16 +206,16 @@ class SaleApiController extends BaseApiController
      *  ),
      * ),
      *
-     * @param AllOrdersRequest $allOrdersRequest
+     * @param AdminAllOrdersRequest $allOrdersRequest
      * @return JsonResponse
      */
-    public function getAllOrders(AllOrdersRequest $allOrdersRequest): JsonResponse
+    public function getAllOrders(AdminAllOrdersRequest $allOrdersRequest): JsonResponse
     {
         $page = ($this->request->query('page')) ?? 1;
 
         $data = [
             'items' => $this->saleService->getAllOrders($page),
-            'total' => $this->saleService->countMyOrders(),
+            'total' => $this->saleService->countAllOrders(),
         ];
 
         return $this->returnOk(null, ['items' => $data]);
@@ -227,7 +227,7 @@ class SaleApiController extends BaseApiController
      *  security={{"sanctum":{}}},
      *  summary="Get user's order details",
      *  description="Gets current user's order details for a certain order",
-     *  tags={"Sale"},
+     *  tags={"Order"},
      *
      *  @OA\Parameter(
      *      name="order",
@@ -253,6 +253,44 @@ class SaleApiController extends BaseApiController
      * @return JsonResponse
      */
     public function getMyOrderDetails(MyOrderDetailsRequest $myOrderDetailsRequest, Order $order): JsonResponse
+    {
+        $data = $this->saleService->getOrderDetails($order->getId());
+
+        return $this->returnOk(null, [$data]);
+    }
+
+    /**
+     * @OA\Get (
+     *  path="/api/sales/allOrders/{order}",
+     *  security={{"sanctum":{}}},
+     *  summary="Get any user's order details (admin)",
+     *  description="Gets any user's order details for a certain order for admin only",
+     *  tags={"Order"},
+     *
+     *  @OA\Parameter(
+     *      name="order",
+     *      in="path",
+     *      description="My Order Id",
+     *      required=false
+     *  ),
+     *  @OA\Response(
+     *      response=200,
+     *      description="success",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="sucess", type="string", example="success"),
+     *      )
+     *  ),
+     *  @OA\Response(
+     *      response=422,
+     *      description="bad request",
+     *  ),
+     * ),
+     *
+     * @param AdminOrderDetailsRequest $adminOrderDetailsRequest
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function getOrderDetails(AdminOrderDetailsRequest $adminOrderDetailsRequest, Order $order): JsonResponse
     {
         $data = $this->saleService->getOrderDetails($order->getId());
 
